@@ -2,7 +2,7 @@ import React from 'react'
 import ReactDOM from 'react-dom/client'
 import { RouterProvider } from 'react-router-dom'
 import App from './App'
-import { router, routesName } from './core/Routes.tsx'
+import { router, routesName } from './core/Routes'
 import './index.css'
 
 const routeList = []

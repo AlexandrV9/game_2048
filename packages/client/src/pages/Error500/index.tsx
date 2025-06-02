@@ -1,1 +1,1 @@
-export { default as Error500Page } from './Error500.tsx'
+export { default as Error500Page } from './Error500'

@@ -1,1 +1,1 @@
-export { default as SignInPage } from './SignIn.tsx'
+export { default as SignInPage } from './SignIn'

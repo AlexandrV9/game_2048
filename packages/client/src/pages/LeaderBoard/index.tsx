@@ -1,1 +1,1 @@
-export { default as LeaderBoardPage } from './LeaderBoard.tsx'
+export { default as LeaderBoardPage } from './LeaderBoard'

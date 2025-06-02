@@ -1,1 +1,1 @@
-export { default as EndPage } from './End.tsx'
+export { default as EndPage } from './End'

@@ -1,1 +1,1 @@
-export { default as StartPage } from './Start.tsx'
+export { default as StartPage } from './Start'

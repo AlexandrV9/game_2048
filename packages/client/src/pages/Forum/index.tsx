@@ -1,1 +1,1 @@
-export { default as ForumPage } from './Forum.tsx'
+export { default as ForumPage } from './Forum'
