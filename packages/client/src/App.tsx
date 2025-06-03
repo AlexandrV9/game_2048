@@ -1,6 +1,6 @@
 import { useEffect } from 'react'
 import { RouterProvider } from 'react-router-dom'
-import { router } from './core/Routes'
+import { router } from './core/Routes.js'
 import './App.css'
 
 function App() {

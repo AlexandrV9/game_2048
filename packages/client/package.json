@@ -11,15 +11,23 @@
     "test": "jest ./ --passWithNoTests"
   },
   "dependencies": {
+    "@radix-ui/react-slot": "^1.2.3",
+    "@tailwindcss/vite": "^4.1.8",
+    "class-variance-authority": "^0.7.1",
+    "clsx": "^2.1.1",
     "dotenv": "^16.0.2",
     "eslint-config-prettier": "^8.5.0",
+    "lucide-react": "^0.511.0",
     "prettier": "^2.7.1",
     "react": "^18.2.0",
-    "react-dom": "^18.2.0"
+    "react-dom": "^18.2.0",
+    "tailwind-merge": "^3.3.0",
+    "tailwindcss": "^4.1.8"
   },
   "devDependencies": {
     "@testing-library/react": "^13.3.0",
     "@types/jest": "^28.1.8",
+    "@types/node": "^22.15.29",
     "@types/react": "^18.0.17",
     "@types/react-dom": "^18.0.6",
     "@typescript-eslint/eslint-plugin": "^5.35.1",
@@ -33,8 +41,9 @@
     "react-router-dom": "^7.6.1",
     "react-routes": "^0.2.6",
     "ts-jest": "^28.0.8",
+    "tw-animate-css": "^1.3.3",
     "typescript": "^4.8.2",
-    "vite": "^3.0.7"
+    "vite": "^6.3.5"
   },
   "license": "MIT"
 }
