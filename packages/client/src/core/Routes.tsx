@@ -7,9 +7,9 @@ import {
   HomePage,
   LeaderBoardPage,
   ProfilePage,
+  StartPage,
   SignInPage,
   SignUpPage,
-  StartPage,
 } from '../pages'
 
 export const routesName: Record<string, string> = {

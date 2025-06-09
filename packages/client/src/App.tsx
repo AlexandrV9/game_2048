@@ -1,4 +1,4 @@
-import { useEffect } from 'react'
+import { Suspense, useEffect } from 'react'
 import { RouterProvider } from 'react-router-dom'
 import { router } from './core/Routes.js'
 import './App.css'
@@ -16,7 +16,9 @@ function App() {
   }, [])
   return (
     <div className="App">
-      <RouterProvider router={router} />
+      <Suspense fallback={null}>
+        <RouterProvider router={router} />
+      </Suspense>
     </div>
   )
 }
