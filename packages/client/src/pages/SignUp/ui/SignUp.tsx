@@ -120,7 +120,7 @@ const SignUpPage = () => {
               />
 
               <Button type="submit" className="w-full">
-                Войти
+                Создать
               </Button>
             </form>
           </Form>
