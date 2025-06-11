@@ -36,7 +36,7 @@ const SignUpPage = () => {
     <div className={styles.page}>
       <Card className="w-full max-w-[400px]">
         <CardHeader>
-          <CardTitle className="text-center text-xl">Создать аккаунт</CardTitle>
+          <CardTitle className="text-center text-xl">Регистрация</CardTitle>
         </CardHeader>
         <CardContent>
           <Form {...form}>
