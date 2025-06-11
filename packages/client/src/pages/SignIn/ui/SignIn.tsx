@@ -10,7 +10,6 @@ import { Input } from '@/components/ui/input'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 
-import styles from './SignIn.module.css'
 import {
   Card,
   CardContent,
@@ -32,7 +31,7 @@ const SignInPage = () => {
   }
 
   return (
-    <div className={styles.page}>
+    <div className="flex justify-center items-center w-[100vw] h-[100vh]">
       <Card className="w-full max-w-[400px]">
         <CardHeader>
           <CardTitle className="text-center text-xl">Авторизация</CardTitle>
