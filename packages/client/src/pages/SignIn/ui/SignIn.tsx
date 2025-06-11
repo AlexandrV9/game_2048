@@ -59,7 +59,7 @@ const SignInPage = () => {
                   <FormItem>
                     <FormLabel>Пароль</FormLabel>
                     <FormControl>
-                      <Input autoComplete="off" {...field} />
+                      <Input type="password" autoComplete="off" {...field} />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
