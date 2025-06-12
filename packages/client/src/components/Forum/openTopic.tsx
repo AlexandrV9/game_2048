@@ -1,7 +1,8 @@
-import { comment, me, topic } from '@/pages/Forum/Forum.mock.ts'
+import { Comment, me, Topic } from '@/pages/Forum/Forum.mock.ts'
 import { FormEvent, useEffect, useState } from 'react'
 import { Root } from 'react-dom/client'
-import Comment from './comment.tsx'
+import CommentComponent from './comment.tsx'
+import { routesName } from '@/core/Routes.tsx'
 
 export const dateFormatted = (date: Date): string => {
   const day = date.getDay().toString()
@@ -14,11 +15,12 @@ export const dateFormatted = (date: Date): string => {
 
 const OpenTopic: React.FC<{
   rootTopic: Root
-  topic: topic
-  forumTopics: topic[]
-  setForumTopics: React.Dispatch<React.SetStateAction<topic[]>>
-}> = ({ rootTopic, topic, forumTopics, setForumTopics }) => {
-  const thisTopic = forumTopics.find(item => item.id == topic.id) as topic
+  topic: Topic
+  forumTopics: Topic[]
+  setForumTopics: React.Dispatch<React.SetStateAction<Topic[]>>
+  styles: CSSModuleClasses
+}> = ({ rootTopic, topic, forumTopics, setForumTopics, styles }) => {
+  const thisTopic = forumTopics.find(item => item.id == topic.id) as Topic
   const [commentsTopic, setCommentsTopic] = useState(thisTopic.comments)
 
   const closeDialog = () => {
@@ -26,16 +28,15 @@ const OpenTopic: React.FC<{
   }
 
   useEffect(() => {
-    const dialogContainer =
-      document.getElementsByClassName('comments-section')[0]
+    const dialogContainer = document.getElementsByClassName(
+      styles.commentsSection
+    )[0]
     dialogContainer.scrollTo(0, dialogContainer.scrollHeight)
   }, [commentsTopic])
 
   useEffect(() => {
     const handleEscape = (e: KeyboardEvent) => {
-      if (e.key === 'Escape') {
-        closeDialog()
-      }
+      if (e.key === 'Escape') closeDialog()
     }
     document.addEventListener('keydown', handleEscape)
     return () => document.removeEventListener('keydown', handleEscape)
@@ -46,14 +47,16 @@ const OpenTopic: React.FC<{
     const form = data.currentTarget as HTMLFormElement
     const commentInput = form.elements[0] as HTMLTextAreaElement
 
-    const newComment: comment = {
-      id: comments.length + 1,
+    if (!commentInput.value) return
+
+    const newComment: Comment = {
+      id: commentsTopic.length + 1,
       content: commentInput.value,
       author: me,
       created: new Date(),
     }
-    setCommentsTopic((prevComments: comment[]) => [...prevComments, newComment])
-    setForumTopics((prevTopics: topic[]) => {
+    setCommentsTopic((prevComments: Comment[]) => [...prevComments, newComment])
+    setForumTopics((prevTopics: Topic[]) => {
       return prevTopics.map(item => {
         if (item.id == thisTopic.id) {
           return {
@@ -67,52 +70,56 @@ const OpenTopic: React.FC<{
     commentInput.value = ''
   }
 
-  const comments: JSX.Element[] = []
-  commentsTopic.map(item => {
-    comments.push(<Comment {...item} key={item.id} />)
-  })
-
   return (
-    <div className="open-topic">
-      <button className="close-window" onClick={closeDialog} />
-      <div className="open-topic-dialog">
-        <div className="dialog-header">
-          <div className="topic-info">
-            <h2 className="topic-title">{topic.topic}</h2>
-            <div className="topic-meta">
-              <div className="author-info">
+    <div className={styles.openTopic}>
+      <button className={styles.closeWindow} onClick={closeDialog} />
+      <div className={styles.openTopicDialog}>
+        <div className={styles.dialogHeader}>
+          <div className={styles.topicInfo}>
+            <h2 className={styles.topicTitle}>{topic.topic}</h2>
+            <div className={styles.topicMeta}>
+              <a href={`${routesName['profile']}/${topic.author.id}`}>
+                <div className={styles.authorInfo}>
+                  <img
+                    src={topic.author.avatar}
+                    alt={topic.author.login}
+                    className={styles.authorAvatar}
+                  />
+                  <span className={styles.authorName}>
+                    {topic.author.firstName} {topic.author.secondName}
+                  </span>
+                </div>
+              </a>
+              <div className={styles.dateInfo}>
                 <img
-                  src={topic.author.avatar}
-                  alt={topic.author.login}
-                  className="author-avatar"
+                  src="/Forum/calendar.svg"
+                  className={styles.calendarIcon}
                 />
-                <span className="author-name">
-                  {topic.author.first_name} {topic.author.second_name}
-                </span>
-              </div>
-              <div className="date-info">
-                <img src="/calendar.svg" className="calendar-icon" />
                 <span>{dateFormatted(topic.created)}</span>
               </div>
             </div>
           </div>
         </div>
 
-        <div className="comments-section">{comments}</div>
+        <div className={styles.commentsSection}>
+          {commentsTopic.map(item => (
+            <CommentComponent comment={item} styles={styles} key={item.id} />
+          ))}
+        </div>
 
-        <div className="comment-input-section">
-          <img src={me.avatar} alt={me.login} className="input-avatar" />
+        <div className={styles.commentInputSection}>
+          <img src={me.avatar} alt={me.login} className={styles.inputAvatar} />
           <form
-            className="input-container"
+            className={styles.inputContainer}
             onSubmit={data => {
               createComment(data)
             }}>
             <textarea
-              className="comment-input"
+              className={styles.commentInput}
               placeholder="Написать комментарий..."
               rows={3}></textarea>
-            <button className="send-btn" type="submit">
-              <img src="/sendButton.svg" alt="sendButton" />
+            <button className={styles.sendBtn} type="submit">
+              <img src="/Forum/sendButton.svg" alt="sendButton" />
             </button>
           </form>
         </div>

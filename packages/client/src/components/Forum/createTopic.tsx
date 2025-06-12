@@ -1,55 +1,60 @@
 import { Button } from '@/components/ui/button.js'
 import { Textarea } from '@/components/ui/textarea.tsx'
-import { me, topic } from '@/pages/Forum/Forum.mock.ts'
+import { me, Topic } from '@/pages/Forum/Forum.mock.ts'
 import { FormEvent, useEffect } from 'react'
 import { Root } from 'react-dom/client'
 
 const CreateTopic: React.FC<{
   rootTopic: Root
-  forumTopics: topic[]
-  setForumTopics: React.Dispatch<React.SetStateAction<topic[]>>
-}> = ({ rootTopic, forumTopics, setForumTopics }) => {
+  forumTopics: Topic[]
+  setForumTopics: React.Dispatch<React.SetStateAction<Topic[]>>
+  styles: CSSModuleClasses
+}> = ({ rootTopic, forumTopics, setForumTopics, styles }) => {
   const closeDialog = () => {
     rootTopic.render('')
   }
 
   useEffect(() => {
     const handleEscape = (e: KeyboardEvent) => {
-      if (e.key === 'Escape') {
-        closeDialog()
-      }
+      if (e.key === 'Escape') closeDialog()
     }
     document.addEventListener('keydown', handleEscape)
     return () => document.removeEventListener('keydown', handleEscape)
   }, [])
 
   const createTopic = (data: FormEvent<HTMLFormElement>) => {
+    data.preventDefault()
+
     const form = data.currentTarget as HTMLFormElement
     const topicInput = form.elements[0] as HTMLTextAreaElement
 
-    const newTopic: topic = {
+    if (!topicInput.value) return
+
+    const newTopic: Topic = {
       id: forumTopics.length + 1,
       topic: topicInput.value,
       author: me,
       created: new Date(),
       comments: [],
     }
-    setForumTopics((prevTopics: topic[]) => [newTopic, ...prevTopics])
+    setForumTopics((prevTopics: Topic[]) => [newTopic, ...prevTopics])
     rootTopic.render('')
+
+    topicInput.value = ''
   }
 
   return (
-    <div className="create-topic">
-      <button className="close-window" onClick={closeDialog} />
+    <div className={styles.createTopic}>
+      <button className={styles.closeWindow} onClick={closeDialog} />
       <form
-        className="create-topic-dialog"
+        className={styles.createTopicDialog}
         onSubmit={data => createTopic(data)}>
         <Textarea
           placeholder="Введите тему ..."
-          className="topic-create-title"
+          className={styles.topicCreateTitle}
           maxLength={2000}
         />
-        <Button className="topic-create-button">СОЗДАТЬ</Button>
+        <Button className={styles.topicCreateButton}>СОЗДАТЬ</Button>
       </form>
     </div>
   )

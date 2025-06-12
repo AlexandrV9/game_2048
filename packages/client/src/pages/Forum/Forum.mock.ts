@@ -1,7 +1,7 @@
-export interface user {
+export interface User {
   id: number
-  first_name: string
-  second_name: string
+  firstName: string
+  secondName: string
   login: string
   email: string
   password: string
@@ -9,26 +9,26 @@ export interface user {
   avatar: string
 }
 
-export interface comment {
+export interface Comment {
   id: number
   content: string
   created: Date
-  author: user
+  author: User
 }
 
-export interface topic {
+export interface Topic {
   id: number
   topic: string
-  author: user
+  author: User
   created: Date
-  comments: comment[]
+  comments: Comment[]
 }
 
-export const users: user[] = [
+export const users: User[] = [
   {
     id: 1,
-    first_name: 'Иван',
-    second_name: 'Петров',
+    firstName: 'Иван',
+    secondName: 'Петров',
     login: 'ivan_petrov',
     email: 'ivan@example.com',
     password: 'qwerty123',
@@ -38,8 +38,8 @@ export const users: user[] = [
   },
   {
     id: 2,
-    first_name: 'Анна',
-    second_name: 'Смирнова',
+    firstName: 'Анна',
+    secondName: 'Смирнова',
     login: 'anna_smirnova',
     email: 'anna@example.com',
     password: 'password123',
@@ -49,8 +49,8 @@ export const users: user[] = [
   },
   {
     id: 3,
-    first_name: 'Максим',
-    second_name: 'Иванов',
+    firstName: 'Максим',
+    secondName: 'Иванов',
     login: 'max_ivanov',
     email: 'max@example.com',
     password: 'max12345',
@@ -60,8 +60,8 @@ export const users: user[] = [
   },
   {
     id: 4,
-    first_name: 'Мария',
-    second_name: 'Васильева',
+    firstName: 'Мария',
+    secondName: 'Васильева',
     login: 'maria_vasilyeva',
     email: 'maria@example.com',
     password: 'maria123',
@@ -70,8 +70,8 @@ export const users: user[] = [
   },
   {
     id: 5,
-    first_name: 'Сергей',
-    second_name: 'Козлов',
+    firstName: 'Сергей',
+    secondName: 'Козлов',
     login: 'sergey_kozlov',
     email: 'sergey@example.com',
     password: 'sergey123',
@@ -81,7 +81,7 @@ export const users: user[] = [
   },
 ]
 
-const comments: comment[] = []
+const comments: Comment[] = []
 for (let i = 1; i <= 100; i++) {
   comments.push({
     id: i,
@@ -91,7 +91,7 @@ for (let i = 1; i <= 100; i++) {
   })
 }
 
-export const forumTopicsMock: topic[] = [
+export const forumTopicsMock: Topic[] = [
   {
     id: 1,
     topic: 'Стратегии победы: как достичь 2048 за минимальное количество ходов',

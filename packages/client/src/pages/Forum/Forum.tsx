@@ -1,39 +1,25 @@
 import { Button } from '@/components/ui/button.js'
-import './Forum.scss'
+import styles from './Forum.module.scss'
 import { Avatar, AvatarImage } from '@radix-ui/react-avatar'
 import { routesName } from '@/core/Routes.js'
 import { useEffect, useState } from 'react'
 
 import { forumTopicsMock, me } from './Forum.mock.ts'
-import { Topic } from '@/components/Forum/topic.tsx'
+import { TopicComponent } from '@/components/Forum/topic.tsx'
 
-const ForumPage: React.FC = () => {
-  document.getElementsByTagName('title')[0].textContent = 'Форум'
+const ForumPage = () => {
   const [forumTopics, setForumTopics] = useState(forumTopicsMock)
 
   useEffect(() => {
-    const topicContainer = document.getElementsByClassName('topic-list')[0]
-    topicContainer.scrollTo(0, 0)
+    const topicContainer = document.getElementById('topic_list')
+    topicContainer?.scrollTo(0, 0)
   }, [forumTopics])
 
-  const topics: JSX.Element[] = []
-  forumTopics.map(item => {
-    topics.push(
-      <Topic
-        topic={item}
-        id={String(item.id)}
-        forumTopics={forumTopics}
-        setForumTopics={setForumTopics}
-        key={item.id}
-      />
-    )
-  })
-
   return (
-    <div className="forum">
-      <div className="hover-trigger"></div>
+    <div className={styles.forum}>
+      <div className={styles.hoverTrigger}></div>
       <Button
-        className="back-button"
+        className={styles.backButton}
         onClick={() => {
           history.back()
         }}>
@@ -42,7 +28,7 @@ const ForumPage: React.FC = () => {
 
       <nav>
         <h2>ФОРУМ</h2>
-        <div className="avatar">
+        <div className={styles.avatar}>
           <Avatar>
             <a href={`${routesName['profile']}/${me.id}`}>
               <AvatarImage src={me.avatar} alt="avatar" />
@@ -51,18 +37,29 @@ const ForumPage: React.FC = () => {
         </div>
       </nav>
 
-      <div className="forum-panel">
-        <Topic
+      <div className={styles.forumPanel}>
+        <TopicComponent
           id={'btn-add'}
           add={true}
           forumTopics={forumTopics}
           setForumTopics={setForumTopics}
+          styles={styles}
         />
-        <div className="topic-list" id="topic_list" key="topic_list">
-          {topics}
+        <div className={styles.topicList} id="topic_list" key="topic_list">
+          {forumTopics.map(item => (
+            <TopicComponent
+              topic={item}
+              id={String(item.id)}
+              forumTopics={forumTopics}
+              setForumTopics={setForumTopics}
+              key={item.id}
+              styles={styles}
+            />
+          ))}
         </div>
       </div>
-      <div className="plug-topic"></div>
+      <div className={styles.plugTopic} id="plug_topic"></div>
+      <div className={styles.plugTopic} id="plug_topic"></div>
     </div>
   )
 }
