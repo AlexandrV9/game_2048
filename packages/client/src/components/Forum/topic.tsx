@@ -1,59 +1,15 @@
 import { Topic } from '@/pages/Forum/Forum.mock.ts'
-import { createRoot, Root } from 'react-dom/client'
-import CreateTopic from './createTopic.tsx'
-import OpenTopic, { dateFormatted } from './openTopic.tsx'
-import { Button } from '../ui/button.tsx'
-import clsx from 'clsx'
-
-let rootTopic: Root
+import { dateFormatted } from './openTopic.tsx'
 
 interface topicProps {
   topic?: Topic
-  id: string
   add?: boolean
-  forumTopics: Topic[]
-  setForumTopics: React.Dispatch<React.SetStateAction<Topic[]>>
   styles: CSSModuleClasses
 }
 
-export const TopicComponent = ({
-  topic,
-  id,
-  add = false,
-  forumTopics,
-  setForumTopics,
-  styles,
-}: topicProps) => {
-  const createDialog = () => {
-    if (!rootTopic)
-      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-      rootTopic = createRoot(document.getElementById('plug_topic')!)
-    if (add) {
-      rootTopic.render(
-        <CreateTopic
-          rootTopic={rootTopic}
-          forumTopics={forumTopics}
-          setForumTopics={setForumTopics}
-          styles={styles}
-        />
-      )
-    } else {
-      rootTopic.render(
-        <OpenTopic
-          rootTopic={rootTopic}
-          topic={topic as Topic}
-          forumTopics={forumTopics}
-          setForumTopics={setForumTopics}
-          styles={styles}
-        />
-      )
-    }
-  }
-
-  const commentStyle = clsx(styles.topic, add && styles.add)
-
+export const TopicComponent = ({ topic, add = false, styles }: topicProps) => {
   return (
-    <Button className={commentStyle} onClick={createDialog} id={id} key={id}>
+    <>
       {add ? (
         <span className={styles.topicTitle}>ДОБАВИТЬ</span>
       ) : (
@@ -89,6 +45,6 @@ export const TopicComponent = ({
       ) : (
         ''
       )}
-    </Button>
+    </>
   )
 }

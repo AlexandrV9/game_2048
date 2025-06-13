@@ -2,18 +2,13 @@ import { Button } from '@/components/ui/button.js'
 import { Textarea } from '@/components/ui/textarea.tsx'
 import { me, Topic } from '@/pages/Forum/Forum.mock.ts'
 import { FormEvent, useEffect } from 'react'
-import { Root } from 'react-dom/client'
 
 const CreateTopic: React.FC<{
-  rootTopic: Root
   forumTopics: Topic[]
   setForumTopics: React.Dispatch<React.SetStateAction<Topic[]>>
   styles: CSSModuleClasses
-}> = ({ rootTopic, forumTopics, setForumTopics, styles }) => {
-  const closeDialog = () => {
-    rootTopic.render('')
-  }
-
+  closeDialog: () => void
+}> = ({ forumTopics, setForumTopics, styles, closeDialog }) => {
   useEffect(() => {
     const handleEscape = (e: KeyboardEvent) => {
       if (e.key === 'Escape') closeDialog()
@@ -31,16 +26,15 @@ const CreateTopic: React.FC<{
     if (!topicInput.value) return
 
     const newTopic: Topic = {
-      id: forumTopics.length + 1,
+      id: forumTopics.length + Math.random() * 100,
       topic: topicInput.value,
       author: me,
       created: new Date(),
       comments: [],
     }
     setForumTopics((prevTopics: Topic[]) => [newTopic, ...prevTopics])
-    rootTopic.render('')
-
     topicInput.value = ''
+    closeDialog()
   }
 
   return (

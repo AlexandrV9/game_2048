@@ -1,6 +1,5 @@
 import { Comment, me, Topic } from '@/pages/Forum/Forum.mock.ts'
 import { FormEvent, useEffect, useRef, useState } from 'react'
-import { Root } from 'react-dom/client'
 import CommentComponent from './comment.tsx'
 import { routesName } from '@/core/Routes.tsx'
 
@@ -14,19 +13,15 @@ export const dateFormatted = (date: Date): string => {
 }
 
 const OpenTopic: React.FC<{
-  rootTopic: Root
   topic: Topic
   forumTopics: Topic[]
   setForumTopics: React.Dispatch<React.SetStateAction<Topic[]>>
   styles: CSSModuleClasses
-}> = ({ rootTopic, topic, forumTopics, setForumTopics, styles }) => {
+  closeDialog: () => void
+}> = ({ topic, forumTopics, setForumTopics, styles, closeDialog }) => {
   const thisTopic = forumTopics.find(item => item.id == topic.id) as Topic
   const [commentsTopic, setCommentsTopic] = useState(thisTopic.comments)
   const commentsContainerRef = useRef<HTMLDivElement | null>(null)
-
-  const closeDialog = () => {
-    rootTopic.render('')
-  }
 
   useEffect(() => {
     if (commentsContainerRef.current) {
@@ -53,7 +48,7 @@ const OpenTopic: React.FC<{
     if (!commentInput.value) return
 
     const newComment: Comment = {
-      id: commentsTopic.length + 1,
+      id: commentsTopic.length + Math.random() * 100,
       content: commentInput.value,
       author: me,
       created: new Date(),

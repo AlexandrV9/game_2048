@@ -7,7 +7,8 @@
   flex-direction: column;
   background-color: #f8f8f3;
   overflow-x: hidden;
-  scrollbar-width: 6px;
+  scrollbar-width: 0.1vi;
+  font-size: 2vh;
 
   nav {
     display: flex;
@@ -17,25 +18,25 @@
     h2 {
       margin-top: 2vi;
       font-weight: bold;
-      font-size: 50px;
-      margin-left: calc(50% - 117px);
+      font-size: 5vh;
+      margin-left: 45vi;
       color: #6c6150;
     }
   }
 }
 
 .forum::-webkit-scrollbar {
-  width: 8px;
+  width: 0.1vi;
 }
 
 .forum::-webkit-scrollbar-track {
   background: #fbfbe9;
-  border-radius: 10px;
+  border-radius: 0.1vi;
 }
 
 .forum::-webkit-scrollbar-thumb {
   background: #fbfbe9;
-  border-radius: 10px;
+  border-radius: 0.1vi;
 }
 
 .forum::-webkit-scrollbar-thumb:hover {
@@ -66,15 +67,19 @@
   display: flex;
   justify-items: center;
   z-index: 1001;
-  height: 92%;
-  width: 3%;
-  min-width: max-content;
-  margin: 2%;
+  height: 92vh;
+  width: 3vi;
+  min-width: 3vi;
+  max-width: 3vi;
+  margin: 1vi;
   opacity: 0;
   transform: translateX(-100%);
   transition: all 0.5s ease;
   cursor: pointer;
   background-color: #6c6150;
+  font-size: 1.5vh;
+  padding: 3vh;
+  border-radius: 1vh;
 }
 
 .hoverTrigger {
@@ -82,10 +87,9 @@
   display: flex;
   justify-items: center;
   z-index: 1001;
-  height: 100%;
-  width: 150px;
+  height: 100vh;
+  width: 10vi;
   min-width: max-content;
-  margin: 50px 10px;
 }
 
 .hoverTrigger:hover + .backButton {
@@ -101,18 +105,18 @@
 
 .avatar {
   position: static;
-  width: 54px;
-  height: 54px;
-  margin: 15px 20px 2vi auto;
+  width: 3vi;
+  height: 3vi;
+  margin: 1vi 1vi 2vi auto;
   border-radius: 50%;
-  box-shadow: 0px 2px 6px 0px black;
+  box-shadow: 0px 0.1vi 0.3vi 0px black;
   opacity: 1;
   transition: opacity 0.3s ease;
 
   img {
     border-radius: 50%;
-    width: 54px;
-    height: 54px;
+    width: 3vi;
+    height: 3vi;
   }
 }
 
@@ -126,7 +130,6 @@
   width: 60vi;
   height: 70vh;
   margin-top: 4vi;
-  margin-bottom: 20px;
   padding: 0.5vi;
   background-color: #fbfbe9;
   border-radius: 0.5em;
@@ -137,30 +140,33 @@
 .topicList {
   position: relative;
   overflow-y: auto;
-  width: auto;
-  height: calc(100% - 80px - 0.5vi);
+  width: 59vi;
+  height: 59vh;
+  scrollbar-width: 0.1vi;
 }
 
 .topic {
   display: flex;
   flex-direction: row;
-  margin: 20px;
+  margin: 1vi;
   border: 0.5px solid #6c61501c;
-  width: calc(100% - 40px);
-  height: max-content;
+  width: 56vi;
+  height: 7vh;
   border-radius: 0.5em;
   align-items: start;
   background-color: #eed9bb;
   opacity: 1;
   transition: opacity 0.3s ease;
-  padding: 10px 10px;
+  padding: 1vh 1vh;
   max-width: width;
   cursor: pointer;
   text-align: left;
   color: #111827;
+  font-size: 1.5vh;
 
   .messageIcon {
     height: 2vh;
+    width: 2vh;
   }
 }
 
@@ -175,6 +181,8 @@
   background-color: #6c6150;
   text-align: center;
   color: white;
+  height: 4vh;
+  width: 57vi;
 }
 
 .topic:hover {
@@ -185,6 +193,10 @@
 .plugTopic {
   position: fixed;
   z-index: 1002;
+}
+
+.hidden {
+  display: none;
 }
 
 .createTopic {
@@ -209,10 +221,9 @@
 .createTopicDialog {
   position: fixed;
   z-index: 1003;
-  border: 0.5px solid #6c61501c;
-  width: 100vh;
-  height: max-content;
-  max-height: 30vi;
+  border: 0.1vi solid #6c61501c;
+  width: 50vi;
+  height: 20vh;
   background-color: #fbfbe9;
   border-radius: 0.5em;
   box-shadow: 0px 2px 2px 0px gray;
@@ -221,6 +232,13 @@
   flex-direction: column;
   justify-content: center;
   align-items: center;
+
+  textarea{
+    width: 49vi;
+    max-height: 15vh;
+    min-height: 10vh;
+    font-size: 2vh;
+  }
 }
 
 .topicCreateTitle {
@@ -235,6 +253,9 @@
   cursor: pointer;
   opacity: 1;
   transition: opacity 0.3s ease;
+  height: 4vh;
+  width: 8vi;
+  font-size: 2vh;
 }
 
 .topicCreateButton:hover {
@@ -255,10 +276,10 @@
 .openTopicDialog {
   position: fixed;
   z-index: 1003;
-  border: 0.5px solid #6c61501c;
+  border: 0.1vi solid #6c61501c;
   background-color: #fbfbe9;
   border-radius: 0.5em;
-  box-shadow: 0px 2px 2px 0px gray;
+  box-shadow: 0px 1vh 1vh 0px gray;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
@@ -278,7 +299,7 @@
 }
 
 .dialogHeader {
-  padding: 1.5rem;
+  padding: 1vi;
   background: #f7e7b2;
   display: flex;
   align-items: flex-start;
@@ -293,7 +314,7 @@
 .topicMeta {
   display: flex;
   align-items: center;
-  gap: 1rem;
+  gap: 0.5vi;
   font-size: 0.875rem;
   color: #6b7280;
 }
@@ -301,32 +322,34 @@
 .authorInfo {
   display: flex;
   align-items: center;
-  gap: 0.5rem;
+  gap: 0.5vi;
 }
 
 .authorAvatar {
-  width: 2rem;
-  height: 2rem;
+  width: 1.7vi;
+  height: 1.7vi;
   border-radius: 50%;
-  border: 2px solid white;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  border: 0.1vi solid white;
+  box-shadow: 0 0.1vi 0.3vi rgba(0, 0, 0, 0.1);
 }
 
 .authorName {
   font-weight: 500;
   color: #1f2937;
+  font-size: 1.5vh;
 }
 
 .dateInfo {
   display: flex;
   align-items: center;
-  gap: 0.25rem;
+  gap: 0.1vi;
+  font-size: 1.5vh;
 }
 
 .calendarIcon {
   color: #6b7280;
-  width: 16px;
-  height: 16px;
+  width: 1vi;
+  height: 1vi;
 }
 
 .commentsSection {
