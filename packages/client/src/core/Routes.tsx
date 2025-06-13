@@ -10,7 +10,8 @@ import {
   StartPage,
   SignInPage,
   SignUpPage,
-} from '../pages'
+  StartPage,
+} from '../pages/index.js'
 
 export const routesName: Record<string, string> = {
   home: '/',
