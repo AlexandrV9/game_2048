@@ -9,7 +9,7 @@ import {
   ProfilePage,
   SignInPage,
   SignUpPage,
-  StartPage,
+  GamePage,
 } from '../pages'
 
 export const routesName: Record<string, string> = {
@@ -19,7 +19,7 @@ export const routesName: Record<string, string> = {
   profile: '/profile',
   lederBoard: '/leader-board',
   forum: '/forum',
-  start: '/start',
+  game: '/game',
   end: '/end',
   error404: '/404',
   error500: '/500',
@@ -63,8 +63,8 @@ export const router = createBrowserRouter([
     element: <SignUpPage />,
   },
   {
-    path: routesName.start,
-    element: <StartPage />,
+    path: routesName.game,
+    element: <GamePage />,
   },
   {
     path: '*',

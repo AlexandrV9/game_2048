@@ -39,7 +39,7 @@ const Game2048: React.FC = () => {
     board.forEach((row, rowIndex) => {
       row.forEach((cell, cellIndex) => {
         //Cell
-        ctx.fillStyle = cell === 0 ? '#ccc' : getCellColor(cell)
+        ctx.fillStyle = getCellColor(cell)
         ctx.fillRect(
           cellIndex * CELL_SIZE,
           rowIndex * CELL_SIZE,

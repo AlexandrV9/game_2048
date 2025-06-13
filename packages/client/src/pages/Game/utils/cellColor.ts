@@ -1,5 +1,7 @@
 export const getCellColor = (val: number): string => {
   switch (val) {
+    case 0:
+      return '#ccc'
     case 2:
       return '#eee4da'
     case 4:
