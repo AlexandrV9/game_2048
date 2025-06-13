@@ -9,7 +9,14 @@ import {
 
 export class AuthService {
   static signUp(data: ReqSignUp) {
-    return baseApi.post<ResSignUp>('/auth/signup', data)
+    return baseApi.post<ResSignUp>('/auth/signup', {
+      first_name: data.firstName,
+      second_name: data.secondName,
+      login: data.login,
+      email: data.email,
+      password: data.password,
+      phone: data.phone,
+    })
   }
 
   static signInByLogin(data: ReqSignInByLogin) {

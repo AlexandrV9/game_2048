@@ -1,6 +1,6 @@
 import { Suspense, useEffect } from 'react'
-import { RouterProvider } from 'react-router-dom'
-import { router } from '../shared/routes/index.js'
+import { ToastContainer } from 'react-toastify'
+import { AppRouter } from './providers'
 
 import './index.css'
 
@@ -17,9 +17,10 @@ export function App() {
   }, [])
 
   return (
-    <div className="App">
+    <div className="h-[100vh] w-[100vw]">
       <Suspense fallback={null}>
-        <RouterProvider router={router} />
+        <AppRouter />
+        <ToastContainer />
       </Suspense>
     </div>
   )

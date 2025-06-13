@@ -30,6 +30,7 @@
     "react-dom": "^18.2.0",
     "react-hook-form": "^7.57.0",
     "react-phone-number-input": "^3.4.12",
+    "react-spinners": "^0.17.0",
     "react-toastify": "^11.0.5",
     "tailwind-merge": "^3.3.0",
     "tailwindcss": "^4.1.8",

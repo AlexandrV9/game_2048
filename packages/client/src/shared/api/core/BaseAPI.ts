@@ -87,16 +87,15 @@ class BaseAPI {
   private async handleRequest<TData>(
     request: Promise<AxiosResponse<TData, unknown>>
   ) {
-    try {
-      const response = await request
-      const resData = this.transformResData(response)
+    return request
+      .then(data => {
+        return this.transformResData(data) as AxiosResponse<TData, unknown>
+      })
+      .catch(error => {
+        this.handleError(error)
 
-      return resData
-    } catch (error) {
-      this.handleError(error)
-
-      throw error
-    }
+        return error
+      })
   }
 }
 

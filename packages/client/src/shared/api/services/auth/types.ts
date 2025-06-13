@@ -1,8 +1,8 @@
 import { User } from '../../../types'
 
 export type ReqSignUp = {
-  first_name: string
-  second_name: string
+  firstName: string
+  secondName: string
   login: string
   email: string
   password: string

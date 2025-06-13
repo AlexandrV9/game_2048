@@ -1,5 +1,7 @@
+import { PageLayout } from '@/shared/layouts'
+
 const LeaderBoardPage = () => {
-  return <h1>Leader Board Page</h1>
+  return <PageLayout>Leader Board Page</PageLayout>
 }
 
 export default LeaderBoardPage
