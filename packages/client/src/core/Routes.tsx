@@ -7,6 +7,7 @@ import {
   HomePage,
   LeaderBoardPage,
   ProfilePage,
+  StartPage,
   SignInPage,
   SignUpPage,
   StartPage,
