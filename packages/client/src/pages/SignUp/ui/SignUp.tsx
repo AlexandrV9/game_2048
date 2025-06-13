@@ -10,7 +10,6 @@ import { Input } from '@/components/ui/input'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 
-import styles from './SignUp.module.css'
 import {
   Card,
   CardContent,
@@ -42,10 +41,10 @@ const SignUpPage = () => {
   }
 
   return (
-    <div className={styles.page}>
+    <div className="flex justify-center items-center w-[100vw] h-[100vh]">
       <Card className="w-full max-w-[400px]">
         <CardHeader>
-          <CardTitle className="text-center text-xl">Создать аккаунт</CardTitle>
+          <CardTitle className="text-center text-xl">Регистрация</CardTitle>
         </CardHeader>
         <CardContent>
           <Form {...form}>
@@ -130,7 +129,7 @@ const SignUpPage = () => {
                   <FormItem>
                     <FormLabel>Пароль</FormLabel>
                     <FormControl>
-                      <Input autoComplete="off" {...field} />
+                      <Input type="password" autoComplete="off" {...field} />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
