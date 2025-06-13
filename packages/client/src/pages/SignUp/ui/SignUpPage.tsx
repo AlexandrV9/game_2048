@@ -100,7 +100,15 @@ const SignUpPage = () => {
                   <FormItem>
                     <FormLabel>Номер телефона</FormLabel>
                     <FormControl>
-                      <PhoneInput autoComplete="off" {...field} />
+                      <PhoneInput
+                        {...field}
+                        defaultCountry="RU"
+                        international
+                        autoComplete="off"
+                        onChange={value => {
+                          field.onChange(value === '+8' ? '+7' : value)
+                        }}
+                      />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -121,7 +129,7 @@ const SignUpPage = () => {
               />
 
               <Button type="submit" className="w-full">
-                Войти
+                Создать
               </Button>
             </form>
           </Form>
