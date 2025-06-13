@@ -2,17 +2,19 @@ import { Button } from '@/components/ui/button.js'
 import styles from './Forum.module.scss'
 import { Avatar, AvatarImage } from '@radix-ui/react-avatar'
 import { routesName } from '@/core/Routes.js'
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 
 import { forumTopicsMock, me } from './Forum.mock.ts'
 import { TopicComponent } from '@/components/Forum/topic.tsx'
 
 const ForumPage = () => {
   const [forumTopics, setForumTopics] = useState(forumTopicsMock)
+  const topicContainerRef = useRef<HTMLDivElement | null>(null)
 
   useEffect(() => {
-    const topicContainer = document.getElementById('topic_list')
-    topicContainer?.scrollTo(0, 0)
+    if (topicContainerRef.current) {
+      topicContainerRef.current.scrollTo(0, 0)
+    }
   }, [forumTopics])
 
   return (
@@ -45,7 +47,10 @@ const ForumPage = () => {
           setForumTopics={setForumTopics}
           styles={styles}
         />
-        <div className={styles.topicList} id="topic_list" key="topic_list">
+        <div
+          className={styles.topicList}
+          ref={topicContainerRef}
+          key="topic_list">
           {forumTopics.map(item => (
             <TopicComponent
               topic={item}

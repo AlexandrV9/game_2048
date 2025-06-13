@@ -1,5 +1,5 @@
 import { Comment, me, Topic } from '@/pages/Forum/Forum.mock.ts'
-import { FormEvent, useEffect, useState } from 'react'
+import { FormEvent, useEffect, useRef, useState } from 'react'
 import { Root } from 'react-dom/client'
 import CommentComponent from './comment.tsx'
 import { routesName } from '@/core/Routes.tsx'
@@ -22,16 +22,19 @@ const OpenTopic: React.FC<{
 }> = ({ rootTopic, topic, forumTopics, setForumTopics, styles }) => {
   const thisTopic = forumTopics.find(item => item.id == topic.id) as Topic
   const [commentsTopic, setCommentsTopic] = useState(thisTopic.comments)
+  const commentsContainerRef = useRef<HTMLDivElement | null>(null)
 
   const closeDialog = () => {
     rootTopic.render('')
   }
 
   useEffect(() => {
-    const dialogContainer = document.getElementsByClassName(
-      styles.commentsSection
-    )[0]
-    dialogContainer.scrollTo(0, dialogContainer.scrollHeight)
+    if (commentsContainerRef.current) {
+      commentsContainerRef.current.scrollTo(
+        0,
+        commentsContainerRef.current.scrollHeight
+      )
+    }
   }, [commentsTopic])
 
   useEffect(() => {
@@ -101,7 +104,7 @@ const OpenTopic: React.FC<{
           </div>
         </div>
 
-        <div className={styles.commentsSection}>
+        <div className={styles.commentsSection} ref={commentsContainerRef}>
           {commentsTopic.map(item => (
             <CommentComponent comment={item} styles={styles} key={item.id} />
           ))}
