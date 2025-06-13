@@ -11,12 +11,9 @@ export const formSchema = z.object({
       message: 'Имя может содержать только буквы и дефисы',
     }),
 
-  secondName: z
-    .string()
-    .optional()
-    .refine(val => !val || val.length >= 2, {
-      message: 'Фамилия должна быть не короче 2 символов',
-    }),
+  secondName: requiredField().min(2, {
+    message: 'Фамилия должна быть не короче 2 символов',
+  }),
 
   login: requiredField()
     .min(5, { message: 'Логин должен быть не короче 5 символов' })

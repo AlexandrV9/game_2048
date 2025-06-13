@@ -1,9 +1,10 @@
 import { Suspense, useEffect } from 'react'
 import { RouterProvider } from 'react-router-dom'
-import { router } from './core/Routes.js'
-import './App.css'
+import { router } from '../shared/routes/index.js'
 
-function App() {
+import './index.css'
+
+export function App() {
   useEffect(() => {
     const fetchServerData = async () => {
       const url = `http://localhost:${__SERVER_PORT__}`
@@ -14,6 +15,7 @@ function App() {
 
     fetchServerData()
   }, [])
+
   return (
     <div className="App">
       <Suspense fallback={null}>
@@ -22,5 +24,3 @@ function App() {
     </div>
   )
 }
-
-export default App

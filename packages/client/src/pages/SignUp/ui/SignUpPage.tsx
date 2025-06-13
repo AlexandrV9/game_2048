@@ -22,14 +22,23 @@ import { Button } from '@/components/ui/button'
 import { z } from 'zod'
 import { formSchema } from '../model/formSchema'
 import { PhoneInput } from '@/components/ui/phone-input'
+import { useAuth } from '@/shared/auth'
 
 const SignUpPage = () => {
+  const { signUp } = useAuth()
+
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
   })
 
-  function onSubmit(values: z.infer<typeof formSchema>) {
-    console.log(values)
+  function onSubmit(formData: z.infer<typeof formSchema>) {
+    const { firstName, secondName, ...otherFormData } = formData
+
+    signUp({
+      first_name: firstName,
+      second_name: secondName,
+      ...otherFormData,
+    })
   }
 
   return (
