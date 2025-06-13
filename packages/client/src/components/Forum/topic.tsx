@@ -2,15 +2,15 @@ import { Topic } from '@/pages/Forum/Forum.mock.ts'
 import { dateFormatted } from './openTopic.tsx'
 
 interface topicProps {
-  topic?: Topic
+  topic: Topic | null
   add?: boolean
   styles: CSSModuleClasses
 }
 
-export const TopicComponent = ({ topic, add = false, styles }: topicProps) => {
+export const TopicComponent = ({ topic, styles }: topicProps) => {
   return (
     <>
-      {add ? (
+      {!topic ? (
         <span className={styles.topicTitle}>ДОБАВИТЬ</span>
       ) : (
         <div className={styles.topicInfo}>
@@ -18,12 +18,12 @@ export const TopicComponent = ({ topic, add = false, styles }: topicProps) => {
           <div className={styles.topicMeta}>
             <div className={styles.authorInfo}>
               <img
-                src={topic?.author.avatar}
-                alt={topic?.author.login}
+                src={topic.author.avatar}
+                alt={topic.author.login}
                 className={styles.authorAvatar}
               />
               <span className={styles.authorName}>
-                {topic?.author.firstName} {topic?.author.secondName}
+                {topic.author.firstName} {topic.author.secondName}
               </span>
             </div>
             <div className={styles.dateInfo}>
@@ -33,18 +33,16 @@ export const TopicComponent = ({ topic, add = false, styles }: topicProps) => {
           </div>
         </div>
       )}
-      {!add && topic?.comments?.length ? (
+      {topic && topic.comments.length ? (
         <>
           <img
             src="/Forum/message.svg"
             alt="messages"
             className={styles.messageIcon}
           />
-          <span>{topic?.comments?.length}</span>
+          <span>{topic.comments.length}</span>
         </>
-      ) : (
-        ''
-      )}
+      ) : null}
     </>
   )
 }

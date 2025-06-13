@@ -15,11 +15,11 @@ const CommentComponent = ({ comment, styles }: topicProps) => {
   )
   const bubbleStyle = clsx(
     styles.commentBubble,
-    me.id == comment.author.id && styles.me
+    me.id === comment.author.id && styles.me
   )
 
   return (
-    <div className={commentStyle} key={comment.id}>
+    <div className={commentStyle}>
       <a href={`${routesName['profile']}/${comment.author.id}`}>
         <img
           src={comment.author.avatar}

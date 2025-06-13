@@ -1,13 +1,13 @@
 @use '../../index.css';
 
 .forum {
-  width: 100vi;
+  width: 100vw;
   height: 100vh;
   display: flex;
   flex-direction: column;
   background-color: #f8f8f3;
   overflow-x: hidden;
-  scrollbar-width: 0.1vi;
+  scrollbar-width: 0.1vw;
   font-size: 2vh;
 
   nav {
@@ -16,31 +16,31 @@
     align-items: center;
 
     h2 {
-      margin-top: 2vi;
+      margin-top: 2vw;
       font-weight: bold;
       font-size: 5vh;
-      margin-left: 45vi;
+      margin-left: 45vw;
       color: #6c6150;
     }
   }
 }
 
 .forum::-webkit-scrollbar {
-  width: 0.1vi;
+  width: 0.1vw;
 }
 
 .forum::-webkit-scrollbar-track {
   background: #fbfbe9;
-  border-radius: 0.1vi;
+  border-radius: 0.1vw;
 }
 
 .forum::-webkit-scrollbar-thumb {
   background: #fbfbe9;
-  border-radius: 0.1vi;
+  border-radius: 0.1vw;
 }
 
 .forum::-webkit-scrollbar-thumb:hover {
-  background: #fbfbe9;
+  background: #f4f4be;
 }
 
 .forum::-webkit-scrollbar-thumb:active {
@@ -52,26 +52,16 @@
   scrollbar-width: thin;
 }
 
-.forum {
-  -ms-scroll-chaining: chained;
-  -ms-scroll-rails: none;
-  -ms-scroll-snap-type: proximity;
-  -ms-scroll-snap-points-x: snapList(100%);
-  -ms-scroll-snap-points-y: snapList(100%);
-  -ms-scroll-snap-destination: 0 0;
-  -ms-overflow-style: -ms-autohiding-scrollbar;
-}
-
 .backButton {
   position: fixed;
   display: flex;
   justify-items: center;
   z-index: 1001;
   height: 92vh;
-  width: 3vi;
-  min-width: 3vi;
-  max-width: 3vi;
-  margin: 1vi;
+  width: 3vw;
+  min-width: 3vw;
+  max-width: 3vw;
+  margin: 1vw;
   opacity: 0;
   transform: translateX(-100%);
   transition: all 0.5s ease;
@@ -88,7 +78,7 @@
   justify-items: center;
   z-index: 1001;
   height: 100vh;
-  width: 10vi;
+  width: 10vw;
   min-width: max-content;
 }
 
@@ -105,18 +95,18 @@
 
 .avatar {
   position: static;
-  width: 3vi;
-  height: 3vi;
-  margin: 1vi 1vi 2vi auto;
+  width: 3vw;
+  height: 3vw;
+  margin: 1vw 1vw 2vw auto;
   border-radius: 50%;
-  box-shadow: 0px 0.1vi 0.3vi 0px black;
+  box-shadow: 0px 0.1vw 0.3vw 0px black;
   opacity: 1;
   transition: opacity 0.3s ease;
 
   img {
     border-radius: 50%;
-    width: 3vi;
-    height: 3vi;
+    width: 3vw;
+    height: 3vw;
   }
 }
 
@@ -127,10 +117,10 @@
 
 .forumPanel {
   position: relative;
-  width: 60vi;
+  width: 60vw;
   height: 70vh;
-  margin-top: 4vi;
-  padding: 0.5vi;
+  margin-top: 4vw;
+  padding: 0.5vw;
   background-color: #fbfbe9;
   border-radius: 0.5em;
   align-self: center;
@@ -140,17 +130,18 @@
 .topicList {
   position: relative;
   overflow-y: auto;
-  width: 59vi;
+  width: 59vw;
   height: 59vh;
-  scrollbar-width: 0.1vi;
+  scrollbar-width: 0.1vw;
+  scroll-behavior: smooth;
 }
 
 .topic {
   display: flex;
   flex-direction: row;
-  margin: 1vi;
+  margin: 1vw;
   border: 0.5px solid #6c61501c;
-  width: 56vi;
+  width: 56vw;
   height: 7vh;
   border-radius: 0.5em;
   align-items: start;
@@ -158,7 +149,7 @@
   opacity: 1;
   transition: opacity 0.3s ease;
   padding: 1vh 1vh;
-  max-width: width;
+  max-width: 56vw;
   cursor: pointer;
   text-align: left;
   color: #111827;
@@ -182,7 +173,7 @@
   text-align: center;
   color: white;
   height: 4vh;
-  width: 57vi;
+  width: 57vw;
 }
 
 .topic:hover {
@@ -221,8 +212,8 @@
 .createTopicDialog {
   position: fixed;
   z-index: 1003;
-  border: 0.1vi solid #6c61501c;
-  width: 50vi;
+  border: 0.1vw solid #6c61501c;
+  width: 50vw;
   height: 20vh;
   background-color: #fbfbe9;
   border-radius: 0.5em;
@@ -234,28 +225,31 @@
   align-items: center;
 
   textarea{
-    width: 49vi;
+    width: 49vw;
     max-height: 15vh;
     min-height: 10vh;
     font-size: 2vh;
+    border-radius: 1vh;
+    border: 0.1vh solid #6c61501c;
+    padding: 1vh;
   }
 }
 
 .topicCreateTitle {
   background-color: #f8f8f3;
-  max-height: 20vi;
-  height: 10vi;
+  max-height: 20vw;
+  height: 10vw;
 }
 
 .topicCreateButton {
   background-color: #6c6150;
-  margin-top: 0.5vi;
+  margin-top: 0.5vw;
   cursor: pointer;
   opacity: 1;
   transition: opacity 0.3s ease;
   height: 4vh;
-  width: 8vi;
-  font-size: 2vh;
+  width: 8vw;
+  font-size: 1.2vh;
 }
 
 .topicCreateButton:hover {
@@ -276,7 +270,7 @@
 .openTopicDialog {
   position: fixed;
   z-index: 1003;
-  border: 0.1vi solid #6c61501c;
+  border: 0.1vw solid #6c61501c;
   background-color: #fbfbe9;
   border-radius: 0.5em;
   box-shadow: 0px 1vh 1vh 0px gray;
@@ -299,7 +293,7 @@
 }
 
 .dialogHeader {
-  padding: 1vi;
+  padding: 1vw;
   background: #f7e7b2;
   display: flex;
   align-items: flex-start;
@@ -314,7 +308,7 @@
 .topicMeta {
   display: flex;
   align-items: center;
-  gap: 0.5vi;
+  gap: 0.5vw;
   font-size: 0.875rem;
   color: #6b7280;
 }
@@ -322,15 +316,15 @@
 .authorInfo {
   display: flex;
   align-items: center;
-  gap: 0.5vi;
+  gap: 0.5vw;
 }
 
 .authorAvatar {
-  width: 1.7vi;
-  height: 1.7vi;
+  width: 1.7vw;
+  height: 1.7vw;
   border-radius: 50%;
-  border: 0.1vi solid white;
-  box-shadow: 0 0.1vi 0.3vi rgba(0, 0, 0, 0.1);
+  border: 0.1vw solid white;
+  box-shadow: 0 0.1vw 0.3vw rgba(0, 0, 0, 0.1);
 }
 
 .authorName {
@@ -342,14 +336,14 @@
 .dateInfo {
   display: flex;
   align-items: center;
-  gap: 0.1vi;
+  gap: 0.1vw;
   font-size: 1.5vh;
 }
 
 .calendarIcon {
   color: #6b7280;
-  width: 1vi;
-  height: 1vi;
+  width: 1vw;
+  height: 1vw;
 }
 
 .commentsSection {
@@ -360,6 +354,7 @@
   flex-direction: column;
   gap: 1.5rem;
   width: 100%;
+  scroll-behavior: smooth;
 }
 
 .comment {
@@ -412,6 +407,7 @@
 
 .commentAuthor {
   font-weight: 600;
+  font-size: 1.7vh;
   color: #111827;
 }
 
@@ -429,6 +425,7 @@
   color: #1f2937;
   line-height: 1.6;
   white-space: pre-wrap;
+  font-size: 1.7vh;
 }
 
 .commentInputSection {

@@ -1,7 +1,6 @@
 import { Button } from '@/components/ui/button.js'
-import { Textarea } from '@/components/ui/textarea.tsx'
 import { me, Topic } from '@/pages/Forum/Forum.mock.ts'
-import { FormEvent, useEffect } from 'react'
+import { FormEvent, useEffect, useRef } from 'react'
 
 const CreateTopic: React.FC<{
   forumTopics: Topic[]
@@ -16,24 +15,21 @@ const CreateTopic: React.FC<{
     document.addEventListener('keydown', handleEscape)
     return () => document.removeEventListener('keydown', handleEscape)
   }, [])
+  const inputRef = useRef<HTMLTextAreaElement | null>(null)
 
   const createTopic = (data: FormEvent<HTMLFormElement>) => {
     data.preventDefault()
 
-    const form = data.currentTarget as HTMLFormElement
-    const topicInput = form.elements[0] as HTMLTextAreaElement
-
-    if (!topicInput.value) return
+    if (!inputRef.current?.value) return
 
     const newTopic: Topic = {
       id: forumTopics.length + Math.random() * 100,
-      topic: topicInput.value,
+      topic: inputRef.current?.value,
       author: me,
       created: new Date(),
       comments: [],
     }
     setForumTopics((prevTopics: Topic[]) => [newTopic, ...prevTopics])
-    topicInput.value = ''
     closeDialog()
   }
 
@@ -43,10 +39,11 @@ const CreateTopic: React.FC<{
       <form
         className={styles.createTopicDialog}
         onSubmit={data => createTopic(data)}>
-        <Textarea
+        <textarea
           placeholder="Введите тему ..."
           className={styles.topicCreateTitle}
           maxLength={2000}
+          ref={inputRef}
         />
         <Button className={styles.topicCreateButton}>СОЗДАТЬ</Button>
       </form>

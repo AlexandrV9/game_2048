@@ -4,7 +4,7 @@ import CommentComponent from './comment.tsx'
 import { routesName } from '@/core/Routes.tsx'
 
 export const dateFormatted = (date: Date): string => {
-  const day = date.getDay().toString()
+  const day = date.getDate().toString()
   const month = date.toLocaleString('RU-ru', { month: 'long' })
   const year = date.getFullYear().toString()
   const hour = date.getHours().toString()
@@ -22,6 +22,7 @@ const OpenTopic: React.FC<{
   const thisTopic = forumTopics.find(item => item.id == topic.id) as Topic
   const [commentsTopic, setCommentsTopic] = useState(thisTopic.comments)
   const commentsContainerRef = useRef<HTMLDivElement | null>(null)
+  const inputRef = useRef<HTMLTextAreaElement | null>(null)
 
   useEffect(() => {
     if (commentsContainerRef.current) {
@@ -42,14 +43,12 @@ const OpenTopic: React.FC<{
 
   const createComment = (data: FormEvent<HTMLFormElement>) => {
     data.preventDefault()
-    const form = data.currentTarget as HTMLFormElement
-    const commentInput = form.elements[0] as HTMLTextAreaElement
 
-    if (!commentInput.value) return
+    if (!inputRef.current?.value) return
 
     const newComment: Comment = {
       id: commentsTopic.length + Math.random() * 100,
-      content: commentInput.value,
+      content: inputRef.current?.value,
       author: me,
       created: new Date(),
     }
@@ -65,7 +64,9 @@ const OpenTopic: React.FC<{
         return item
       })
     })
-    commentInput.value = ''
+    if (inputRef.current) {
+      inputRef.current.value = ''
+    }
   }
 
   return (
@@ -115,7 +116,8 @@ const OpenTopic: React.FC<{
             <textarea
               className={styles.commentInput}
               placeholder="Написать комментарий..."
-              rows={3}></textarea>
+              rows={3}
+              ref={inputRef}></textarea>
             <button className={styles.sendBtn} type="submit">
               <img src="/Forum/sendButton.svg" alt="sendButton" />
             </button>

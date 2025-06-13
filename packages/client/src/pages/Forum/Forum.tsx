@@ -9,6 +9,7 @@ import clsx from 'clsx'
 import OpenTopic from '@/components/Forum/openTopic.tsx'
 
 import { forumTopicsMock, me, Topic } from './Forum.mock.ts'
+import { useNavigate } from 'react-router-dom'
 
 const ForumPage = () => {
   const [forumTopics, setForumTopics] = useState(forumTopicsMock)
@@ -16,6 +17,7 @@ const ForumPage = () => {
   const [isVisible, setIsVisible] = useState(false)
   const topicContainerRef = useRef<HTMLDivElement | null>(null)
   const plugContainerRef = useRef<HTMLDivElement | null>(null)
+  const navigate = useNavigate()
 
   useEffect(() => {
     if (isVisible) {
@@ -68,7 +70,7 @@ const ForumPage = () => {
       <Button
         className={styles.backButton}
         onClick={() => {
-          history.back()
+          navigate(-1)
         }}>
         back
       </Button>
@@ -86,12 +88,9 @@ const ForumPage = () => {
 
       <div className={styles.forumPanel}>
         <Button className={topicStyle} onClick={createDialog}>
-          <TopicComponent add={true} styles={styles} />
+          <TopicComponent topic={null} styles={styles} />
         </Button>
-        <div
-          className={styles.topicList}
-          ref={topicContainerRef}
-          key="topic_list">
+        <div className={styles.topicList} ref={topicContainerRef}>
           {forumTopics.map(item => (
             <Button
               className={styles.topic}
@@ -102,7 +101,7 @@ const ForumPage = () => {
           ))}
         </div>
       </div>
-      <div className={styles.plugTopic} ref={plugContainerRef} id="plug_topic">
+      <div className={styles.plugTopic} ref={plugContainerRef}>
         {thisTopic}
       </div>
     </div>
