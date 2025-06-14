@@ -1,5 +1,7 @@
+import { PageLayout } from '@/shared/layouts'
+
 const ForumPage = () => {
-  return <h1>Forum Page</h1>
+  return <PageLayout>Forum Page</PageLayout>
 }
 
 export default ForumPage

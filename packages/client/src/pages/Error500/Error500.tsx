@@ -1,5 +1,7 @@
+import { PageLayout } from '@/shared/layouts'
+
 const Error500Page = () => {
-  return <h1>Error 500 Page</h1>
+  return <PageLayout>Error 500 Page</PageLayout>
 }
 
 export default Error500Page

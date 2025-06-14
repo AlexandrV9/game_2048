@@ -1,5 +1,7 @@
+import { PageLayout } from '@/shared/layouts'
+
 const StartPage = () => {
-  return <h1>Start Page</h1>
+  return <PageLayout>Start Page</PageLayout>
 }
 
 export default StartPage

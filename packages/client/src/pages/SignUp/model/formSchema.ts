@@ -11,11 +11,11 @@ export const formSchema = z.object({
       message: 'Имя может содержать только буквы и дефисы',
     }),
 
-  secondName: z
-    .string()
-    .optional()
-    .refine(val => !val || val.length >= 2, {
-      message: 'Фамилия должна быть не короче 2 символов',
+  secondName: requiredField()
+    .min(2, { message: 'Фамилия должна быть не короче 2 символов' })
+    .max(50, { message: 'Фамилия должна быть не длиннее 50 символов' })
+    .regex(/^[a-zA-Zа-яА-ЯёЁ\- ]+$/, {
+      message: 'Фамилия может содержать только буквы и дефисы',
     }),
 
   login: requiredField()
