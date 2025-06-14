@@ -8,11 +8,10 @@ import { useAuth } from '@/shared/auth'
 import { Link, useNavigate } from 'react-router-dom'
 import { Button, Card, Form, Input } from '@/shared/ui'
 import { routesName } from '@/shared/configs/routes'
-import { useEffect } from 'react'
 
 const SignInPage = () => {
   const navigate = useNavigate()
-  const { signInByLogin, isLoggedIn, isLoading } = useAuth()
+  const { signInByLogin, isLoading } = useAuth()
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -30,12 +29,6 @@ const SignInPage = () => {
       toast.error('Упс, что-то пошло не так. Попробуйте снова')
     }
   }
-
-  useEffect(() => {
-    if (isLoggedIn) {
-      // navigate(routesName.home)
-    }
-  }, [isLoggedIn, navigate])
 
   if (isLoading) {
     return null
