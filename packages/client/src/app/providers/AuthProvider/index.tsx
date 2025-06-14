@@ -42,6 +42,7 @@ export const AuthProvider = () => {
 
   const signOut = useCallback(async () => {
     return AuthService.logout().then(res => {
+      setIsLoggedIn(false)
       navigate(routesName.signin)
       return res
     })
