@@ -1,14 +1,16 @@
 import { Link } from 'react-router-dom'
 import { routesName } from '@/core/Routes.js'
-import './Error500.css'
+import { Button } from '@/components/ui/button.js'
 
 const Error500Page = () => {
   return (
-    <div className={'error-page-wrapper'}>
-      <h1>Ошибка 500 — Страница не найдена</h1>
-      <Link to={routesName.home} className={'error-page-link'}>
-        На главную
-      </Link>
+    <div className="min-h-screen flex flex-col items-center justify-center text-center gap-10">
+      <h1 className="scroll-m-20 text-center text-4xl font-extrabold tracking-tight text-balance">
+        Ошибка 500 — Проблемы на сервере
+      </h1>
+      <Button className="w-auto cursor-pointer">
+        <Link to={routesName.home}>Home</Link>
+      </Button>
     </div>
   )
 }
