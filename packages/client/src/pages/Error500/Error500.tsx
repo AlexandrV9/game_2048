@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom'
-import { routesName } from '@/core/Routes.js'
-import { Button } from '@/components/ui/button.js'
+import { routesName } from '@/shared/configs/routes'
+import { Button } from '@/shared/ui'
 
 const Error500Page = () => {
   return (

@@ -7,7 +7,6 @@ import { moveLeft } from './utils/moveLeft.js'
 import { cloneBoard } from './utils/helpers.js'
 import { rotateBoard } from './utils/rotateBoard.js'
 import { endGameCheck } from './utils/endGameCheck.js'
-import { Button } from '@/components/ui/button.js'
 import {
   AlertDialog,
   AlertDialogContent,
@@ -17,10 +16,11 @@ import {
   AlertDialogFooter,
   AlertDialogHeader,
   AlertDialogTitle,
-} from '@/components/ui/alert-dialog.js'
+} from '@/shared/ui/AlertDialog/alert-dialog.js'
 import { Link } from 'react-router-dom'
-import { routesName } from '@/core/Routes.js'
-import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs.js'
+import { Tabs, TabsList, TabsTrigger } from '@/shared/ui/Tabs/tabs.js'
+import { Button } from '@/shared/ui/index.js'
+import { routesName } from '@/shared/configs/routes.js'
 
 // const SIZE = 3
 
