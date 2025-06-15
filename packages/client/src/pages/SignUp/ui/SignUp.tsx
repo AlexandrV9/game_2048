@@ -1,33 +1,22 @@
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
-
-import { z } from 'zod'
-import { formSchema } from '../model/formSchema'
+import { FormSchema, formSchema } from '../model/formSchema'
 import { useAuth } from '@/shared/auth'
-import { Button, Card, Form, Input, PhoneInput } from '@/shared/ui'
+import { Button, Card, Form, TextInput, PhoneInput } from '@/shared/ui'
 import { Link, useNavigate } from 'react-router-dom'
 import { routesName } from '@/shared/configs/routes'
-import { toast } from 'react-toastify'
 import { useEffect } from 'react'
 
 const SignUpPage = () => {
   const navigate = useNavigate()
   const { signUp, isLoggedIn, isLoading } = useAuth()
 
-  const form = useForm<z.infer<typeof formSchema>>({
+  const form = useForm<FormSchema>({
     resolver: zodResolver(formSchema),
   })
 
-  async function onSubmit(formData: z.infer<typeof formSchema>) {
-    try {
-      const res = await signUp(formData)
-
-      if (res?.status === 200) {
-        navigate(routesName.signin)
-      }
-    } catch {
-      toast.error('Упс, что-то пошло не так. Попробуйте снова')
-    }
+  function onSubmit(formData: FormSchema) {
+    signUp(formData)
   }
 
   useEffect(() => {
@@ -56,7 +45,7 @@ const SignUpPage = () => {
                   <Form.Item>
                     <Form.Label>Имя</Form.Label>
                     <Form.Control>
-                      <Input autoComplete="off" {...field} />
+                      <TextInput autoComplete="off" {...field} />
                     </Form.Control>
                     <Form.Message />
                   </Form.Item>
@@ -69,7 +58,7 @@ const SignUpPage = () => {
                   <Form.Item>
                     <Form.Label>Фамилия</Form.Label>
                     <Form.Control>
-                      <Input autoComplete="off" {...field} />
+                      <TextInput autoComplete="off" {...field} />
                     </Form.Control>
                     <Form.Message />
                   </Form.Item>
@@ -82,7 +71,7 @@ const SignUpPage = () => {
                   <Form.Item>
                     <Form.Label>Логин</Form.Label>
                     <Form.Control>
-                      <Input autoComplete="off" {...field} />
+                      <TextInput autoComplete="off" {...field} />
                     </Form.Control>
                     <Form.Message />
                   </Form.Item>
@@ -95,7 +84,7 @@ const SignUpPage = () => {
                   <Form.Item>
                     <Form.Label>E-mail</Form.Label>
                     <Form.Control>
-                      <Input autoComplete="off" {...field} />
+                      <TextInput autoComplete="off" {...field} />
                     </Form.Control>
                     <Form.Message />
                   </Form.Item>
@@ -129,7 +118,11 @@ const SignUpPage = () => {
                   <Form.Item>
                     <Form.Label>Пароль</Form.Label>
                     <Form.Control>
-                      <Input type="password" autoComplete="off" {...field} />
+                      <TextInput
+                        type="password"
+                        autoComplete="off"
+                        {...field}
+                      />
                     </Form.Control>
                     <Form.Message />
                   </Form.Item>
@@ -145,7 +138,7 @@ const SignUpPage = () => {
         <Card.Footer className="flex-col gap-2">
           <p className="leading-5">
             Уже есть аккаунт?{' '}
-            <Link to={routesName.signin} className="text-blue-600">
+            <Link to={routesName.signIn} className="text-blue-600">
               Войти
             </Link>
           </p>

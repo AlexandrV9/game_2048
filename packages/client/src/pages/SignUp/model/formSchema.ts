@@ -53,3 +53,5 @@ export const formSchema = z.object({
     .min(10, { message: 'Номер должен быть не короче 10 цифр' })
     .max(20, { message: 'Номер должен быть не длиннее 20 цифр' }),
 })
+
+export type FormSchema = z.infer<typeof formSchema>

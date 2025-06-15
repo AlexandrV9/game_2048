@@ -14,5 +14,5 @@ export const ProtectedRoute = () => {
     return <Outlet />
   }
 
-  return <Navigate replace to={routesName.signin} />
+  return <Navigate replace to={routesName.signIn} />
 }

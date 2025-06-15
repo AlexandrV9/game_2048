@@ -28,3 +28,5 @@ export const formSchema = z.object({
       message: 'Пароль должен содержать хотя бы одну цифру',
     }),
 })
+
+export type FormSchema = z.infer<typeof formSchema>

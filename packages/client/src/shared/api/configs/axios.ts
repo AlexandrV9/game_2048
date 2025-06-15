@@ -1,10 +1,10 @@
-import { routesName } from '@/shared/configs/routes'
 import axios, { AxiosError } from 'axios'
 
 export const axiosInstance = axios.create({
   baseURL: import.meta.env.VITE_BASE_API_URL,
   headers: { 'Content-Type': 'application/json; charset=utf-8' },
   withCredentials: true,
+  timeout: 10_000,
 })
 
 axiosInstance.interceptors.response.use(
@@ -12,11 +12,12 @@ axiosInstance.interceptors.response.use(
     return response
   },
   function (error: AxiosError) {
-    if (error.status === 401 || error.status === 403) {
-      localStorage.clear()
-      sessionStorage.clear()
+    if (error.response?.status === 401 || error.response?.status === 403) {
+      if (typeof window !== undefined) {
+        localStorage.clear()
+        sessionStorage.clear()
+      }
     }
-
     return Promise.reject(error)
   }
 )

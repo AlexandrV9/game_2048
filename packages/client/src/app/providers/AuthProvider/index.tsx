@@ -4,6 +4,7 @@ import { AuthContext } from '@/shared/auth'
 import { isPublicRoute, routesName } from '@/shared/configs/routes'
 import { useCallback, useEffect, useState } from 'react'
 import { Outlet, useLocation, useNavigate } from 'react-router-dom'
+import { toast } from 'react-toastify'
 
 export const AuthProvider = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false)
@@ -13,21 +14,39 @@ export const AuthProvider = () => {
   const navigate = useNavigate()
 
   const signInByLogin = useCallback(async (data: ReqSignInByLogin) => {
-    return AuthService.signInByLogin(data).then(res => {
+    try {
+      const res = await AuthService.signInByLogin(data)
+
       if (res?.status === 200) {
         setIsLoggedIn(true)
+        toast.success('Добро пожаловать!')
         navigate(routesName.home)
+      } else {
+        throw new Error('Authorization failed')
       }
-      return res
-    })
+    } catch {
+      toast.error('Упс, что-то пошло не так. Попробуйте снова')
+    }
   }, [])
 
   const signUp = useCallback(async (data: ReqSignUp) => {
-    return AuthService.signUp(data)
+    try {
+      const res = await AuthService.signUp(data)
+
+      if (res?.status === 200) {
+        navigate(routesName.signIn)
+      } else {
+        throw new Error('Registration failed')
+      }
+    } catch {
+      toast.error('Упс, что-то пошло не так. Попробуйте снова')
+    }
   }, [])
 
   const checkIsAuth = useCallback(async () => {
-    return AuthService.getUserInfo().then(res => {
+    try {
+      const res = await AuthService.getUserInfo()
+
       if (res?.status === 200) {
         setIsLoggedIn(true)
 
@@ -37,22 +56,29 @@ export const AuthProvider = () => {
       } else {
         setIsLoggedIn(false)
       }
-    })
-  }, [])
+    } catch {
+      setIsLoggedIn(false)
+    }
+  }, [location.pathname])
 
   const signOut = useCallback(async () => {
-    return AuthService.logout().then(res => {
-      setIsLoggedIn(false)
-      navigate(routesName.signin)
-      return res
-    })
-  }, [])
+    try {
+      const res = await AuthService.logout()
+
+      if (res?.status === 200) {
+        setIsLoggedIn(false)
+        navigate(routesName.signIn)
+      }
+    } catch {
+      /* empty */
+    }
+  }, [location.pathname])
 
   useEffect(() => {
     checkIsAuth().finally(() => {
       setIsLoading(false)
     })
-  }, [])
+  }, [checkIsAuth])
 
   return (
     <AuthContext.Provider

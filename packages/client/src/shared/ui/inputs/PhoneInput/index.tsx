@@ -4,11 +4,11 @@ import * as RPNInput from 'react-phone-number-input'
 import flags from 'react-phone-number-input/flags'
 
 import { cn } from '@/shared/lib/utils'
-import { Input } from '..'
 import { Popover } from '../../Popover'
 import { Button } from '../../Button'
 import { Command } from '../../Command'
 import { ScrollArea } from '../../ScrollArea'
+import { TextInput } from '../TextInput'
 
 type PhoneInputProps = Omit<
   React.ComponentProps<'input'>,
@@ -51,7 +51,7 @@ const InputComponent = React.forwardRef<
   HTMLInputElement,
   React.ComponentProps<'input'>
 >(({ className, ...props }, ref) => (
-  <Input
+  <TextInput
     className={cn('rounded-e-lg rounded-s-none', className)}
     {...props}
     ref={ref}

@@ -3,7 +3,7 @@ import { forwardRef } from 'react'
 
 export type InputProps = React.ComponentProps<'input'>
 
-const Input = forwardRef<HTMLInputElement, InputProps>(
+export const TextInput = forwardRef<HTMLInputElement, InputProps>(
   ({ className, ...props }, ref) => {
     return (
       <input
@@ -20,7 +20,3 @@ const Input = forwardRef<HTMLInputElement, InputProps>(
     )
   }
 )
-
-export { Input }
-
-export * from './PhoneInput'

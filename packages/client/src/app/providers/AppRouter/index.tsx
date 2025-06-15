@@ -30,11 +30,11 @@ export const router = createBrowserRouter([
         element: <Error500Page />,
       },
       {
-        path: routesName.signin,
+        path: routesName.signIn,
         element: <SignInPage />,
       },
       {
-        path: routesName.signup,
+        path: routesName.signUp,
         element: <SignUpPage />,
       },
       {
@@ -57,7 +57,7 @@ export const router = createBrowserRouter([
             element: <HomePage />,
           },
           {
-            path: routesName.lederBoard,
+            path: routesName.leaderBoard,
             element: <LeaderBoardPage />,
           },
           {
