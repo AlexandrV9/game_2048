@@ -1,5 +1,11 @@
+import { PageLayout } from '@/shared/layouts'
+
 const Error404Page = () => {
-  return <h1>Error 404 Page</h1>
+  return (
+    <PageLayout>
+      <h1>Error 404 Page</h1>
+    </PageLayout>
+  )
 }
 
 export default Error404Page

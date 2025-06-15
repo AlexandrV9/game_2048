@@ -1,104 +1,102 @@
-import {
-  Form,
-  FormControl,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from '@/components/ui/form'
-import { Input } from '@/components/ui/input'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
-
-import {
-  Card,
-  CardContent,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from '@/components/ui/card'
-import { Button } from '@/components/ui/button'
-import { z } from 'zod'
-import { formSchema } from '../model/formSchema'
-import { PhoneInput } from '@/components/ui/phone-input'
+import { FormSchema, formSchema } from '../model/formSchema'
+import { useAuth } from '@/shared/auth'
+import { Button, Card, Form, TextInput, PhoneInput } from '@/shared/ui'
+import { Link, useNavigate } from 'react-router-dom'
+import { routesName } from '@/shared/configs/routes'
+import { useEffect } from 'react'
 
 const SignUpPage = () => {
-  const form = useForm<z.infer<typeof formSchema>>({
+  const navigate = useNavigate()
+  const { signUp, isLoggedIn, isLoading } = useAuth()
+
+  const form = useForm<FormSchema>({
     resolver: zodResolver(formSchema),
   })
 
-  function onSubmit(values: z.infer<typeof formSchema>) {
-    console.log(values)
+  function onSubmit(formData: FormSchema) {
+    signUp(formData)
+  }
+
+  useEffect(() => {
+    if (isLoggedIn) {
+      navigate(routesName.home)
+    }
+  }, [isLoggedIn, navigate])
+
+  if (isLoading) {
+    return null
   }
 
   return (
     <div className="flex justify-center items-center w-[100vw] h-[100vh]">
-      <Card className="w-full max-w-[400px]">
-        <CardHeader>
-          <CardTitle className="text-center text-xl">Регистрация</CardTitle>
-        </CardHeader>
-        <CardContent>
-          <Form {...form}>
+      <Card.Root className="w-full max-w-[400px]">
+        <Card.Header>
+          <Card.Title className="text-center text-xl">Регистрация</Card.Title>
+        </Card.Header>
+        <Card.Content>
+          <Form.Root {...form}>
             <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
-              <FormField
+              <Form.Field
                 control={form.control}
                 name="firstName"
                 render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Имя</FormLabel>
-                    <FormControl>
-                      <Input autoComplete="off" {...field} />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
+                  <Form.Item>
+                    <Form.Label>Имя</Form.Label>
+                    <Form.Control>
+                      <TextInput autoComplete="off" {...field} />
+                    </Form.Control>
+                    <Form.Message />
+                  </Form.Item>
                 )}
               />
-              <FormField
+              <Form.Field
                 control={form.control}
                 name="secondName"
                 render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Фамилия</FormLabel>
-                    <FormControl>
-                      <Input autoComplete="off" {...field} />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
+                  <Form.Item>
+                    <Form.Label>Фамилия</Form.Label>
+                    <Form.Control>
+                      <TextInput autoComplete="off" {...field} />
+                    </Form.Control>
+                    <Form.Message />
+                  </Form.Item>
                 )}
               />
-              <FormField
+              <Form.Field
                 control={form.control}
                 name="login"
                 render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Логин</FormLabel>
-                    <FormControl>
-                      <Input autoComplete="off" {...field} />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
+                  <Form.Item>
+                    <Form.Label>Логин</Form.Label>
+                    <Form.Control>
+                      <TextInput autoComplete="off" {...field} />
+                    </Form.Control>
+                    <Form.Message />
+                  </Form.Item>
                 )}
               />
-              <FormField
+              <Form.Field
                 control={form.control}
                 name="email"
                 render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>E-mail</FormLabel>
-                    <FormControl>
-                      <Input autoComplete="off" {...field} />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
+                  <Form.Item>
+                    <Form.Label>E-mail</Form.Label>
+                    <Form.Control>
+                      <TextInput autoComplete="off" {...field} />
+                    </Form.Control>
+                    <Form.Message />
+                  </Form.Item>
                 )}
               />
-              <FormField
+              <Form.Field
                 control={form.control}
                 name="phone"
                 render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Номер телефона</FormLabel>
-                    <FormControl>
+                  <Form.Item>
+                    <Form.Label>Номер телефона</Form.Label>
+                    <Form.Control>
                       <PhoneInput
                         {...field}
                         defaultCountry="RU"
@@ -108,22 +106,26 @@ const SignUpPage = () => {
                           field.onChange(value === '+8' ? '+7' : value)
                         }}
                       />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
+                    </Form.Control>
+                    <Form.Message />
+                  </Form.Item>
                 )}
               />
-              <FormField
+              <Form.Field
                 control={form.control}
                 name="password"
                 render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Пароль</FormLabel>
-                    <FormControl>
-                      <Input type="password" autoComplete="off" {...field} />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
+                  <Form.Item>
+                    <Form.Label>Пароль</Form.Label>
+                    <Form.Control>
+                      <TextInput
+                        type="password"
+                        autoComplete="off"
+                        {...field}
+                      />
+                    </Form.Control>
+                    <Form.Message />
+                  </Form.Item>
                 )}
               />
 
@@ -131,17 +133,17 @@ const SignUpPage = () => {
                 Создать
               </Button>
             </form>
-          </Form>
-        </CardContent>
-        <CardFooter className="flex-col gap-2">
+          </Form.Root>
+        </Card.Content>
+        <Card.Footer className="flex-col gap-2">
           <p className="leading-5">
             Уже есть аккаунт?{' '}
-            <a href="./signin" className="text-blue-600">
+            <Link to={routesName.signIn} className="text-blue-600">
               Войти
-            </a>
+            </Link>
           </p>
-        </CardFooter>
-      </Card>
+        </Card.Footer>
+      </Card.Root>
     </div>
   )
 }
