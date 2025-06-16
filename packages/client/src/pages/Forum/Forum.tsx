@@ -13,21 +13,11 @@ import { useNavigate } from 'react-router-dom'
 
 const ForumPage = () => {
   const [forumTopics, setForumTopics] = useState(forumTopicsMock)
-  const [thisTopic, setThisTopic] = useState(<></>)
   const [isVisible, setIsVisible] = useState(false)
+  const [openedTopic, setOpenedTopic] = useState<Topic | null>(null)
+  const [dialogState, setDialogState] = useState<'create' | 'open' | null>(null)
   const topicContainerRef = useRef<HTMLDivElement | null>(null)
-  const plugContainerRef = useRef<HTMLDivElement | null>(null)
   const navigate = useNavigate()
-
-  useEffect(() => {
-    if (isVisible) {
-      plugContainerRef.current?.classList.remove('hidden')
-      setIsVisible(false)
-    } else {
-      plugContainerRef.current?.classList.add('hidden')
-      setIsVisible(true)
-    }
-  }, [thisTopic])
 
   useEffect(() => {
     if (topicContainerRef.current) {
@@ -36,30 +26,19 @@ const ForumPage = () => {
   }, [forumTopics])
 
   const closeDialog = () => {
-    setThisTopic(<></>)
+    setIsVisible(false)
+    setDialogState(null)
   }
 
   const createDialog = () => {
-    setThisTopic(
-      <CreateTopic
-        forumTopics={forumTopics}
-        setForumTopics={setForumTopics}
-        styles={styles}
-        closeDialog={closeDialog}
-      />
-    )
+    setIsVisible(true)
+    setDialogState('create')
   }
 
   const openDialog = (topic: Topic) => {
-    setThisTopic(
-      <OpenTopic
-        topic={topic as Topic}
-        forumTopics={forumTopics}
-        setForumTopics={setForumTopics}
-        styles={styles}
-        closeDialog={closeDialog}
-      />
-    )
+    setIsVisible(true)
+    setDialogState('open')
+    setOpenedTopic(topic)
   }
 
   const topicStyle = clsx(styles.topic, styles.add)
@@ -101,8 +80,25 @@ const ForumPage = () => {
           ))}
         </div>
       </div>
-      <div className={styles.plugTopic} ref={plugContainerRef}>
-        {thisTopic}
+      <div className={clsx(styles.plugTopic, isVisible ? '' : 'hidden')}>
+        {dialogState === 'create' && (
+          <CreateTopic
+            forumTopics={forumTopics}
+            setForumTopics={setForumTopics}
+            styles={styles}
+            closeDialog={closeDialog}
+          />
+        )}
+
+        {dialogState === 'open' && openedTopic && (
+          <OpenTopic
+            topic={openedTopic}
+            forumTopics={forumTopics}
+            setForumTopics={setForumTopics}
+            styles={styles}
+            closeDialog={closeDialog}
+          />
+        )}
       </div>
     </div>
   )
