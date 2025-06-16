@@ -1,4 +1,4 @@
-import { Button } from '@/components/ui/button.js'
+import { Button } from '@/shared/ui'
 import { me, Topic } from '@/pages/Forum/Forum.mock.ts'
 import { FormEvent, useEffect, useRef } from 'react'
 

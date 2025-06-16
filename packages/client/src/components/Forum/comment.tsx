@@ -1,7 +1,7 @@
 import { Comment, me } from '@/pages/Forum/Forum.mock.ts'
 import { dateFormatted } from './openTopic.tsx'
 import clsx from 'clsx'
-import { routesName } from '@/core/Routes.tsx'
+import { routesName } from '@/shared/configs/routes.ts'
 
 interface topicProps {
   comment: Comment

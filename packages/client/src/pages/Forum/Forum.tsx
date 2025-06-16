@@ -1,15 +1,14 @@
-import { Button } from '@/components/ui/button.js'
 import styles from './Forum.module.scss'
-import { Avatar, AvatarImage } from '@radix-ui/react-avatar'
-import { routesName } from '@/core/Routes.js'
 import { useEffect, useRef, useState } from 'react'
 import { TopicComponent } from '@/components/Forum/topic.tsx'
 import CreateTopic from '@/components/Forum/createTopic.tsx'
 import clsx from 'clsx'
 import OpenTopic from '@/components/Forum/openTopic.tsx'
-
 import { forumTopicsMock, me, Topic } from './Forum.mock.ts'
 import { useNavigate } from 'react-router-dom'
+import { Button } from '@/shared/ui/index.ts'
+import { routesName } from '@/shared/configs/routes.ts'
+import { Avatar, AvatarImage } from '@/shared/ui/index.ts'
 
 const ForumPage = () => {
   const [forumTopics, setForumTopics] = useState(forumTopicsMock)

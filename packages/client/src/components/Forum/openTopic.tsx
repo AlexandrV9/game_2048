@@ -1,7 +1,7 @@
 import { Comment, me, Topic } from '@/pages/Forum/Forum.mock.ts'
 import { FormEvent, useEffect, useRef, useState } from 'react'
 import CommentComponent from './comment.tsx'
-import { routesName } from '@/core/Routes.tsx'
+import { routesName } from '@/shared/configs/routes.ts'
 
 export const dateFormatted = (date: Date): string => {
   const day = date.getDate().toString()
