@@ -1,5 +1,7 @@
+import { PageLayout } from '@/shared/layouts'
+
 const HomePage = () => {
-  return <h1>Home Page</h1>
+  return <PageLayout>Home Page</PageLayout>
 }
 
 export default HomePage

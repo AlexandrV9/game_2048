@@ -3,23 +3,12 @@ import { CheckIcon, ChevronsUpDown } from 'lucide-react'
 import * as RPNInput from 'react-phone-number-input'
 import flags from 'react-phone-number-input/flags'
 
-import { Button } from '@/components/ui/button'
-import {
-  Command,
-  CommandEmpty,
-  CommandGroup,
-  CommandInput,
-  CommandItem,
-  CommandList,
-} from '@/components/ui/command'
-import { Input } from '@/components/ui/input'
-import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from '@/components/ui/popover'
-import { ScrollArea } from '@/components/ui/scroll-area'
-import { cn } from '@/lib/utils'
+import { cn } from '@/shared/lib/utils'
+import { Popover } from '../../Popover'
+import { Button } from '../../Button'
+import { Command } from '../../Command'
+import { ScrollArea } from '../../ScrollArea'
+import { TextInput } from '../TextInput'
 
 type PhoneInputProps = Omit<
   React.ComponentProps<'input'>,
@@ -29,40 +18,40 @@ type PhoneInputProps = Omit<
     onChange?: (value: RPNInput.Value) => void
   }
 
-const PhoneInput: React.ForwardRefExoticComponent<PhoneInputProps> =
-  React.forwardRef<React.ElementRef<typeof RPNInput.default>, PhoneInputProps>(
-    ({ className, onChange, value, ...props }, ref) => {
-      return (
-        <RPNInput.default
-          ref={ref}
-          className={cn('flex', className)}
-          flagComponent={FlagComponent}
-          countrySelectComponent={CountrySelect}
-          inputComponent={InputComponent}
-          smartCaret={false}
-          value={value || undefined}
-          /**
-           * Handles the onChange event.
-           *
-           * react-phone-number-input might trigger the onChange event as undefined
-           * when a valid phone number is not entered. To prevent this,
-           * the value is coerced to an empty string.
-           *
-           * @param {E164Number | undefined} value - The entered value
-           */
-          onChange={value => onChange?.(value || ('' as RPNInput.Value))}
-          {...props}
-        />
-      )
-    }
+const PhoneInput = React.forwardRef<
+  React.ElementRef<typeof RPNInput.default>,
+  PhoneInputProps
+>(({ className, onChange, value, ...props }, ref) => {
+  return (
+    <RPNInput.default
+      ref={ref}
+      className={cn('flex', className)}
+      flagComponent={FlagComponent}
+      countrySelectComponent={CountrySelect}
+      inputComponent={InputComponent}
+      smartCaret={false}
+      value={value || undefined}
+      /**
+       * Handles the onChange event.
+       *
+       * react-phone-number-input might trigger the onChange event as undefined
+       * when a valid phone number is not entered. To prevent this,
+       * the value is coerced to an empty string.
+       *
+       * @param {E164Number | undefined} value - The entered value
+       */
+      onChange={value => onChange?.(value || ('' as RPNInput.Value))}
+      {...props}
+    />
   )
+})
 PhoneInput.displayName = 'PhoneInput'
 
 const InputComponent = React.forwardRef<
   HTMLInputElement,
   React.ComponentProps<'input'>
 >(({ className, ...props }, ref) => (
-  <Input
+  <TextInput
     className={cn('rounded-e-lg rounded-s-none', className)}
     {...props}
     ref={ref}
@@ -90,8 +79,8 @@ const CountrySelect = ({
   const [isOpen, setIsOpen] = React.useState(false)
 
   return (
-    <Popover open={isOpen} onOpenChange={setIsOpen} modal>
-      <PopoverTrigger asChild>
+    <Popover.Root open={isOpen} onOpenChange={setIsOpen} modal>
+      <Popover.Trigger asChild>
         <Button
           type="button"
           variant="outline"
@@ -108,10 +97,10 @@ const CountrySelect = ({
             )}
           />
         </Button>
-      </PopoverTrigger>
-      <PopoverContent className="w-[300px] p-0">
-        <Command>
-          <CommandInput
+      </Popover.Trigger>
+      <Popover.Content className="w-[300px] p-0">
+        <Command.Root>
+          <Command.Input
             value={searchValue}
             onValueChange={value => {
               setSearchValue(value)
@@ -128,10 +117,10 @@ const CountrySelect = ({
             }}
             placeholder="Search country..."
           />
-          <CommandList>
+          <Command.List>
             <ScrollArea ref={scrollAreaRef} className="h-72">
-              <CommandEmpty>No country found.</CommandEmpty>
-              <CommandGroup>
+              <Command.Empty>No country found.</Command.Empty>
+              <Command.Group>
                 {countryList.map(({ value, label }) =>
                   value ? (
                     <CountrySelectOption
@@ -144,12 +133,12 @@ const CountrySelect = ({
                     />
                   ) : null
                 )}
-              </CommandGroup>
+              </Command.Group>
             </ScrollArea>
-          </CommandList>
-        </Command>
-      </PopoverContent>
-    </Popover>
+          </Command.List>
+        </Command.Root>
+      </Popover.Content>
+    </Popover.Root>
   )
 }
 
@@ -172,7 +161,7 @@ const CountrySelectOption = ({
   }
 
   return (
-    <CommandItem className="gap-2" onSelect={handleSelect}>
+    <Command.Item className="gap-2" onSelect={handleSelect}>
       <FlagComponent country={country} countryName={countryName} />
       <span className="flex-1 text-sm">{countryName}</span>
       <span className="text-sm text-foreground/50">{`+${RPNInput.getCountryCallingCode(
@@ -183,7 +172,7 @@ const CountrySelectOption = ({
           country === selectedCountry ? 'opacity-100' : 'opacity-0'
         }`}
       />
-    </CommandItem>
+    </Command.Item>
   )
 }
 

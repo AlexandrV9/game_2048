@@ -1,9 +1,10 @@
 import { Suspense, useEffect } from 'react'
-import { RouterProvider } from 'react-router-dom'
-import { router } from './core/Routes.js'
-import './App.css'
+import { ToastContainer } from 'react-toastify'
+import { AppRouter } from './providers'
 
-function App() {
+import './index.css'
+
+export function App() {
   useEffect(() => {
     const fetchServerData = async () => {
       const url = `http://localhost:${__SERVER_PORT__}`
@@ -14,13 +15,13 @@ function App() {
 
     fetchServerData()
   }, [])
+
   return (
-    <div className="App">
+    <div className="h-[100vh] w-[100vw]">
       <Suspense fallback={null}>
-        <RouterProvider router={router} />
+        <AppRouter />
+        <ToastContainer />
       </Suspense>
     </div>
   )
 }
-
-export default App

@@ -1,68 +1,63 @@
-import {
-  Form,
-  FormControl,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from '@/components/ui/form'
-import { Input } from '@/components/ui/input'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
-
-import {
-  Card,
-  CardContent,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from '@/components/ui/card'
-import { Button } from '@/components/ui/button'
-import { z } from 'zod'
-import { formSchema } from '../model/formSchema'
+import { FormSchema, formSchema } from '../model/formSchema'
+import { useAuth } from '@/shared/auth'
+import { Link } from 'react-router-dom'
+import { Button, Card, Form, TextInput } from '@/shared/ui'
+import { routesName } from '@/shared/configs/routes'
 
 const SignInPage = () => {
-  const form = useForm<z.infer<typeof formSchema>>({
+  const { signInByLogin, isLoading } = useAuth()
+
+  const form = useForm<FormSchema>({
     resolver: zodResolver(formSchema),
   })
 
-  function onSubmit(values: z.infer<typeof formSchema>) {
-    console.log(values)
+  function onSubmit(values: FormSchema) {
+    signInByLogin(values)
+  }
+
+  if (isLoading) {
+    return null
   }
 
   return (
     <div className="flex justify-center items-center w-[100vw] h-[100vh]">
-      <Card className="w-full max-w-[400px]">
-        <CardHeader>
-          <CardTitle className="text-center text-xl">Авторизация</CardTitle>
-        </CardHeader>
-        <CardContent>
-          <Form {...form}>
+      <Card.Root className="w-full max-w-[400px]">
+        <Card.Header>
+          <Card.Title className="text-center text-xl">Авторизация</Card.Title>
+        </Card.Header>
+        <Card.Content>
+          <Form.Root {...form}>
             <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
-              <FormField
+              <Form.Field
                 control={form.control}
                 name="login"
                 render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Логин</FormLabel>
-                    <FormControl>
-                      <Input autoComplete="off" {...field} />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
+                  <Form.Item>
+                    <Form.Label>Логин</Form.Label>
+                    <Form.Control>
+                      <TextInput autoComplete="off" {...field} />
+                    </Form.Control>
+                    <Form.Message />
+                  </Form.Item>
                 )}
               />
-              <FormField
+              <Form.Field
                 control={form.control}
                 name="password"
                 render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Пароль</FormLabel>
-                    <FormControl>
-                      <Input type="password" autoComplete="off" {...field} />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
+                  <Form.Item>
+                    <Form.Label>Пароль</Form.Label>
+                    <Form.Control>
+                      <TextInput
+                        type="password"
+                        autoComplete="off"
+                        {...field}
+                      />
+                    </Form.Control>
+                    <Form.Message />
+                  </Form.Item>
                 )}
               />
 
@@ -70,17 +65,17 @@ const SignInPage = () => {
                 Войти
               </Button>
             </form>
-          </Form>
-        </CardContent>
-        <CardFooter className="flex-col gap-2">
+          </Form.Root>
+        </Card.Content>
+        <Card.Footer className="flex-col gap-2">
           <p className="leading-5">
             Нет аккаунта?{' '}
-            <a href="./signup" className="text-blue-600">
+            <Link to={routesName.signUp} className="text-blue-600">
               Создать
-            </a>
+            </Link>
           </p>
-        </CardFooter>
-      </Card>
+        </Card.Footer>
+      </Card.Root>
     </div>
   )
 }

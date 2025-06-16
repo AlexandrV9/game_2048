@@ -11,10 +11,10 @@ import {
   type FieldValues,
 } from 'react-hook-form'
 
-import { cn } from '@/lib/utils'
-import { Label } from '@/components/ui/label'
+import { cn } from '@/shared/lib/utils'
+import { Label } from '../Label'
 
-const Form = FormProvider
+const FormRoot = FormProvider
 
 type FormFieldContextValue<
   TFieldValues extends FieldValues = FieldValues,
@@ -40,7 +40,7 @@ const FormField = <
   )
 }
 
-const useFormField = () => {
+export const useFormField = () => {
   const fieldContext = React.useContext(FormFieldContext)
   const itemContext = React.useContext(FormItemContext)
   const { getFieldState } = useFormContext()
@@ -152,13 +152,12 @@ function FormMessage({ className, ...props }: React.ComponentProps<'p'>) {
   )
 }
 
-export {
-  useFormField,
-  Form,
-  FormItem,
-  FormLabel,
-  FormControl,
-  FormDescription,
-  FormMessage,
-  FormField,
+export const Form = {
+  Root: FormRoot,
+  Item: FormItem,
+  Label: FormLabel,
+  Control: FormControl,
+  Description: FormDescription,
+  Message: FormMessage,
+  Field: FormField,
 }
