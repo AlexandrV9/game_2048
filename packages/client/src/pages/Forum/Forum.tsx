@@ -55,12 +55,13 @@ const ForumPage = () => {
 
       <nav>
         <h2>ФОРУМ</h2>
+
         <div className={styles.avatar}>
-          <Avatar>
-            <a href={`${routesName['profile']}/${me.id}`}>
+          <a href={`${routesName['profile']}/${me.id}`}>
+            <Avatar className={styles.avatarImg}>
               <AvatarImage src={me.avatar} alt="avatar" />
-            </a>
-          </Avatar>
+            </Avatar>
+          </a>
         </div>
       </nav>
 

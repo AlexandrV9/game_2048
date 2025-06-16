@@ -102,13 +102,12 @@
   box-shadow: 0px 0.1vw 0.3vw 0px black;
   opacity: 1;
   transition: opacity 0.3s ease;
+}
 
-  img {
-    border-radius: 50%;
+.avatarImg{
     width: 3vw;
     height: 3vw;
   }
-}
 
 .avatar:hover {
   opacity: 0.7;
