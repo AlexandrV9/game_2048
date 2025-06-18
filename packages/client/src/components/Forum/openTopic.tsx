@@ -2,6 +2,8 @@ import { Comment, me, Topic } from '@/pages/Forum/Forum.mock.ts'
 import { FormEvent, useEffect, useRef, useState } from 'react'
 import CommentComponent from './comment.tsx'
 import { routesName } from '@/shared/configs/routes.ts'
+import calendarImage from '../../shared/assets/Forum/calendar.svg'
+import sendImage from '../../shared/assets/Forum/sendButton.svg'
 
 export const dateFormatted = (date: Date): string => {
   const day = date.getDate().toString()
@@ -90,10 +92,7 @@ const OpenTopic: React.FC<{
                 </div>
               </a>
               <div className={styles.dateInfo}>
-                <img
-                  src="/Forum/calendar.svg"
-                  className={styles.calendarIcon}
-                />
+                <img src={calendarImage} className={styles.calendarIcon} />
                 <span>{dateFormatted(topic.created)}</span>
               </div>
             </div>
@@ -119,7 +118,7 @@ const OpenTopic: React.FC<{
               rows={3}
               ref={inputRef}></textarea>
             <button className={styles.sendBtn} type="submit">
-              <img src="/Forum/sendButton.svg" alt="sendButton" />
+              <img src={sendImage} alt="sendButton" />
             </button>
           </form>
         </div>

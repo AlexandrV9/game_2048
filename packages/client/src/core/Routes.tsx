@@ -3,7 +3,7 @@ export const routesName: Record<string, string> = {
   signin: '/signin',
   signup: '/signup',
   profile: '/profile',
-  lederBoard: '/leader-board',
+  leaderBoard: '/leader-board',
   forum: '/forum',
   start: '/start',
   end: '/end',
