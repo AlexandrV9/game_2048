@@ -5,7 +5,7 @@ export const routesName = {
   profile: '/profile',
   leaderBoard: '/leader-board',
   forum: '/forum',
-  start: '/start',
+  game: '/game',
   end: '/end',
   error404: '/404',
   error500: '/500',
@@ -14,7 +14,7 @@ export const routesName = {
 export const publicRoutes = [
   routesName.signIn,
   routesName.signUp,
-  routesName.start,
+  routesName.game,
   routesName.error404,
   routesName.error500,
 ] as const

@@ -10,7 +10,7 @@ import {
   ProfilePage,
   SignInPage,
   SignUpPage,
-  StartPage,
+  GamePage,
 } from '@/pages'
 
 import { routesName } from '@/shared/configs/routes'
@@ -38,8 +38,8 @@ export const router = createBrowserRouter([
         element: <SignUpPage />,
       },
       {
-        path: routesName.start,
-        element: <StartPage />,
+        path: routesName.game,
+        element: <GamePage />,
       },
       {
         element: <ProtectedRoute />,
