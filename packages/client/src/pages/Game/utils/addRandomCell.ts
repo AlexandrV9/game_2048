@@ -14,6 +14,6 @@ export const addRandomCell = (board: GameBoard): GameBoard => {
     return board
   }
   const [row, cell] = emptyCells[getRandomNumber(emptyCells.length)]
-  board[row][cell] = Math.random() < 0.5 ? 1024 : 512
+  board[row][cell] = Math.random() < 0.5 ? 2 : 4
   return board
 }
