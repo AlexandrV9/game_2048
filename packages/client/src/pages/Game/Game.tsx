@@ -1,7 +1,15 @@
 import React, { useRef, useEffect, useState } from 'react'
 import { getCellColor } from './utils/cellColor.js'
 import { generateEmptyBoard } from './utils/generateEmptyBoard.js'
-import { GameBoard, GameStatus, GameStatusType } from './models.js'
+import {
+  GameBoard,
+  GameMoveDirections,
+  GameStatus,
+  GameStatusType,
+  PressingKeyObj,
+  SMALL_SWIPE,
+  TouchCoords,
+} from './models.js'
 import { addRandomCell } from './utils/addRandomCell.js'
 import { moveLeft } from './utils/moveLeft.js'
 import { cloneBoard } from './utils/helpers.js'
@@ -22,8 +30,6 @@ import { Tabs, TabsList, TabsTrigger } from '@/shared/ui/Tabs/tabs.js'
 import { Button } from '@/shared/ui/index.js'
 import { routesName } from '@/shared/configs/routes.js'
 
-// const SIZE = 3
-
 const getInitialCanvasSize = (cellCount: number) => {
   const size = Math.floor((window.innerHeight * 0.6) / cellCount) * cellCount
   return { width: size, height: size }
@@ -32,12 +38,12 @@ const getInitialCanvasSize = (cellCount: number) => {
 const Game2048: React.FC = () => {
   const canvasRef = useRef<HTMLCanvasElement>(null)
   const containerRef = useRef<HTMLDivElement>(null)
+  const touchStartRef = useRef<TouchCoords | null>(null)
   const [size, setSize] = useState(4)
   const [board, setBoard] = useState<GameBoard>(generateEmptyBoard(size))
   const [score, setScore] = useState(0)
-  const [isWin, setIsWin] = useState(false)
-  const [isStarted, setIsStarted] = useState(false)
-  const [isGameOver, setGameOver] = useState(false)
+  const [gameStatus, setGameStatus] = useState<GameStatusType>(GameStatus.idle)
+  const [isWinGameContinue, setIsWinGameContinue] = useState(false)
   const [canvasSize, setCanvasSize] = useState(getInitialCanvasSize(size))
   const [showDialog, setShowDialog] = useState(false)
   const [dialogType, setDialogType] = useState<GameStatusType | null>(null)
@@ -46,9 +52,8 @@ const Game2048: React.FC = () => {
     const newBoard = addRandomCell(addRandomCell(generateEmptyBoard(size)))
     setBoard(newBoard)
     setScore(0)
-    setIsWin(false)
-    setIsStarted(true)
-    setGameOver(false)
+    setGameStatus(GameStatus.playing)
+    setIsWinGameContinue(false)
   }
 
   const handleContinue = () => {
@@ -56,16 +61,15 @@ const Game2048: React.FC = () => {
     if (dialogType === GameStatus.lose) {
       startGame()
     } else {
-      setIsStarted(true)
-      setIsWin(false)
+      setGameStatus(GameStatus.playing)
+      setIsWinGameContinue(true)
     }
     setDialogType(null)
   }
 
   const handleExit = () => {
     setShowDialog(false)
-    setIsStarted(false)
-    setGameOver(false)
+    setGameStatus(GameStatus.idle)
     setDialogType(null)
   }
 
@@ -110,8 +114,8 @@ const Game2048: React.FC = () => {
     })
   }
 
-  const handleKeyDown = (event: KeyboardEvent) => {
-    if (!isStarted || isWin) return
+  const handleKeyDown = (event: KeyboardEvent | PressingKeyObj) => {
+    if (gameStatus !== GameStatus.playing) return
 
     let newBoard: GameBoard = cloneBoard(board)
     let moved = false
@@ -119,15 +123,15 @@ const Game2048: React.FC = () => {
     let win = false
 
     switch (event.key) {
-      case 'ArrowLeft':
+      case GameMoveDirections.left:
         ;[newBoard, moved, points, win] = moveLeft(size, newBoard)
         break
-      case 'ArrowRight':
+      case GameMoveDirections.right:
         newBoard = rotateBoard(size, rotateBoard(size, newBoard))
         ;[newBoard, moved, points, win] = moveLeft(size, newBoard)
         newBoard = rotateBoard(size, rotateBoard(size, newBoard))
         break
-      case 'ArrowUp':
+      case GameMoveDirections.up:
         newBoard = rotateBoard(
           size,
           rotateBoard(size, rotateBoard(size, newBoard))
@@ -135,7 +139,7 @@ const Game2048: React.FC = () => {
         ;[newBoard, moved, points, win] = moveLeft(size, newBoard)
         newBoard = rotateBoard(size, newBoard)
         break
-      case 'ArrowDown':
+      case GameMoveDirections.down:
         newBoard = rotateBoard(size, newBoard)
         ;[newBoard, moved, points, win] = moveLeft(size, newBoard)
         newBoard = rotateBoard(
@@ -148,18 +152,47 @@ const Game2048: React.FC = () => {
     if (moved) {
       setBoard(addRandomCell(newBoard))
       setScore(score => score + points)
-      if (win && isWin) {
-        setIsWin(true)
+      if (win && !isWinGameContinue) {
+        setGameStatus(GameStatus.win)
         setDialogType(GameStatus.win)
         setShowDialog(true)
       }
       if (endGameCheck(size, newBoard)) {
-        setIsStarted(false)
-        setGameOver(true)
+        setGameStatus(GameStatus.lose)
         setDialogType(GameStatus.lose)
         setShowDialog(true)
       }
     }
+  }
+
+  const handleTouchStart = (e: TouchEvent) => {
+    const touch = e.touches[0]
+    touchStartRef.current = { x: touch.clientX, y: touch.clientY }
+  }
+
+  const handleTouchEnd = (e: TouchEvent) => {
+    if (!touchStartRef.current) return
+
+    const touch = e.changedTouches[0]
+    const dx = touch.clientX - touchStartRef.current.x
+    const dy = touch.clientY - touchStartRef.current.y
+    const absDx = Math.abs(dx)
+    const absDy = Math.abs(dy)
+
+    if (Math.max(absDx, absDy) < SMALL_SWIPE) return
+
+    const direction =
+      absDx > absDy
+        ? dx > 0
+          ? GameMoveDirections.right
+          : GameMoveDirections.left
+        : dy > 0
+        ? GameMoveDirections.down
+        : GameMoveDirections.up
+
+    handleKeyDown({ key: direction })
+
+    touchStartRef.current = null
   }
 
   useEffect(() => {
@@ -168,7 +201,6 @@ const Game2048: React.FC = () => {
         Math.floor(
           Math.min(window.innerWidth * 0.6, window.innerHeight * 0.6) / size
         ) * size
-      console.log('Resized to:', newCellSize, 'x', newCellSize)
       setCanvasSize({ width: newCellSize, height: newCellSize })
     }
 
@@ -178,17 +210,30 @@ const Game2048: React.FC = () => {
   }, [])
 
   useEffect(() => {
-    window.addEventListener('keydown', handleKeyDown)
-    return () => window.removeEventListener('keydown', handleKeyDown)
-  }, [board, isStarted, isWin, isGameOver])
+    if (!canvasRef.current) return
+    const canvas = canvasRef.current
+    canvas.addEventListener('touchstart', handleTouchStart)
+    canvas.addEventListener('touchend', handleTouchEnd)
+
+    return () => {
+      canvas.removeEventListener('touchstart', handleTouchStart)
+      canvas.removeEventListener('touchend', handleTouchEnd)
+    }
+  }, [board, gameStatus])
 
   useEffect(() => {
-    if (canvasSize.width === 0) return
-    const animationLoop = () => {
+    window.addEventListener('keydown', handleKeyDown)
+    return () => window.removeEventListener('keydown', handleKeyDown)
+  }, [board, gameStatus, size])
+
+  useEffect(() => {
+    let frameId: number
+    const render = () => {
       draw()
-      requestAnimationFrame(animationLoop)
+      frameId = requestAnimationFrame(render)
     }
-    animationLoop()
+    render()
+    return () => cancelAnimationFrame(frameId)
   }, [board, canvasSize])
 
   return (
@@ -210,13 +255,19 @@ const Game2048: React.FC = () => {
             defaultValue={size.toString()}
             onValueChange={(value: string) => setSize(Number(value))}>
             <TabsList>
-              <TabsTrigger value="8" disabled={isStarted || isGameOver}>
+              <TabsTrigger
+                value="8"
+                disabled={gameStatus === GameStatus.playing}>
                 Easy
               </TabsTrigger>
-              <TabsTrigger value="4" disabled={isStarted || isGameOver}>
+              <TabsTrigger
+                value="4"
+                disabled={gameStatus === GameStatus.playing}>
                 Normal
               </TabsTrigger>
-              <TabsTrigger value="3" disabled={isStarted || isGameOver}>
+              <TabsTrigger
+                value="3"
+                disabled={gameStatus === GameStatus.playing}>
                 Hard
               </TabsTrigger>
             </TabsList>
