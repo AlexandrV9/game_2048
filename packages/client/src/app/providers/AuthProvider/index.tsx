@@ -1,7 +1,11 @@
 import { AuthService } from '@/shared/api'
 import { ReqSignInByLogin, ReqSignUp } from '@/shared/api/services/auth/types'
 import { AuthContext } from '@/shared/auth'
-import { isPublicRoute, routesName } from '@/shared/configs/routes'
+import {
+  isProtectedRoute,
+  isPublicRoute,
+  routesName,
+} from '@/shared/configs/routes'
 import { useCallback, useEffect, useState } from 'react'
 import { Outlet, useLocation, useNavigate } from 'react-router-dom'
 import { toast } from 'react-toastify'
@@ -48,6 +52,7 @@ export const AuthProvider = () => {
       const res = await AuthService.getUserInfo()
 
       if (res?.status === 200) {
+        console.log('1')
         setIsLoggedIn(true)
 
         if (isPublicRoute(location.pathname)) {

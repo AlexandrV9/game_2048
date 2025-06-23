@@ -1,4 +1,4 @@
-import { PageLayout } from '@/shared/layouts'
+import { PageLayout } from '@/app/layouts'
 import { useParams } from 'react-router-dom'
 
 const ProfilePage = () => {
