@@ -19,4 +19,10 @@ export default defineConfig({
       '@': path.resolve(__dirname, './src'),
     },
   },
+  build: {
+    assetsInlineLimit: 4096,
+  },
+  optimizeDeps: {
+    exclude: ['serviceWorker.ts'],
+  },
 })

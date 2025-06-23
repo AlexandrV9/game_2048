@@ -21,6 +21,6 @@
     },
     "allowImportingTsExtensions": true
   },
-  "include": ["src"],
+  "include": ["src", "public/serviceWorker.ts"],
   "references": [{ "path": "./tsconfig.node.json" }]
 }
