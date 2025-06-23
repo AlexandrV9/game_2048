@@ -52,7 +52,6 @@ export const AuthProvider = () => {
       const res = await AuthService.getUserInfo()
 
       if (res?.status === 200) {
-        console.log('1')
         setIsLoggedIn(true)
 
         if (isPublicRoute(location.pathname)) {
