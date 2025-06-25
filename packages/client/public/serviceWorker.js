@@ -1,40 +1,28 @@
 const CACHE_NAME = 'game-2048-v1'
 
-const URLS: string[] = [
-  '/src/pages/End/End.tsx',
-  '/src/pages/Error404/Error404.tsx',
-  '/src/pages/Error500/Error500.tsx',
-  '/src/pages/Forum/Forum.tsx',
-  '/src/pages/Home/Home.tsx',
-  '/src/pages/LeaderBoard/LeaderBoard.tsx',
-  '/src/pages/Pending/Pending.tsx',
-  '/src/pages/Profile/Profile.tsx',
-  '/src/pages/SignIn/ui/SignIn.tsx',
-  '/src/pages/SignUp/ui/SignUp.tsx',
-  '/src/pages/Start/Start.tsx',
-
+const URLS = [
   '/2048.svg',
   '/Forum/calendar.svg',
   '/Forum/message.svg',
   '/Forum/sendButton.svg',
 ]
 
-self.addEventListener('install', (event: InstallEvent) => {
+self.addEventListener('install', (event) => {
   event.waitUntil(
     caches
       .open(CACHE_NAME)
-      .then((cache: Cache) => {
+      .then((cache) => {
         console.log('Кэш открыт')
         return cache.addAll(URLS)
       })
-      .catch((err: Error) => {
+      .catch((err) => {
         console.error('Ошибка при установке:', err)
         throw err
       })
   )
 })
 
-self.addEventListener('fetch', (event: FetchEvent) => {
+self.addEventListener('fetch', (event) => {
   const requestURL = event.request.url
 
   if (!requestURL.startsWith('http://') && !requestURL.startsWith('https://')) {
@@ -42,14 +30,13 @@ self.addEventListener('fetch', (event: FetchEvent) => {
   }
 
   event.respondWith(
-    caches.match(event.request).then((response: Response | undefined) => {
+    caches.match(event.request).then((response) => {
       if (response) {
         return response
       }
 
-      const clonedRequest = event.request.clone()
-      return fetch(clonedRequest)
-        .then((response: Response) => {
+      return fetch(event.request)
+        .then((response) => {
           if (
             !response ||
             response.status !== 200 ||
@@ -59,7 +46,7 @@ self.addEventListener('fetch', (event: FetchEvent) => {
           }
 
           const responseToCache = response.clone()
-          caches.open(CACHE_NAME).then((cache: Cache) => {
+          caches.open(CACHE_NAME).then((cache) => {
             try {
               cache.put(event.request, responseToCache)
             } catch (error) {
@@ -71,17 +58,17 @@ self.addEventListener('fetch', (event: FetchEvent) => {
           return response
         })
         .catch(() => {
-          console.error('Ошибка при обработке запроса')
+          caches.match('/offline.html')
         })
     })
   )
 })
 
-self.addEventListener('activate', (event: ActivateEvent) => {
+self.addEventListener('activate', (event) => {
   event.waitUntil(
     caches
       .keys()
-      .then((cacheNames: string[]) => {
+      .then((cacheNames) => {
         return Promise.all(
           cacheNames
             .filter(name => name !== CACHE_NAME)

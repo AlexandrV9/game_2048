@@ -10,7 +10,7 @@ const startServiceWorker = () => {
   if ('serviceWorker' in navigator) {
     window.addEventListener('load', () => {
       navigator.serviceWorker
-        .register('public/serviceWorker.ts')
+        .register('/serviceWorker.js')
         .then(registration => {
           console.log(
             'ServiceWorker зарегистрирован успешно: ',
