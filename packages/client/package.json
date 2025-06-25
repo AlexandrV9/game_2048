@@ -58,7 +58,8 @@
     "ts-jest": "^28.0.8",
     "tw-animate-css": "^1.3.3",
     "typescript": "^4.8.2",
-    "vite": "^6.3.5"
+    "vite": "^6.3.5",
+    "vite-plugin-pwa": "^1.0.0"
   },
   "license": "MIT"
 }
