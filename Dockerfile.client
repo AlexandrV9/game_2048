@@ -12,7 +12,7 @@ RUN yarn install --frozen-lockfile
 
 COPY . .
 
-RUN yarn install
+RUN yarn
 RUN rm -rf /app/packages/client/dist/ && yarn build --scope=client
 
 
