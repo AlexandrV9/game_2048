@@ -67,7 +67,7 @@ self.addEventListener('fetch', (event) => {
           return response
         })
         .catch(() => {
-          caches.match('/offline.html')
+          caches.match('src/shared/assets/offline.html')
         })
     })
   )
