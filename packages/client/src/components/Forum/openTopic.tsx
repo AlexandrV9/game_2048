@@ -92,7 +92,11 @@ const OpenTopic: React.FC<{
                 </div>
               </a>
               <div className={styles.dateInfo}>
-                <img src={calendarImage} className={styles.calendarIcon} />
+                <img
+                  src={calendarImage}
+                  className={styles.calendarIcon}
+                  alt="calendar"
+                />
                 <span>{dateFormatted(topic.created)}</span>
               </div>
             </div>

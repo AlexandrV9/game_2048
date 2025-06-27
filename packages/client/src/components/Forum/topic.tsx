@@ -29,7 +29,11 @@ export const TopicComponent = ({ topic, styles }: topicProps) => {
               </span>
             </div>
             <div className={styles.dateInfo}>
-              <img src={calendarImage} className={styles.calendarIcon} />
+              <img
+                src={calendarImage}
+                className={styles.calendarIcon}
+                alt="calendar"
+              />
               <span>{dateFormatted((topic as Topic).created)}</span>
             </div>
           </div>
