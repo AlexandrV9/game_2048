@@ -6,6 +6,8 @@ import dotenv from 'dotenv'
 import { VitePWA } from 'vite-plugin-pwa'
 dotenv.config()
 
+const isDev = process.env.NODE_ENV == 'development'
+
 // https://vitejs.dev/config/
 export default defineConfig({
   server: {
@@ -21,7 +23,7 @@ export default defineConfig({
       srcDir: 'src',
       filename: '../public/serviceWorker.js',
       devOptions: {
-        enabled: true,
+        enabled: isDev,
         type: 'module',
       },
       strategies: 'injectManifest',
