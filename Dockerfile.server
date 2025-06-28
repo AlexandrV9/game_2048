@@ -12,7 +12,7 @@ RUN yarn install --frozen-lockfile
 
 COPY . .
 
-RUN yarn lerna bootstrap
+RUN yarn
 RUN rm -rf /app/packages/server/dist/ && yarn build --scope=server
 
 
