@@ -1,5 +1,7 @@
 import { Topic } from '@/pages/Forum/Forum.mock.ts'
 import { dateFormatted } from './openTopic.tsx'
+import messageImage from '../../shared/assets/Forum/message.svg'
+import calendarImage from '../../shared/assets/Forum/calendar.svg'
 
 interface topicProps {
   topic: Topic | null
@@ -27,7 +29,11 @@ export const TopicComponent = ({ topic, styles }: topicProps) => {
               </span>
             </div>
             <div className={styles.dateInfo}>
-              <img src="/Forum/calendar.svg" className={styles.calendarIcon} />
+              <img
+                src={calendarImage}
+                className={styles.calendarIcon}
+                alt="calendar"
+              />
               <span>{dateFormatted((topic as Topic).created)}</span>
             </div>
           </div>
@@ -36,7 +42,7 @@ export const TopicComponent = ({ topic, styles }: topicProps) => {
       {topic && topic.comments.length ? (
         <>
           <img
-            src="/Forum/message.svg"
+            src={messageImage}
             alt="messages"
             className={styles.messageIcon}
           />
