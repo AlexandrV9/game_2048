@@ -79,8 +79,11 @@ const ProfilePage = () => {
 
     try {
       const response = await UserService.changeUserAvatar(file)
-      // @ts-expect-error временно отключаем TS-ошибку
-      setAvatarUrl(response.avatar)
+
+      setAvatarUrl(
+        // @ts-expect-error временно отключаем TS-ошибку
+        'https://ya-praktikum.tech/api/v2/resources/' + response.avatar
+      )
     } catch (error) {
       console.error('Ошибка при загрузке аватара', error)
       form.setError('avatar', {
@@ -126,10 +129,7 @@ const ProfilePage = () => {
                           className="hover:opacity-80 transition cursor-pointer">
                           <Avatar className="w-24 h-24 border border-[#FFA28D] bg-[#fbfbe9]">
                             <AvatarImage
-                              src={
-                                'https://ya-praktikum.tech/api/v2/resources/' +
-                                avatarUrl
-                              }
+                              src={avatarUrl}
                               alt="avatar"
                               className="rounded-full w-full h-full object-cover border-1"
                             />
