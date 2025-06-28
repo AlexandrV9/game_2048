@@ -1,10 +1,19 @@
 const CACHE_NAME = 'game-2048-v1'
 
 const URLS = [
-  '/2048.svg',
-  '/Forum/calendar.svg',
-  '/Forum/message.svg',
-  '/Forum/sendButton.svg',
+  'src/shared/assets/2048.svg',
+  'src/shared/assets/offline.html',
+
+  'src/shared/assets/Forum/calendar.svg',
+  'src/shared/assets/Forum/message.svg',
+  'src/shared/assets/Forum/sendButton.svg',
+  
+  'src/shared/assets/Home/Crown.svg',
+  'src/shared/assets/Home/Forum.svg',
+  'src/shared/assets/Home/Game.svg',
+  'src/shared/assets/Home/Help.svg',
+  'src/shared/assets/Home/Home.svg',
+  'src/shared/assets/Home/Quit.svg',
 ]
 
 self.addEventListener('install', (event) => {
@@ -58,7 +67,7 @@ self.addEventListener('fetch', (event) => {
           return response
         })
         .catch(() => {
-          caches.match('/offline.html')
+          caches.match('src/shared/assets/offline.html')
         })
     })
   )

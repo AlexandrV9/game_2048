@@ -1,6 +1,7 @@
 import { Suspense, useEffect } from 'react'
 import { ToastContainer } from 'react-toastify'
 import { AppRouter } from './providers'
+import image from '../shared/assets/2048.svg'
 
 import './index.css'
 
@@ -14,6 +15,14 @@ export function App() {
     }
 
     fetchServerData()
+  }, [])
+
+  useEffect(() => {
+    const link = document.createElement('link')
+    link.rel = 'icon'
+    link.type = 'image/svg+xml'
+    link.href = image
+    document.head.appendChild(link)
   }, [])
 
   return (
