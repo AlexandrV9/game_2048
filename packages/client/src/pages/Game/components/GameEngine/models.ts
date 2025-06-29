@@ -1,13 +1,8 @@
+import { GameStatus } from '@/pages/Game/types.ts'
+
 export type BoardRow = number[]
 
 export type GameBoard = BoardRow[]
-
-export enum GameStatus {
-  idle = 'idle',
-  playing = 'playing',
-  win = 'win',
-  lose = 'lose',
-}
 
 export enum GameMoveDirections {
   left = 'ArrowLeft',

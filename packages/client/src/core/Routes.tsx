@@ -5,8 +5,7 @@ export const routesName: Record<string, string> = {
   profile: '/profile',
   leaderBoard: '/leader-board',
   forum: '/forum',
-  start: '/start',
-  end: '/end',
+  game: '/game',
   error404: '/404',
   error500: '/500',
 }

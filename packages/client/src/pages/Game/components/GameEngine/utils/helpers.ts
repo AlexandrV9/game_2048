@@ -1,4 +1,4 @@
-import { GameBoard } from '../models.js'
+import { GameBoard } from '../models.ts'
 
 export const getRandomNumber = (max: number) => Math.floor(Math.random() * max)
 

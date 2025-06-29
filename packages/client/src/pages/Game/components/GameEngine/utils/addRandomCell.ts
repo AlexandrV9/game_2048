@@ -1,5 +1,5 @@
-import { getRandomNumber } from './helpers.js'
-import { GameBoard } from '../models.js'
+import { getRandomNumber } from './helpers.ts'
+import { GameBoard } from '../models.ts'
 
 export const addRandomCell = (board: GameBoard): GameBoard => {
   const emptyCells: GameBoard = []

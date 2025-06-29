@@ -1,4 +1,4 @@
-import { GameBoard } from '../models.js'
+import { GameBoard } from '../models.ts'
 
 export const endGameCheck = (size: number, board: GameBoard): boolean => {
   for (let row = 0; row < size; row++) {

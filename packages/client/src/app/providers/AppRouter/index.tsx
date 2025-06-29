@@ -1,7 +1,6 @@
 import { createBrowserRouter, RouterProvider } from 'react-router-dom'
 
 import {
-  EndPage,
   Error404Page,
   Error500Page,
   ForumPage,
@@ -44,10 +43,6 @@ export const router = createBrowserRouter([
       {
         element: <ProtectedRoute />,
         children: [
-          {
-            path: routesName.end,
-            element: <EndPage />,
-          },
           {
             path: routesName.forum,
             element: <ForumPage />,
