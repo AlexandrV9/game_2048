@@ -1,4 +1,3 @@
-export { EndPage } from './End'
 export { Error404Page } from './Error404'
 export { Error500Page } from './Error500'
 export { ForumPage } from './Forum'
