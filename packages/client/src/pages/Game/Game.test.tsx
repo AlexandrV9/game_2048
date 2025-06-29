@@ -9,6 +9,46 @@ const renderWithRouter = (ui: React.ReactElement) => {
 }
 
 describe('Game2048 Component', () => {
+  let originalGetContext: typeof HTMLCanvasElement.prototype.getContext
+  let mockContext: Partial<jest.Mocked<CanvasRenderingContext2D>>
+  beforeEach(() => {
+    originalGetContext = HTMLCanvasElement.prototype.getContext
+
+    mockContext = {
+      fillRect: jest.fn(),
+      clearRect: jest.fn(),
+      fillText: jest.fn(),
+      restore: jest.fn(),
+      beginPath: jest.fn(),
+      moveTo: jest.fn(),
+      lineTo: jest.fn(),
+      closePath: jest.fn(),
+      stroke: jest.fn(),
+      strokeRect: jest.fn(),
+      strokeStyle: '',
+      fillStyle: '',
+      font: '',
+      textAlign: 'center',
+      textBaseline: 'middle',
+    }
+
+    Object.defineProperty(HTMLCanvasElement.prototype, 'getContext', {
+      value: jest.fn((contextId: string) => {
+        if (contextId === '2d') {
+          return mockContext
+        }
+        return null
+      }),
+    })
+  })
+
+  afterEach(() => {
+    Object.defineProperty(HTMLCanvasElement.prototype, 'getContext', {
+      value: originalGetContext,
+    })
+    jest.restoreAllMocks()
+  })
+
   it('рендерит заголовок и кнопки', () => {
     renderWithRouter(<Game2048 />)
 
