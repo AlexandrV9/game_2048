@@ -13,37 +13,49 @@ import { routesName } from '@/shared/configs/routes.ts'
 
 const ErrorBoundary = () => {
   const navigate = useNavigate()
-  const error = useRouteError() as { message: string }
+  const error = useRouteError()
+
+  let message = 'Неизвестная ошибка'
+
+  if (error instanceof Error) {
+    message = error.message
+  } else if (typeof error === 'string') {
+    message = error
+  } else if (
+    typeof error === 'object' &&
+    error !== null &&
+    'message' in error
+  ) {
+    message = String((error as any).message)
+  }
   return (
-    <div>
-      <AlertDialog open={true}>
-        <AlertDialogContent>
-          <AlertDialogHeader>
-            <AlertDialogTitle>Непредвиденная ошибка</AlertDialogTitle>
-            <AlertDialogDescription>
-              Ошибка: <code>{error.message}</code>
-              <br />
-              Если подобное повторяется неоднократно, свяжитесь со службой
-              поддержки приложения.
-            </AlertDialogDescription>
-          </AlertDialogHeader>
-          <AlertDialogFooter>
-            <AlertDialogCancel
-              onClick={() => {
-                navigate(routesName.home)
-              }}>
-              Перейти на домашнюю страницу
-            </AlertDialogCancel>
-            <AlertDialogAction
-              onClick={() => {
-                navigate('.', { replace: true })
-              }}>
-              Перезагрузить страницу
-            </AlertDialogAction>
-          </AlertDialogFooter>
-        </AlertDialogContent>
-      </AlertDialog>
-    </div>
+    <AlertDialog open={true}>
+      <AlertDialogContent>
+        <AlertDialogHeader>
+          <AlertDialogTitle>Непредвиденная ошибка</AlertDialogTitle>
+          <AlertDialogDescription>
+            Ошибка: <code>{message}</code>
+            <br />
+            Если подобное повторяется неоднократно, свяжитесь со службой
+            поддержки приложения.
+          </AlertDialogDescription>
+        </AlertDialogHeader>
+        <AlertDialogFooter>
+          <AlertDialogCancel
+            onClick={() => {
+              navigate(routesName.home)
+            }}>
+            Перейти на домашнюю страницу
+          </AlertDialogCancel>
+          <AlertDialogAction
+            onClick={() => {
+              window.location.reload()
+            }}>
+            Перезагрузить страницу
+          </AlertDialogAction>
+        </AlertDialogFooter>
+      </AlertDialogContent>
+    </AlertDialog>
   )
 }
 
