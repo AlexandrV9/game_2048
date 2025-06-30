@@ -11,9 +11,12 @@ import helpImage from '../../shared/assets/Home/Help.svg'
 import homeImage from '../../shared/assets/Home/Home.svg'
 import quitImage from '../../shared/assets/Home/Quit.svg'
 import { Link } from 'react-router-dom'
-import { routesName } from '@/core/Routes'
+import { useAuth } from '@/shared/auth'
+import { routesName } from '@/shared/configs/routes'
 
 export default function HomePage() {
+  const { signOut } = useAuth()
+
   return (
     <Card.Root className="w-screen h-screen flex flex-col bg-[#fbfbe9] overflow-x-hidden rounded-none gap-0 py-0 border-0">
       <Card.Header className="flex flex-col gap-0 p-0 ">
@@ -69,7 +72,7 @@ export default function HomePage() {
           </Popover>
           <div className="static w-[3vw] h-[3vw] mt-[1vw] mr-[3vw]  ml-[1vw]  rounded-full shadow-md opacity-100 hover:opacity-70 transition-opacity duration-300">
             <Avatar className="w-[3vw] h-[3vw]">
-              <Link to={`${routesName['profile']}/1`} className="text-blue-600">
+              <Link to={`${routesName.profile}/1`} className="text-blue-600">
                 <AvatarImage
                   src="https://sun9-25.userapi.com/c10968/u85534956/141244771/x_4ee7e2c5.jpg"
                   alt="avatar"
@@ -90,7 +93,7 @@ export default function HomePage() {
       <Card.Content className="relative w-[60vw] h-[70vh] mt-[3vh] mb-0 p-[1vw] bg-[#fbfbe9] rounded-lg self-center border-none">
         <nav className="h-full justify-start">
           <div className="flex flex-col gap-[1vw] justify-start h-full">
-            <Link to={routesName['game']} className="w-max self-center">
+            <Link to={routesName.game} className="w-max self-center">
               <Button className="h-[10vh] w-[25vw] bg-[#f6e5b4] hover:bg-[#fae5a7] active:bg-[#faedc6] cursor-pointer flex flex-row p-4 shadow-md rounded-[4vw] items-center justify-center border-none mx-auto">
                 <img
                   src={gameImage}
@@ -103,7 +106,7 @@ export default function HomePage() {
               </Button>
             </Link>
 
-            <Link to={routesName['leaderBoard']} className="w-max self-center">
+            <Link to={routesName.leaderBoard} className="w-max self-center">
               <Button className="h-[10vh] w-[25vw] bg-[#f6e5b4] hover:bg-[#fae5a7] active:bg-[#faedc6] cursor-pointer flex flex-row p-4 shadow-md rounded-[4vw] items-center justify-center border-none mx-auto">
                 <img
                   src={crownImage}
@@ -116,7 +119,7 @@ export default function HomePage() {
               </Button>
             </Link>
 
-            <Link to={routesName['forum']} className="w-max self-center">
+            <Link to={routesName.forum} className="w-max self-center">
               <Button className="h-[10vh] w-[25vw] bg-[#f6e5b4] hover:bg-[#fae5a7] active:bg-[#faedc6] cursor-pointer flex flex-row p-4 shadow-md rounded-[4vw] items-center justify-center border-none mx-auto">
                 <img
                   src={forumImage}
@@ -130,7 +133,7 @@ export default function HomePage() {
             </Link>
 
             <Button
-              onClick={() => window.close()}
+              onClick={() => signOut()}
               className="h-[10vh] w-[25vw] bg-[#f6e5b4] hover:bg-[#fae5a7] active:bg-[#faedc6] cursor-pointer flex flex-row p-4 shadow-md rounded-[4vw] items-center justify-center border-none mx-auto">
               <img
                 src={quitImage}
