@@ -32,29 +32,22 @@ const ProfilePage = () => {
     resolver: zodResolver(formSchema),
   })
 
-  // reset без avatar
   useEffect(() => {
     const loadUser = async () => {
       try {
         const response = await UserService.getUserInfo()
-
         form.reset({
-          // @ts-expect-error временно отключаем TS-ошибку
-          first_name: response.first_name,
-          // @ts-expect-error временно отключаем TS-ошибку
-          second_name: response.second_name,
-          // @ts-expect-error временно отключаем TS-ошибку
-          login: response.login,
-          // @ts-expect-error временно отключаем TS-ошибку
-          email: response.email,
-          // @ts-expect-error временно отключаем TS-ошибку
-          phone: response.phone,
+          first_name: response.data.first_name,
+          second_name: response.data.second_name,
+          login: response.data.login,
+          email: response.data.email,
+          phone: response.data.phone,
           avatar: undefined,
         })
-        // @ts-expect-error временно отключаем TS-ошибку
-        if (response.avatar) {
-          // @ts-expect-error временно отключаем TS-ошибку
-          setAvatarUrl(response.avatar)
+        if (response.data.avatar) {
+          setAvatarUrl(
+            'https://ya-praktikum.tech/api/v2/resources/' + response.data.avatar
+          )
         }
       } catch (error) {
         console.error('Ошибка загрузки пользователя', error)
@@ -69,10 +62,8 @@ const ProfilePage = () => {
     if (!file) {
       return
     }
-    console.log('1', file, form.formState.errors, avatarFile)
     form.setValue('avatar', file)
     await form.trigger('avatar')
-    console.log('2', file, form.control.getFieldState('avatar'), avatarFile)
     if (form.control.getFieldState('avatar').invalid) {
       return
     }
@@ -81,8 +72,7 @@ const ProfilePage = () => {
       const response = await UserService.changeUserAvatar(file)
 
       setAvatarUrl(
-        // @ts-expect-error временно отключаем TS-ошибку
-        'https://ya-praktikum.tech/api/v2/resources/' + response.avatar
+        'https://ya-praktikum.tech/api/v2/resources/' + response.data.avatar
       )
     } catch (error) {
       console.error('Ошибка при загрузке аватара', error)
