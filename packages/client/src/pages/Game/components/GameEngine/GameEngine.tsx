@@ -264,7 +264,10 @@ const GameEngine: React.FC<GameEngineProps> = ({
           Результат: {score}
         </h3>
         <div className="flex gap-1">
-          <Button variant="outline" onClick={handleGoToStart}>
+          <Button
+            variant="outline"
+            onClick={handleGoToStart}
+            className="bg-[#f6e5b4] hover:bg-[#fae5a7] active:bg-[#faedc6]">
             Назад
           </Button>
         </div>
@@ -276,7 +279,7 @@ const GameEngine: React.FC<GameEngineProps> = ({
         height={canvasSize.height}
       />
       <AlertDialog open={showDialog} onOpenChange={setShowDialog}>
-        <AlertDialogContent>
+        <AlertDialogContent className="border-[#FFA28D] bg-[#fbfbe9]">
           <AlertDialogHeader>
             <AlertDialogTitle>
               {dialogType === GameStatus.win
@@ -290,10 +293,14 @@ const GameEngine: React.FC<GameEngineProps> = ({
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>
-            <AlertDialogCancel onClick={handleExit}>
+            <AlertDialogCancel
+              onClick={handleExit}
+              className="bg-[#f6e5b4] hover:bg-[#fae5a7] active:bg-[#faedc6]">
               Закончить игру
             </AlertDialogCancel>
-            <AlertDialogAction onClick={handleContinue}>
+            <AlertDialogAction
+              onClick={handleContinue}
+              className="bg-[#f6e5b4] hover:bg-[#fae5a7] active:bg-[#faedc6] text-black">
               {dialogType === GameStatus.win ? 'Продолжить' : 'Начать заново'}
             </AlertDialogAction>
           </AlertDialogFooter>
