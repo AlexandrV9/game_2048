@@ -1,6 +1,6 @@
 import React, { useRef, useEffect, useState } from 'react'
-import { getCellColor } from './utils/cellColor.js'
-import { generateEmptyBoard } from './utils/generateEmptyBoard.js'
+import { getCellColor } from './utils/cellColor'
+import { generateEmptyBoard } from './utils/generateEmptyBoard'
 import {
   GameBoard,
   GameMoveDirections,
@@ -9,12 +9,12 @@ import {
   PressingKeyObj,
   SMALL_SWIPE,
   TouchCoords,
-} from './models.js'
-import { addRandomCell } from './utils/addRandomCell.js'
-import { moveLeft } from './utils/moveLeft.js'
-import { cloneBoard } from './utils/helpers.js'
-import { rotateBoard } from './utils/rotateBoard.js'
-import { endGameCheck } from './utils/endGameCheck.js'
+} from './models'
+import { addRandomCell } from './utils/addRandomCell'
+import { moveLeft } from './utils/moveLeft'
+import { cloneBoard } from './utils/helpers'
+import { rotateBoard } from './utils/rotateBoard'
+import { endGameCheck } from './utils/endGameCheck'
 import {
   AlertDialog,
   AlertDialogContent,
@@ -24,11 +24,11 @@ import {
   AlertDialogFooter,
   AlertDialogHeader,
   AlertDialogTitle,
-} from '@/shared/ui/AlertDialog/alert-dialog.js'
+} from '@/shared/ui/AlertDialog/alert-dialog'
 import { Link } from 'react-router-dom'
-import { Tabs, TabsList, TabsTrigger } from '@/shared/ui/Tabs/tabs.js'
-import { Button } from '@/shared/ui/index.js'
-import { routesName } from '@/shared/configs/routes.js'
+import { Tabs, TabsList, TabsTrigger } from '@/shared/ui/Tabs/tabs'
+import { Button } from '@/shared/ui/index'
+import { routesName } from '@/shared/configs/routes'
 
 const getInitialCanvasSize = (cellCount: number) => {
   const size = Math.floor((window.innerHeight * 0.6) / cellCount) * cellCount
@@ -292,6 +292,7 @@ const Game2048: React.FC = () => {
         </div>
       </div>
       <canvas
+        data-testid="game-canvas"
         ref={canvasRef}
         width={canvasSize.width}
         height={canvasSize.height}
