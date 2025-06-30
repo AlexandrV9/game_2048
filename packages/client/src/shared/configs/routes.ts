@@ -10,16 +10,18 @@ export const routesName = {
   error500: '/500',
 } as const
 
+export const authRoutes = [routesName.signIn, routesName.signUp]
+
 export const publicRoutes = [
   routesName.signIn,
   routesName.signUp,
-  routesName.game,
   routesName.error404,
   routesName.error500,
 ] as const
 
 export const protectedRoutes = [
   routesName.home,
+  routesName.game,
   routesName.profile,
   routesName.leaderBoard,
   routesName.forum,
@@ -34,6 +36,12 @@ export const protectedRoutes = [
 // }
 
 type ArrayElement<T> = T extends readonly (infer R)[] ? R : never
+
+export const isAuthRoute = (
+  route: string
+): route is ArrayElement<typeof authRoutes> => {
+  return authRoutes.includes(route as never)
+}
 
 export const isPublicRoute = (
   route: string
