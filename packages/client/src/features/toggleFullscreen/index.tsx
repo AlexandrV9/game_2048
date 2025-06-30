@@ -4,26 +4,22 @@ import { useCallback, useEffect, useState } from 'react'
 import { toggleFullscreen } from './helpers'
 
 export const ToggleFullscreen = () => {
-  const [isFullscreen, setIsFullscreen] = useState(!!document.fullscreenElement)
+  const [isFullscreen, setIsFullscreen] = useState(false)
   const [isFullscreenAllowed, setIsFullscreenAllowed] = useState(false)
 
   const handleClick = useCallback(() => {
     toggleFullscreen()
   }, [])
 
-  const getTooltipText = useCallback(() => {
-    if (!isFullscreenAllowed) {
-      return 'Fullscreen is not allowed in this browser'
-    }
-
-    if (isFullscreen) {
-      return 'Click to button that exit fullscreen mode'
-    }
-
-    return 'Click to enter fullscreen'
-  }, [isFullscreenAllowed, isFullscreen])
+  const tooltipText = !isFullscreenAllowed
+    ? 'Fullscreen is not allowed in this browser'
+    : isFullscreen
+    ? 'Click to exit fullscreen'
+    : 'Click to enter fullscreen'
 
   useEffect(() => {
+    setIsFullscreen(!!document.fullscreenElement)
+
     const handleFullscreenChange = () => {
       setIsFullscreen(!!document.fullscreenElement)
     }
@@ -49,7 +45,7 @@ export const ToggleFullscreen = () => {
         </Button>
       </Tooltip.Trigger>
       <Tooltip.Content>
-        <p>{getTooltipText()}</p>
+        <p>{tooltipText}</p>
       </Tooltip.Content>
     </Tooltip>
   )

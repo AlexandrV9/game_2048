@@ -1,9 +1,15 @@
-export function toggleFullscreen(elem?: HTMLElement | null) {
-  const target = elem || document.documentElement
+import { toast } from 'react-toastify'
 
-  if (!document.fullscreenElement) {
-    target.requestFullscreen?.()
-  } else {
-    document.exitFullscreen?.()
+export function toggleFullscreen(elem?: HTMLElement | null) {
+  try {
+    const target = elem || document.documentElement
+
+    if (!document.fullscreenElement) {
+      target.requestFullscreen?.()
+    } else {
+      document.exitFullscreen?.()
+    }
+  } catch {
+    toast.error('Failed open the screen in fullscreen mode')
   }
 }

@@ -19,11 +19,11 @@ const SignUpPage = () => {
     signUp(formData)
   }
 
-  // useEffect(() => {
-  //   if (isLoggedIn) {
-  //     navigate(routesName.home)
-  //   }
-  // }, [isLoggedIn, navigate])
+  useEffect(() => {
+    if (isLoggedIn) {
+      navigate(routesName.home)
+    }
+  }, [isLoggedIn, navigate])
 
   if (isLoading) {
     return null

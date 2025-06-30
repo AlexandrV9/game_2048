@@ -72,7 +72,9 @@ class BaseAPI {
     return payload
   }
 
-  private transformResponseData<T = unknown>(data?: any) {
+  private transformResponseData<T = unknown, D = unknown>(
+    data: AxiosResponse<T, D>
+  ): AxiosResponse<T, D> {
     return data
   }
 
@@ -80,9 +82,10 @@ class BaseAPI {
     return config
   }
 
-  private handleError(error: unknown) {
+  private handleError<T = unknown, D = unknown>(error: unknown) {
     console.log(error)
-    return error
+
+    return error as AxiosResponse<T, D>
   }
 
   private async handleRequest<T>(
@@ -90,9 +93,9 @@ class BaseAPI {
   ): Promise<AxiosResponse<T>> {
     try {
       const response = await request
-      return this.transformResponseData<T>(response) as AxiosResponse<T>
+      return this.transformResponseData<T>(response)
     } catch (error) {
-      return this.handleError(error) as AxiosResponse<T>
+      return this.handleError(error)
     }
   }
 }

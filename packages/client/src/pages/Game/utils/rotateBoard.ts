@@ -1,5 +1,5 @@
-import { GameBoard } from '../models.js'
-import { generateEmptyBoard } from './generateEmptyBoard.js'
+import { GameBoard } from '../models'
+import { generateEmptyBoard } from './generateEmptyBoard'
 
 export const rotateBoard = (size: number, board: GameBoard): GameBoard => {
   const newBoard = generateEmptyBoard(size)

@@ -90,11 +90,11 @@ export default function HomePage() {
       <Card.Content className="relative w-[60vw] h-[70vh] mt-[3vh] mb-0 p-[1vw] bg-[#fbfbe9] rounded-lg self-center border-none">
         <nav className="h-full justify-start">
           <div className="flex flex-col gap-[1vw] justify-start h-full">
-            <Link to={routesName['start']} className="w-max self-center">
+            <Link to={routesName['game']} className="w-max self-center">
               <Button className="h-[10vh] w-[25vw] bg-[#f6e5b4] hover:bg-[#fae5a7] active:bg-[#faedc6] cursor-pointer flex flex-row p-4 shadow-md rounded-[4vw] items-center justify-center border-none mx-auto">
                 <img
                   src={gameImage}
-                  alt="start"
+                  alt="game"
                   className="rounded-full w-[3vw] h-[3vw] mr-[0.5vw] text-[#6c6150]"
                 />
                 <span className="text-[#FFA28D] font-bold text-[2vw]">
