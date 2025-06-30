@@ -1,5 +1,6 @@
 import { createBrowserRouter, RouterProvider } from 'react-router-dom'
 
+import ErrorBoundary from '@/shared/common/ErrorBoundary'
 import {
   Error404Page,
   Error500Page,
@@ -19,6 +20,7 @@ import { ProtectedRoute } from './ProtectedRoute'
 export const router = createBrowserRouter([
   {
     element: <AuthProvider />,
+    errorElement: <ErrorBoundary />,
     children: [
       {
         path: routesName.error404,
