@@ -8,8 +8,8 @@ import {
   AlertDialogFooter,
   AlertDialogHeader,
   AlertDialogTitle,
-} from '@/shared/ui/AlertDialog/alert-dialog.tsx'
-import { routesName } from '@/shared/configs/routes.ts'
+} from '@/shared/ui/AlertDialog/alert-dialog'
+import { routesName } from '@/shared/configs/routes'
 
 const ErrorBoundary = () => {
   const navigate = useNavigate()

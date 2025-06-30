@@ -1,7 +1,6 @@
 import React, { useState, useEffect, Dispatch, SetStateAction } from 'react'
 import styles from '@/pages/Game/style.module.css'
 import { Button } from '@/shared/ui'
-import { GameStatusType } from '@/pages/Game/components/GameEngine/models.ts'
 import clsx from 'clsx'
 
 interface StartGameProps {

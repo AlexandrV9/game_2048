@@ -1,5 +1,5 @@
-import { Topic } from '@/pages/Forum/Forum.mock.ts'
-import { dateFormatted } from './openTopic.tsx'
+import { Topic } from '@/pages/Forum/Forum.mock'
+import { dateFormatted } from './openTopic'
 import messageImage from '../../shared/assets/Forum/message.svg'
 import calendarImage from '../../shared/assets/Forum/calendar.svg'
 

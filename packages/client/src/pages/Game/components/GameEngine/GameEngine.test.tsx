@@ -1,14 +1,25 @@
-import React from 'react'
-import { render, fireEvent, screen } from '@testing-library/react'
-import Game2048 from './Game'
 import '@testing-library/jest-dom'
-import { BrowserRouter } from 'react-router-dom'
+import React from 'react'
+import { render, screen, fireEvent } from '@testing-library/react'
+import GameEngine from './GameEngine'
+import { GameStatus } from '@/pages/Game/types'
 
-const renderWithRouter = (ui: React.ReactElement) => {
-  return render(<BrowserRouter>{ui}</BrowserRouter>)
+const mockSetScore = jest.fn()
+const mockHandleGameOver = jest.fn()
+const mockSetGameStatus = jest.fn()
+const mockHandleGoToStart = jest.fn()
+
+const defaultProps = {
+  score: 0,
+  setScore: mockSetScore,
+  handleGameOver: mockHandleGameOver,
+  gameStatus: GameStatus.playing,
+  setGameStatus: mockSetGameStatus,
+  size: 4,
+  handleGoToStart: mockHandleGoToStart,
 }
 
-describe('Game2048 Component', () => {
+describe('GameEngine', () => {
   let originalGetContext: typeof HTMLCanvasElement.prototype.getContext
   let mockContext: Partial<jest.Mocked<CanvasRenderingContext2D>>
   beforeEach(() => {
@@ -41,47 +52,29 @@ describe('Game2048 Component', () => {
       }),
     })
   })
-
   afterEach(() => {
     Object.defineProperty(HTMLCanvasElement.prototype, 'getContext', {
       value: originalGetContext,
     })
     jest.restoreAllMocks()
   })
+  it('рендерит компонент GameEngine', () => {
+    render(<GameEngine {...defaultProps} />)
 
-  it('рендерит заголовок и кнопки', () => {
-    renderWithRouter(<Game2048 />)
-
-    expect(screen.getByText('2048')).toBeInTheDocument()
-    expect(screen.getByText('Start game')).toBeInTheDocument()
-    expect(screen.getByText('Restart')).toBeInTheDocument()
-    expect(screen.getByText('Home')).toBeInTheDocument()
+    expect(screen.getByText(/Результат/i)).toBeInTheDocument()
   })
 
-  it('начинает новую игру по клику Start game', () => {
-    renderWithRouter(<Game2048 />)
-    const startButton = screen.getByText('Start game')
-    fireEvent.click(startButton)
+  it('вызывает handleGoToStart при нажатии кнопки "Назад"', () => {
+    render(<GameEngine {...defaultProps} />)
 
-    expect(screen.getByText('Score: 0')).toBeInTheDocument()
-  })
+    const backButton = screen.getByRole('button', { name: /Назад/i })
+    fireEvent.click(backButton)
 
-  it('разрешает клик на таб и дизейблит его после начала игры', () => {
-    renderWithRouter(<Game2048 />)
-
-    const hardTab = screen.getByText('Hard')
-    expect(hardTab).toBeInTheDocument()
-    expect(hardTab).toBeEnabled()
-
-    fireEvent.click(hardTab)
-
-    fireEvent.click(screen.getByText('Start game'))
-
-    expect(hardTab).toBeDisabled()
+    expect(mockHandleGoToStart).toHaveBeenCalledTimes(1)
   })
 
   it('canvas присутствует и имеет корректные размеры', () => {
-    renderWithRouter(<Game2048 />)
+    render(<GameEngine {...defaultProps} />)
     const canvas = screen.getByTestId('game-canvas')
 
     expect(canvas).toBeInTheDocument()
@@ -96,9 +89,7 @@ describe('Game2048 Component', () => {
   })
 
   it('реагирует на нажатие клавиш (ArrowLeft)', () => {
-    renderWithRouter(<Game2048 />)
-
-    fireEvent.click(screen.getByText('Start game'))
+    render(<GameEngine {...defaultProps} />)
 
     const canvas = screen.getByTestId('game-canvas') as HTMLCanvasElement
     const ctx = canvas.getContext('2d')
@@ -111,8 +102,7 @@ describe('Game2048 Component', () => {
   })
 
   it('реагирует на свайп', () => {
-    renderWithRouter(<Game2048 />)
-    fireEvent.click(screen.getByText('Start game'))
+    render(<GameEngine {...defaultProps} />)
 
     const canvas = screen.getByTestId('game-canvas') as HTMLCanvasElement
 

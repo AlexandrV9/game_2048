@@ -1,4 +1,4 @@
-import { GameStatus } from '@/pages/Game/types.ts'
+import { GameStatus } from '@/pages/Game/types'
 
 export type BoardRow = number[]
 

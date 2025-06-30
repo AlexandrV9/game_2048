@@ -5,8 +5,8 @@ import React, {
   Dispatch,
   SetStateAction,
 } from 'react'
-import { getCellColor } from '@/pages/Game/components/GameEngine/utils/cellColor.ts'
-import { generateEmptyBoard } from '@/pages/Game/components/GameEngine/utils/generateEmptyBoard.ts'
+import { getCellColor } from '@/pages/Game/components/GameEngine/utils/cellColor'
+import { generateEmptyBoard } from '@/pages/Game/components/GameEngine/utils/generateEmptyBoard'
 import {
   GameBoard,
   GameMoveDirections,
@@ -14,13 +14,13 @@ import {
   PressingKeyObj,
   SMALL_SWIPE,
   TouchCoords,
-} from './models.ts'
+} from '@/pages/Game/components/GameEngine/models'
 import styles from '@/pages/Game/style.module.css'
-import { addRandomCell } from '@/pages/Game/components/GameEngine/utils/addRandomCell.ts'
-import { moveLeft } from '@/pages/Game/components/GameEngine/utils/moveLeft.ts'
-import { cloneBoard } from '@/pages/Game/components/GameEngine/utils/helpers.ts'
-import { rotateBoard } from '@/pages/Game/components/GameEngine/utils/rotateBoard.ts'
-import { endGameCheck } from '@/pages/Game/components/GameEngine/utils/endGameCheck.ts'
+import { addRandomCell } from '@/pages/Game/components/GameEngine/utils/addRandomCell'
+import { moveLeft } from '@/pages/Game/components/GameEngine/utils/moveLeft'
+import { cloneBoard } from '@/pages/Game/components/GameEngine/utils/helpers'
+import { rotateBoard } from '@/pages/Game/components/GameEngine/utils/rotateBoard'
+import { endGameCheck } from '@/pages/Game/components/GameEngine/utils/endGameCheck'
 import {
   AlertDialog,
   AlertDialogContent,
@@ -30,9 +30,9 @@ import {
   AlertDialogFooter,
   AlertDialogHeader,
   AlertDialogTitle,
-} from '@/shared/ui/AlertDialog/alert-dialog.tsx'
+} from '@/shared/ui/AlertDialog/alert-dialog'
 import { Button } from '@/shared/ui'
-import { GameStatus } from '@/pages/Game/types.ts'
+import { GameStatus } from '@/pages/Game/types'
 
 const getInitialCanvasSize = (cellCount: number) => {
   const size = Math.floor((window.innerHeight * 0.6) / cellCount) * cellCount
@@ -270,6 +270,7 @@ const GameEngine: React.FC<GameEngineProps> = ({
         </div>
       </div>
       <canvas
+        data-testid="game-canvas"
         ref={canvasRef}
         width={canvasSize.width}
         height={canvasSize.height}

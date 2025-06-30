@@ -1,12 +1,12 @@
 import React, { useState } from 'react'
-import GameOver from '@/pages/Game/components/GameOver.js'
-import StartGame from '@/pages/Game/components/StartGame.js'
-import { GAME_STATE, GameStatus } from '@/pages/Game/types.js'
+import GameOver from '@/pages/Game/components/GameOver'
+import StartGame from '@/pages/Game/components/StartGame'
+import { GAME_STATE, GameStatus } from '@/pages/Game/types'
 import styles from '@/pages/Game/style.module.css'
 import { useNavigate } from 'react-router-dom'
-import { routesName } from '@/shared/configs/routes.ts'
-import { GameStatusType } from '@/pages/Game/components/GameEngine/models.ts'
-import GameEngine from '@/pages/Game/components/GameEngine/GameEngine.tsx'
+import { routesName } from '@/shared/configs/routes'
+import { GameStatusType } from '@/pages/Game/components/GameEngine/models'
+import GameEngine from '@/pages/Game/components/GameEngine/GameEngine'
 
 const GamePage: React.FC = () => {
   const navigate = useNavigate()
@@ -20,7 +20,7 @@ const GamePage: React.FC = () => {
     setGameState(GAME_STATE.IN_GAME)
   }
 
-  const handleGameOver = (score: number) => {
+  const handleGameOver = () => {
     setGameState(GAME_STATE.ENDGAME)
   }
 
