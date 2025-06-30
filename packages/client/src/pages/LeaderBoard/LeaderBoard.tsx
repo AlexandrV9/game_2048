@@ -1,7 +1,7 @@
 import React from 'react'
-import { routesName } from '@/shared/configs/routes.ts'
 import { Link } from 'react-router-dom'
 import { Button } from '@/shared/ui'
+import { routesName } from '@/core/Routes'
 
 const players = [
   { id: 1, name: 'Игрок 1', score: 150 },
