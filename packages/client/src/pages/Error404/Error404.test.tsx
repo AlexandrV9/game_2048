@@ -16,7 +16,7 @@ describe('Error404Page', () => {
       screen.getByText('Ошибка 404 — Страница не найдена')
     ).toBeInTheDocument()
 
-    const link = screen.getByText('Home')
+    const link = screen.getByText('Домой')
     expect(link).toBeInTheDocument()
     expect(link).toHaveAttribute('href', routesName.home)
   })
