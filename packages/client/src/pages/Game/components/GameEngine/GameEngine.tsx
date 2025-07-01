@@ -264,6 +264,14 @@ const GameEngine: React.FC<GameEngineProps> = ({
           Результат: {score}
         </h3>
         <div className="flex gap-1">
+          {isWinGameContinue && (
+            <Button
+              variant="outline"
+              onClick={handleExit}
+              className="bg-[#f6e5b4] hover:bg-[#fae5a7] active:bg-[#faedc6]">
+              Закончить игру
+            </Button>
+          )}
           <Button
             variant="outline"
             onClick={handleGoToStart}

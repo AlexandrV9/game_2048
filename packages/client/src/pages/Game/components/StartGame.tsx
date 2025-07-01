@@ -67,10 +67,11 @@ const StartGame: React.FC<StartGameProps> = ({
               Сложно
             </Button>
           </div>
-          <Button variant="default" onClick={handleStartClick}>
-            Начать игру
-          </Button>
-          <Button variant="default" onClick={toggleInstructions}>
+          <Button onClick={handleStartClick}>Начать игру</Button>
+          <Button
+            variant="outline"
+            className="bg-[#f6e5b4] hover:bg-[#fae5a7] active:bg-[#faedc6]"
+            onClick={toggleInstructions}>
             {showInstructions ? 'Скрыть подсказки' : 'Показать подсказки'}
           </Button>
           {showInstructions && (

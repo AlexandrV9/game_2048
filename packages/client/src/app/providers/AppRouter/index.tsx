@@ -15,7 +15,7 @@ import {
 
 import { routesName } from '@/shared/configs/routes'
 import { AuthProvider } from '../AuthProvider'
-import { ProtectedRoute } from './ProtectedRoute'
+import { ProtectedRoute } from '@/app/providers'
 
 export const router = createBrowserRouter([
   {

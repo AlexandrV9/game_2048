@@ -29,6 +29,7 @@ const ProfilePage = () => {
     'https://sun9-25.userapi.com/c10968/u85534956/141244771/x_4ee7e2c5.jpg'
   )
   const form = useForm<FormSchema>({
+    defaultValues: mockUser,
     resolver: zodResolver(formSchema),
   })
 
@@ -53,7 +54,7 @@ const ProfilePage = () => {
         console.error('Ошибка загрузки пользователя', error)
       }
     }
-    loadUser()
+    void loadUser()
   }, [form])
 
   const avatarFile = form.watch('avatar')
@@ -94,7 +95,7 @@ const ProfilePage = () => {
       await UserService.updateUserData(userWithoutAvatar)
       return
     }
-    form.trigger()
+    void form.trigger()
   }
 
   return (
@@ -109,7 +110,7 @@ const ProfilePage = () => {
               <Form.Field
                 control={form.control}
                 name="avatar"
-                render={({ field }) => (
+                render={() => (
                   <Form.Item>
                     <Form.Control>
                       <div className="flex flex-col items-center gap-2">
@@ -132,7 +133,7 @@ const ProfilePage = () => {
                           className="hidden"
                           onChange={e => {
                             const file = e.target.files?.[0]
-                            onAvatarChange(file)
+                            void onAvatarChange(file)
                           }}
                         />
                       </div>
@@ -241,12 +242,12 @@ const ProfilePage = () => {
               <div className="flex flex-row gap-1">
                 <Button
                   type="button"
-                  className="bg-[#f6e5b4] hover:bg-[#fae5a7] active:bg-[#faedc6] flex-1 shadow-md border-1 border-[#FFA28D] text-[#FFA28D] font-bold">
+                  className="bg-[#f6e5b4] hover:bg-[#fae5a7] active:bg-[#faedc6] flex-1 shadow-md border-1 border-[#FFA28D] text-[#000] font-bold">
                   <Link to={routesName.home}>На главную</Link>
                 </Button>
                 <Button
                   type="submit"
-                  className="bg-[#f6e5b4] hover:bg-[#fae5a7] active:bg-[#faedc6] flex-1 shadow-md border-1 border-[#FFA28D] text-[#FFA28D] font-bold">
+                  className="bg-[#f6e5b4] hover:bg-[#fae5a7] active:bg-[#faedc6] flex-1 shadow-md border-1 border-[#FFA28D] text-[#000] font-bold">
                   Сохранить
                 </Button>
               </div>

@@ -7,6 +7,7 @@ import { useNavigate } from 'react-router-dom'
 import { routesName } from '@/shared/configs/routes'
 import { GameStatusType } from '@/pages/Game/components/GameEngine/models'
 import GameEngine from '@/pages/Game/components/GameEngine/GameEngine'
+import { ToggleFullscreen } from '@/features/toggleFullscreen'
 
 const GamePage: React.FC = () => {
   const navigate = useNavigate()
@@ -30,6 +31,9 @@ const GamePage: React.FC = () => {
 
   return (
     <div className={styles.gameBackground}>
+      <div className="absolute top-[30px] right-[30px]">
+        <ToggleFullscreen />
+      </div>
       <button
         title="На страницу домой"
         className={styles.outButton}

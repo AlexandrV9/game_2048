@@ -18,9 +18,18 @@ const GameOver: React.FC<GameOverProps> = ({
       <h1>Игра окончена!</h1>
       <h2 className="mt-2">Ваш новый результат: {currentHighScore}</h2>
       <div className="flex mt-2 gap-3">
-        <Button onClick={onRestartGame}>Попробовать снова</Button>
+        <Button
+          variant="outline"
+          className="bg-[#f6e5b4] hover:bg-[#fae5a7] active:bg-[#faedc6]"
+          onClick={onRestartGame}>
+          Попробовать снова
+        </Button>
         <Link to={routesName.home}>
-          <Button>Домой</Button>
+          <Button
+            variant="outline"
+            className="bg-[#f6e5b4] hover:bg-[#fae5a7] active:bg-[#faedc6]">
+            Домой
+          </Button>
         </Link>
       </div>
     </div>
