@@ -9,8 +9,12 @@ import {
 import { useCallback, useEffect, useState } from 'react'
 import { Outlet, useLocation, useNavigate } from 'react-router-dom'
 import { toast } from 'react-toastify'
+import { useDispatch } from 'react-redux'
+import { logout, setUser } from '@/app/features/userSlice'
 
 export const AuthProvider = () => {
+  const dispatch = useDispatch()
+
   const [isLoggedIn, setIsLoggedIn] = useState(false)
   const [isLoading, setIsLoading] = useState(true)
 
@@ -53,9 +57,10 @@ export const AuthProvider = () => {
 
       if (res?.status === 200) {
         setIsLoggedIn(true)
+        dispatch(setUser(res.data))
 
         if (isAuthRoute(location.pathname)) {
-          //navigate(routesName.home)
+          navigate(routesName.home)
         }
       } else {
         setIsLoggedIn(false)
@@ -75,6 +80,7 @@ export const AuthProvider = () => {
       window.close()
 
       if (res?.status === 200) {
+        dispatch(logout())
         setIsLoggedIn(false)
         navigate(routesName.signIn)
       }
