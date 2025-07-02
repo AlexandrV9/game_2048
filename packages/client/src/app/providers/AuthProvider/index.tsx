@@ -55,7 +55,7 @@ export const AuthProvider = () => {
         setIsLoggedIn(true)
 
         if (isAuthRoute(location.pathname)) {
-          navigate(routesName.home)
+          //navigate(routesName.home)
         }
       } else {
         setIsLoggedIn(false)

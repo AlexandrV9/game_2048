@@ -1,7 +1,7 @@
-import { Comment, me, Topic } from '@/pages/Forum/Forum.mock.ts'
+import { Comment, me, Topic } from '@/pages/Forum/Forum.mock'
 import { FormEvent, useEffect, useRef, useState } from 'react'
-import CommentComponent from './comment.tsx'
-import { routesName } from '@/shared/configs/routes.ts'
+import CommentComponent from './comment'
+import { routesName } from '@/shared/configs/routes'
 import calendarImage from '../../shared/assets/Forum/calendar.svg'
 import sendImage from '../../shared/assets/Forum/sendButton.svg'
 

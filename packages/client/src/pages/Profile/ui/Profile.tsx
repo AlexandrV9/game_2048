@@ -29,38 +29,32 @@ const ProfilePage = () => {
     'https://sun9-25.userapi.com/c10968/u85534956/141244771/x_4ee7e2c5.jpg'
   )
   const form = useForm<FormSchema>({
+    defaultValues: mockUser,
     resolver: zodResolver(formSchema),
   })
 
-  // reset без avatar
   useEffect(() => {
     const loadUser = async () => {
       try {
         const response = await UserService.getUserInfo()
-
         form.reset({
-          // @ts-expect-error временно отключаем TS-ошибку
-          first_name: response.first_name,
-          // @ts-expect-error временно отключаем TS-ошибку
-          second_name: response.second_name,
-          // @ts-expect-error временно отключаем TS-ошибку
-          login: response.login,
-          // @ts-expect-error временно отключаем TS-ошибку
-          email: response.email,
-          // @ts-expect-error временно отключаем TS-ошибку
-          phone: response.phone,
+          first_name: response.data.first_name,
+          second_name: response.data.second_name,
+          login: response.data.login,
+          email: response.data.email,
+          phone: response.data.phone,
           avatar: undefined,
         })
-        // @ts-expect-error временно отключаем TS-ошибку
-        if (response.avatar) {
-          // @ts-expect-error временно отключаем TS-ошибку
-          setAvatarUrl(response.avatar)
+        if (response.data.avatar) {
+          setAvatarUrl(
+            'https://ya-praktikum.tech/api/v2/resources/' + response.data.avatar
+          )
         }
       } catch (error) {
         console.error('Ошибка загрузки пользователя', error)
       }
     }
-    loadUser()
+    void loadUser()
   }, [form])
 
   const avatarFile = form.watch('avatar')
@@ -69,10 +63,8 @@ const ProfilePage = () => {
     if (!file) {
       return
     }
-    console.log('1', file, form.formState.errors, avatarFile)
     form.setValue('avatar', file)
     await form.trigger('avatar')
-    console.log('2', file, form.control.getFieldState('avatar'), avatarFile)
     if (form.control.getFieldState('avatar').invalid) {
       return
     }
@@ -81,8 +73,7 @@ const ProfilePage = () => {
       const response = await UserService.changeUserAvatar(file)
 
       setAvatarUrl(
-        // @ts-expect-error временно отключаем TS-ошибку
-        'https://ya-praktikum.tech/api/v2/resources/' + response.avatar
+        'https://ya-praktikum.tech/api/v2/resources/' + response.data.avatar
       )
     } catch (error) {
       console.error('Ошибка при загрузке аватара', error)
@@ -104,7 +95,7 @@ const ProfilePage = () => {
       await UserService.updateUserData(userWithoutAvatar)
       return
     }
-    form.trigger()
+    void form.trigger()
   }
 
   return (
@@ -119,7 +110,7 @@ const ProfilePage = () => {
               <Form.Field
                 control={form.control}
                 name="avatar"
-                render={({ field }) => (
+                render={() => (
                   <Form.Item>
                     <Form.Control>
                       <div className="flex flex-col items-center gap-2">
@@ -142,7 +133,7 @@ const ProfilePage = () => {
                           className="hidden"
                           onChange={e => {
                             const file = e.target.files?.[0]
-                            onAvatarChange(file)
+                            void onAvatarChange(file)
                           }}
                         />
                       </div>
@@ -251,12 +242,12 @@ const ProfilePage = () => {
               <div className="flex flex-row gap-1">
                 <Button
                   type="button"
-                  className="bg-[#f6e5b4] hover:bg-[#fae5a7] active:bg-[#faedc6] flex-1 shadow-md border-1 border-[#FFA28D] text-[#FFA28D] font-bold">
+                  className="bg-[#f6e5b4] hover:bg-[#fae5a7] active:bg-[#faedc6] flex-1 shadow-md border-1 border-[#FFA28D] text-[#000] font-bold">
                   <Link to={routesName.home}>На главную</Link>
                 </Button>
                 <Button
                   type="submit"
-                  className="bg-[#f6e5b4] hover:bg-[#fae5a7] active:bg-[#faedc6] flex-1 shadow-md border-1 border-[#FFA28D] text-[#FFA28D] font-bold">
+                  className="bg-[#f6e5b4] hover:bg-[#fae5a7] active:bg-[#faedc6] flex-1 shadow-md border-1 border-[#FFA28D] text-[#000] font-bold">
                   Сохранить
                 </Button>
               </div>

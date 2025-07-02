@@ -14,7 +14,7 @@ const SignInPage = () => {
   })
 
   function onSubmit(values: FormSchema) {
-    signInByLogin(values)
+    void signInByLogin(values)
   }
 
   if (isLoading) {
@@ -22,7 +22,8 @@ const SignInPage = () => {
   }
 
   return (
-    <div className="flex justify-center items-center w-[100vw] h-[100vh]">
+    <div className="flex flex-col gap-2 justify-center items-center w-[100vw] h-[100vh] bg-[#fbfbe9]">
+      <h1 className="text-3xl font-bold">Игра 2048</h1>
       <Card.Root className="w-full max-w-[400px]">
         <Card.Header>
           <Card.Title className="text-center text-xl">Авторизация</Card.Title>

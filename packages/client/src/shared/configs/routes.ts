@@ -6,7 +6,6 @@ export const routesName = {
   leaderBoard: '/leader-board',
   forum: '/forum',
   game: '/game',
-  end: '/end',
   error404: '/404',
   error500: '/500',
 } as const
@@ -26,7 +25,6 @@ export const protectedRoutes = [
   routesName.profile,
   routesName.leaderBoard,
   routesName.forum,
-  routesName.end,
 ] as const
 
 // TODO: преобразовать роуты к виду

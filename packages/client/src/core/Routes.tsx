@@ -6,7 +6,6 @@ export const routesName: Record<string, string> = {
   leaderBoard: '/leader-board',
   forum: '/forum',
   game: '/game',
-  end: '/end',
   error404: '/404',
   error500: '/500',
 }

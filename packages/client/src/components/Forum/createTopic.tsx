@@ -1,5 +1,5 @@
 import { Button } from '@/shared/ui'
-import { me, Topic } from '@/pages/Forum/Forum.mock.ts'
+import { me, Topic } from '@/pages/Forum/Forum.mock'
 import { FormEvent, useEffect, useRef } from 'react'
 
 const CreateTopic: React.FC<{

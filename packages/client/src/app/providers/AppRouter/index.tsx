@@ -2,7 +2,6 @@ import { createBrowserRouter, RouterProvider } from 'react-router-dom'
 
 import ErrorBoundary from '@/shared/common/ErrorBoundary'
 import {
-  EndPage,
   Error404Page,
   Error500Page,
   ForumPage,
@@ -16,7 +15,7 @@ import {
 
 import { routesName } from '@/shared/configs/routes'
 import { AuthProvider } from '../AuthProvider'
-import { ProtectedRoute } from './ProtectedRoute'
+import { ProtectedRoute } from '@/app/providers'
 
 export const router = createBrowserRouter([
   {
@@ -46,10 +45,6 @@ export const router = createBrowserRouter([
       {
         element: <ProtectedRoute />,
         children: [
-          {
-            path: routesName.end,
-            element: <EndPage />,
-          },
           {
             path: routesName.forum,
             element: <ForumPage />,

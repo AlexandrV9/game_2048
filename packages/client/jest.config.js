@@ -1,4 +1,5 @@
 import dotenv from 'dotenv'
+
 dotenv.config()
 
 export default {
@@ -8,11 +9,14 @@ export default {
   moduleNameMapper: {
     '^@/(.*)$': '<rootDir>/src/$1',
   },
+  transform: {
+    '.+\\.(css|styl|less|sass|scss)$': 'jest-css-modules-transform'
+  },
   setupFilesAfterEnv: ['<rootDir>/jest.setup.ts'],
   globals: {
     'ts-jest': {
-      tsconfig: 'tsconfig.json',
-    },
+      tsconfig: 'tsconfig.json'
+    }
     // __SERVER_PORT__: process.env.SERVER_PORT,
-  },
+  }
 }

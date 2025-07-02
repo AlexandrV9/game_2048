@@ -3,34 +3,27 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import { FormSchema, formSchema } from '../model/formSchema'
 import { useAuth } from '@/shared/auth'
 import { Button, Card, Form, TextInput, PhoneInput } from '@/shared/ui'
-import { Link, useNavigate } from 'react-router-dom'
+import { Link } from 'react-router-dom'
 import { routesName } from '@/shared/configs/routes'
-import { useEffect } from 'react'
 
 const SignUpPage = () => {
-  const navigate = useNavigate()
-  const { signUp, isLoggedIn, isLoading } = useAuth()
+  const { signUp, isLoading } = useAuth()
 
   const form = useForm<FormSchema>({
     resolver: zodResolver(formSchema),
   })
 
   function onSubmit(formData: FormSchema) {
-    signUp(formData)
+    void signUp(formData)
   }
-
-  useEffect(() => {
-    if (isLoggedIn) {
-      navigate(routesName.home)
-    }
-  }, [isLoggedIn, navigate])
 
   if (isLoading) {
     return null
   }
 
   return (
-    <div className="flex justify-center items-center w-[100vw] h-[100vh]">
+    <div className="flex flex-col gap-2 justify-center items-center w-[100vw] h-[100vh] bg-[#fbfbe9]">
+      <h1 className="text-3xl font-bold">Игра 2048</h1>
       <Card.Root className="w-full max-w-[400px]">
         <Card.Header>
           <Card.Title className="text-center text-xl">Регистрация</Card.Title>

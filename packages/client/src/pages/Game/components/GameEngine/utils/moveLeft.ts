@@ -1,4 +1,4 @@
-import { GameBoard } from '../models.js'
+import { GameBoard } from '../models'
 
 export const moveLeft = (
   size: number,

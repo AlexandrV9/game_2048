@@ -1,14 +1,14 @@
 import styles from './Forum.module.scss'
 import { useEffect, useRef, useState } from 'react'
-import { TopicComponent } from '@/components/Forum/topic.tsx'
-import CreateTopic from '@/components/Forum/createTopic.tsx'
+import { TopicComponent } from '@/components/Forum/topic'
+import CreateTopic from '@/components/Forum/createTopic'
 import clsx from 'clsx'
-import OpenTopic from '@/components/Forum/openTopic.tsx'
-import { forumTopicsMock, me, Topic } from './Forum.mock.ts'
+import OpenTopic from '@/components/Forum/openTopic'
+import { forumTopicsMock, me, Topic } from './Forum.mock'
 import { useNavigate } from 'react-router-dom'
-import { Button } from '@/shared/ui/index.ts'
-import { routesName } from '@/shared/configs/routes.ts'
-import { Avatar, AvatarImage } from '@/shared/ui/index.ts'
+import { Button } from '@/shared/ui'
+import { routesName } from '@/shared/configs/routes'
+import { Avatar, AvatarImage } from '@/shared/ui'
 
 const ForumPage = () => {
   const [forumTopics, setForumTopics] = useState(forumTopicsMock)
