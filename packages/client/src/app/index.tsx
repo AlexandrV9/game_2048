@@ -2,7 +2,8 @@ import { Suspense, useEffect } from 'react'
 import { ToastContainer } from 'react-toastify'
 import { AppRouter } from './providers'
 import image from '../shared/assets/2048.svg'
-
+import { Provider } from 'react-redux'
+import store from '@/app/store'
 import './index.css'
 
 export function App() {
@@ -28,7 +29,9 @@ export function App() {
   return (
     <div className="h-[100vh] w-[100vw]">
       <Suspense fallback={null}>
-        <AppRouter />
+        <Provider store={store}>
+          <AppRouter />
+        </Provider>
         <ToastContainer />
       </Suspense>
     </div>
