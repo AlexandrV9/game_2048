@@ -1,7 +1,7 @@
 import axios, { AxiosError } from 'axios'
-
+console.log()
 export const axiosInstance = axios.create({
-  baseURL: import.meta.env.VITE_BASE_API_URL,
+  baseURL: 'https://' + import.meta.env.VITE_BASE_API_URL,
   headers: { 'Content-Type': 'application/json; charset=utf-8' },
   withCredentials: true,
   timeout: 10_000,

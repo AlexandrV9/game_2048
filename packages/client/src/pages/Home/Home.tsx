@@ -13,9 +13,26 @@ import quitImage from '../../shared/assets/Home/Quit.svg'
 import { Link } from 'react-router-dom'
 import { useAuth } from '@/shared/auth'
 import { routesName } from '@/shared/configs/routes'
+import { useEffect, useState } from 'react'
+import { UserService } from '@/shared/api/services/user'
 
 export default function HomePage() {
+  const [avatar, setAvatar] = useState('')
   const { signOut } = useAuth()
+
+  useEffect(() => {
+    const loadAvatar = async () => {
+      const response = await UserService.getUserInfo()
+      if (response.data.avatar) {
+        setAvatar(
+          `https://${import.meta.env.VITE_BASE_API_URL}/resources/${
+            response.data.avatar
+          }`
+        )
+      }
+    }
+    void loadAvatar()
+  }, [])
 
   return (
     <Card.Root className="w-screen h-screen flex flex-col bg-[#fbfbe9] overflow-x-hidden rounded-none gap-0 py-0 border-0">
@@ -74,7 +91,11 @@ export default function HomePage() {
             <Avatar className="w-[3vw] h-[3vw]">
               <Link to={`${routesName.profile}/1`} className="text-blue-600">
                 <AvatarImage
-                  src="https://sun9-25.userapi.com/c10968/u85534956/141244771/x_4ee7e2c5.jpg"
+                  src={
+                    avatar
+                      ? avatar
+                      : 'https://sun9-25.userapi.com/c10968/u85534956/141244771/x_4ee7e2c5.jpg'
+                  }
                   alt="avatar"
                   className="rounded-full w-[3vw] h-[3vw]"
                 />

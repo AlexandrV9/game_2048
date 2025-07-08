@@ -77,7 +77,7 @@ export const AuthProvider = () => {
   const signOut = useCallback(async () => {
     try {
       const res = await AuthService.logout()
-      window.close()
+      // window.close()
 
       if (res?.status === 200) {
         dispatch(logout())
