@@ -37,6 +37,22 @@ export const AuthProvider = () => {
     }
   }, [])
 
+  const signInByOAuth = useCallback(async () => {
+    try {
+      const res = await AuthService.signInByOAuth()
+
+      if (res?.status === 200) {
+        setIsLoggedIn(true)
+        toast.success('Добро пожаловать!')
+        navigate(routesName.home)
+      } else {
+        throw new Error('Ошибка авторизации')
+      }
+    } catch {
+      toast.error('Упс, что-то пошло не так. Попробуйте снова')
+    }
+  }, [])
+
   const signUp = useCallback(async (data: ReqSignUp) => {
     try {
       const res = await AuthService.signUp(data)
@@ -97,7 +113,14 @@ export const AuthProvider = () => {
 
   return (
     <AuthContext.Provider
-      value={{ isLoggedIn, isLoading, signUp, signInByLogin, signOut }}>
+      value={{
+        isLoggedIn,
+        isLoading,
+        signUp,
+        signInByLogin,
+        signInByOAuth,
+        signOut,
+      }}>
       <Outlet />
     </AuthContext.Provider>
   )

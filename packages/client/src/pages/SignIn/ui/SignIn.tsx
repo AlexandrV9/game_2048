@@ -5,9 +5,10 @@ import { useAuth } from '@/shared/auth'
 import { Link } from 'react-router-dom'
 import { Button, Card, Form, TextInput } from '@/shared/ui'
 import { routesName } from '@/shared/configs/routes'
+import yaImage from '../../../shared/assets/yandex.svg'
 
 const SignInPage = () => {
-  const { signInByLogin, isLoading } = useAuth()
+  const { signInByLogin, signInByOAuth, isLoading } = useAuth()
 
   const form = useForm<FormSchema>({
     resolver: zodResolver(formSchema),
@@ -15,6 +16,10 @@ const SignInPage = () => {
 
   function onSubmit(values: FormSchema) {
     void signInByLogin(values)
+  }
+
+  function OAuth() {
+    void signInByOAuth()
   }
 
   if (isLoading) {
@@ -66,6 +71,11 @@ const SignInPage = () => {
                 Войти
               </Button>
             </form>
+            <p className="text-center">или</p>
+            <Button className="w-full" onClick={OAuth}>
+              <img src={yaImage} alt="yandex" className="w-5 h-5" />
+              <p>Яндекс.ID</p>
+            </Button>
           </Form.Root>
         </Card.Content>
         <Card.Footer className="flex-col gap-2">

@@ -19,6 +19,13 @@ export class AuthService {
     })
   }
 
+  static signInByOAuth() {
+    return baseApi.post('/oauth/yandex', {
+      code: import.meta.env.VITE_CODE_OAUTH,
+      redirect_uri: import.meta.env.VITE_REDIRECT_URI_OAUTH,
+    })
+  }
+
   static signInByLogin(data: ReqSignInByLogin) {
     return baseApi.post<ResSignInByLogin>('/auth/signin', data)
   }
