@@ -4,6 +4,7 @@ import CommentComponent from './comment'
 import { routesName } from '@/shared/configs/routes'
 import calendarImage from '../../shared/assets/Forum/calendar.svg'
 import sendImage from '../../shared/assets/Forum/sendButton.svg'
+import { UserService } from '@/shared/api/services/user'
 
 export const dateFormatted = (date: Date): string => {
   const day = date.getDate().toString()
@@ -23,8 +24,23 @@ const OpenTopic: React.FC<{
 }> = ({ topic, forumTopics, setForumTopics, styles, closeDialog }) => {
   const thisTopic = forumTopics.find(item => item.id == topic.id) as Topic
   const [commentsTopic, setCommentsTopic] = useState(thisTopic.comments)
+  const [avatar, setAvatar] = useState('')
   const commentsContainerRef = useRef<HTMLDivElement | null>(null)
   const inputRef = useRef<HTMLTextAreaElement | null>(null)
+
+  useEffect(() => {
+    const loadAvatar = async () => {
+      const response = await UserService.getUserInfo()
+      if (response.data.avatar) {
+        setAvatar(
+          `https://${import.meta.env.VITE_BASE_API_URL}/resources/${
+            response.data.avatar
+          }`
+        )
+      }
+    }
+    void loadAvatar()
+  }, [])
 
   useEffect(() => {
     if (commentsContainerRef.current) {
@@ -110,7 +126,11 @@ const OpenTopic: React.FC<{
         </div>
 
         <div className={styles.commentInputSection}>
-          <img src={me.avatar} alt={me.login} className={styles.inputAvatar} />
+          <img
+            src={avatar ? avatar : me.avatar}
+            alt={me.login}
+            className={styles.inputAvatar}
+          />
           <form
             className={styles.inputContainer}
             onSubmit={data => {
