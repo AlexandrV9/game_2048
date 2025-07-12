@@ -37,9 +37,9 @@ export const AuthProvider = () => {
     }
   }, [])
 
-  const signInByOAuth = useCallback(async () => {
+  const signInByOAuth = useCallback(async (code: string) => {
     try {
-      const res = await AuthService.signInByOAuth()
+      const res = await AuthService.signInByOAuth(code)
 
       if (res?.status === 200) {
         setIsLoggedIn(true)
@@ -80,8 +80,11 @@ export const AuthProvider = () => {
         }
       } else {
         setIsLoggedIn(false)
-
-        if (isProtectedRoute(location.pathname)) {
+        if (location.pathname == routesName.home) {
+          const query = new URLSearchParams(window.location.search)
+          const code = query.get('code')
+          code ? signInByOAuth(code) : navigate(routesName.signIn)
+        } else if (isProtectedRoute(location.pathname)) {
           navigate(routesName.signIn)
         }
       }
@@ -93,7 +96,6 @@ export const AuthProvider = () => {
   const signOut = useCallback(async () => {
     try {
       const res = await AuthService.logout()
-      // window.close()
 
       if (res?.status === 200) {
         dispatch(logout())
@@ -101,13 +103,15 @@ export const AuthProvider = () => {
         navigate(routesName.signIn)
       }
     } catch {
-      /* empty */
+      toast.error('Упс, что-то пошло не так. Попробуйте снова')
     }
   }, [location.pathname])
 
   useEffect(() => {
     checkIsAuth().finally(() => {
-      setIsLoading(false)
+      setTimeout(() => {
+        setIsLoading(false)
+      }, 500)
     })
   }, [checkIsAuth])
 

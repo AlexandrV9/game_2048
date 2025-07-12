@@ -8,7 +8,7 @@ import { routesName } from '@/shared/configs/routes'
 import yaImage from '../../../shared/assets/yandex.svg'
 
 const SignInPage = () => {
-  const { signInByLogin, signInByOAuth, isLoading } = useAuth()
+  const { signInByLogin, isLoading } = useAuth()
 
   const form = useForm<FormSchema>({
     resolver: zodResolver(formSchema),
@@ -18,8 +18,13 @@ const SignInPage = () => {
     void signInByLogin(values)
   }
 
-  function OAuth() {
-    void signInByOAuth()
+  const OAuth = async () => {
+    const queryParams = new URLSearchParams({
+      response_type: 'code',
+      client_id: import.meta.env.VITE_CLIENT_ID_OAUTH,
+      redirect_uri: import.meta.env.VITE_REDIRECT_URI_OAUTH,
+    })
+    window.location.href = `https://oauth.yandex.ru/authorize?${queryParams.toString()}`
   }
 
   if (isLoading) {

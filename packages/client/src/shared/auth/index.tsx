@@ -7,7 +7,7 @@ export type IAuthContext = {
   signInByLogin: (data: ReqSignInByLogin) => Promise<void>
   signUp: (data: ReqSignUp) => Promise<void>
   signOut: () => Promise<void>
-  signInByOAuth: () => Promise<void>
+  signInByOAuth: (code: string) => Promise<void>
 }
 
 export const AuthContext = createContext<IAuthContext | undefined>(undefined)
