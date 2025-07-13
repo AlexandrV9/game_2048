@@ -4,7 +4,8 @@ import CommentComponent from './comment'
 import { routesName } from '@/shared/configs/routes'
 import calendarImage from '../../shared/assets/Forum/calendar.svg'
 import sendImage from '../../shared/assets/Forum/sendButton.svg'
-import { UserService } from '@/shared/api/services/user'
+import { useSelector } from 'react-redux'
+import { RootState } from '@/app/store'
 
 export const dateFormatted = (date: Date): string => {
   const day = date.getDate().toString()
@@ -24,23 +25,12 @@ const OpenTopic: React.FC<{
 }> = ({ topic, forumTopics, setForumTopics, styles, closeDialog }) => {
   const thisTopic = forumTopics.find(item => item.id == topic.id) as Topic
   const [commentsTopic, setCommentsTopic] = useState(thisTopic.comments)
-  const [avatar, setAvatar] = useState('')
   const commentsContainerRef = useRef<HTMLDivElement | null>(null)
   const inputRef = useRef<HTMLTextAreaElement | null>(null)
-
-  useEffect(() => {
-    const loadAvatar = async () => {
-      const response = await UserService.getUserInfo()
-      if (response.data.avatar) {
-        setAvatar(
-          `https://${import.meta.env.VITE_BASE_API_URL}/resources/${
-            response.data.avatar
-          }`
-        )
-      }
-    }
-    void loadAvatar()
-  }, [])
+  const avatarLink = useSelector((state: RootState) => state.user).user?.avatar
+  const avatar = avatarLink
+    ? `https://${import.meta.env.VITE_BASE_API_URL}/resources/${avatarLink}`
+    : null
 
   useEffect(() => {
     if (commentsContainerRef.current) {

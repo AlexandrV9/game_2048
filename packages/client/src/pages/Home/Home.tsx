@@ -13,26 +13,15 @@ import quitImage from '../../shared/assets/Home/Quit.svg'
 import { Link } from 'react-router-dom'
 import { useAuth } from '@/shared/auth'
 import { routesName } from '@/shared/configs/routes'
-import { useEffect, useState } from 'react'
-import { UserService } from '@/shared/api/services/user'
+import { useSelector } from 'react-redux'
+import { RootState } from '@/app/store'
 
 export default function HomePage() {
-  const [avatar, setAvatar] = useState('')
+  const avatarLink = useSelector((state: RootState) => state.user).user?.avatar
+  const avatar = avatarLink
+    ? `https://${import.meta.env.VITE_BASE_API_URL}/resources/${avatarLink}`
+    : null
   const { signOut } = useAuth()
-
-  useEffect(() => {
-    const loadAvatar = async () => {
-      const response = await UserService.getUserInfo()
-      if (response.data.avatar) {
-        setAvatar(
-          `https://${import.meta.env.VITE_BASE_API_URL}/resources/${
-            response.data.avatar
-          }`
-        )
-      }
-    }
-    void loadAvatar()
-  }, [])
 
   return (
     <Card.Root className="w-screen h-screen flex flex-col bg-[#fbfbe9] overflow-x-hidden rounded-none gap-0 py-0 border-0">

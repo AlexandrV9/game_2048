@@ -9,30 +9,20 @@ import { useNavigate } from 'react-router-dom'
 import { Button } from '@/shared/ui'
 import { routesName } from '@/shared/configs/routes'
 import { Avatar, AvatarImage } from '@/shared/ui'
-import { UserService } from '@/shared/api/services/user'
+import { useSelector } from 'react-redux'
+import { RootState } from '@/app/store'
 
 const ForumPage = () => {
   const [forumTopics, setForumTopics] = useState(forumTopicsMock)
   const [isVisible, setIsVisible] = useState(false)
   const [openedTopic, setOpenedTopic] = useState<Topic | null>(null)
   const [dialogState, setDialogState] = useState<'create' | 'open' | null>(null)
-  const [avatar, setAvatar] = useState('')
   const topicContainerRef = useRef<HTMLDivElement | null>(null)
   const navigate = useNavigate()
-
-  useEffect(() => {
-    const loadAvatar = async () => {
-      const response = await UserService.getUserInfo()
-      if (response.data.avatar) {
-        setAvatar(
-          `https://${import.meta.env.VITE_BASE_API_URL}/resources/${
-            response.data.avatar
-          }`
-        )
-      }
-    }
-    void loadAvatar()
-  }, [])
+  const avatarLink = useSelector((state: RootState) => state.user).user?.avatar
+  const avatar = avatarLink
+    ? `https://${import.meta.env.VITE_BASE_API_URL}/resources/${avatarLink}`
+    : null
 
   useEffect(() => {
     if (topicContainerRef.current) {
