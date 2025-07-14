@@ -2,13 +2,16 @@ import dotenv from 'dotenv'
 import express from 'express'
 import path from 'node:path'
 import fs from 'fs/promises'
+import { dirname } from 'node:path'
+import { fileURLToPath } from 'node:url'
 
 import { createServer as createViteServer } from 'vite'
 
 dotenv.config()
 
 const port = process.env.PORT || 8000
-const clientPath = path.join(__dirname, '..')
+const __filename = fileURLToPath(import.meta.url)
+const clientPath = path.join(dirname(__filename), '..')
 const isDev = process.env.NODE_ENV === 'development'
 const isProduction = process.env.NODE_ENV === 'production'
 

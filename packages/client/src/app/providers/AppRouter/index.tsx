@@ -1,4 +1,8 @@
-import { createBrowserRouter, RouterProvider } from 'react-router-dom'
+import {
+  createBrowserRouter,
+  type RouteObject,
+  RouterProvider,
+} from 'react-router-dom'
 
 import ErrorBoundary from '@/shared/common/ErrorBoundary'
 import {
@@ -17,7 +21,7 @@ import { routesName } from '@/shared/configs/routes'
 import { AuthProvider } from '../AuthProvider'
 import { ProtectedRoute } from '@/app/providers'
 
-export const router = createBrowserRouter([
+const routes: RouteObject[] = [
   {
     element: <AuthProvider />,
     errorElement: <ErrorBoundary />,
@@ -73,7 +77,13 @@ export const router = createBrowserRouter([
       },
     ],
   },
-])
+]
+
+let router: ReturnType<typeof createBrowserRouter>
+
+if (typeof window !== 'undefined') {
+  router = createBrowserRouter(routes)
+}
 
 export const AppRouter = () => <RouterProvider router={router} />
 

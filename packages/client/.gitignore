@@ -22,3 +22,8 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+
+server/*.js
+server/*d.ts
+
+tsconfig.server.tsbuildinfo
