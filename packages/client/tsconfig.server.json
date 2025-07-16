@@ -9,5 +9,5 @@
     "skipLibCheck": true,
     "moduleResolution": "node"
   },
-  "include": ["server/index.ts"]
+  "include": ["./server/index.ts"]
 }
