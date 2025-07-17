@@ -76,6 +76,7 @@ export const AuthProvider = () => {
 
   const signOut = useCallback(async () => {
     try {
+      console.log('ddewdwe')
       const res = await AuthService.logout()
       window.close()
 
