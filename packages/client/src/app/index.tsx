@@ -26,6 +26,12 @@ export function App() {
     document.head.appendChild(link)
   }, [])
 
+  useEffect(() => {
+    if (Notification.permission !== 'granted') {
+      Notification.requestPermission()
+    }
+  }, [])
+
   return (
     <div className="h-[100vh] w-[100vw]">
       <Suspense fallback={null}>

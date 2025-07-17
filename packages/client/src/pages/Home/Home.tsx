@@ -13,9 +13,12 @@ import quitImage from '../../shared/assets/Home/Quit.svg'
 import { Link } from 'react-router-dom'
 import { useAuth } from '@/shared/auth'
 import { routesName } from '@/shared/configs/routes'
+import { useNotification } from '@/shared/hooks/useNotification'
 
 export default function HomePage() {
   const { signOut } = useAuth()
+
+  useNotification()
 
   return (
     <Card.Root className="w-screen h-screen flex flex-col bg-[#fbfbe9] overflow-x-hidden rounded-none gap-0 py-0 border-0">

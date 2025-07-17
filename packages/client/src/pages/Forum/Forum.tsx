@@ -9,6 +9,7 @@ import { useNavigate } from 'react-router-dom'
 import { Button } from '@/shared/ui'
 import { routesName } from '@/shared/configs/routes'
 import { Avatar, AvatarImage } from '@/shared/ui'
+import { useNotification } from '@/shared/hooks/useNotification'
 
 const ForumPage = () => {
   const [forumTopics, setForumTopics] = useState(forumTopicsMock)
@@ -17,6 +18,8 @@ const ForumPage = () => {
   const [dialogState, setDialogState] = useState<'create' | 'open' | null>(null)
   const topicContainerRef = useRef<HTMLDivElement | null>(null)
   const navigate = useNavigate()
+
+  useNotification()
 
   useEffect(() => {
     if (topicContainerRef.current) {
