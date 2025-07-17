@@ -15,7 +15,7 @@ import {
 
 import { routesName } from '@/shared/configs/routes'
 import { AuthProvider } from '../AuthProvider'
-import { ProtectedRoute } from '@/app/providers'
+import { ProtectedRoute } from './ProtectedRoute'
 
 export const routes: RouteObject[] = [
   {
