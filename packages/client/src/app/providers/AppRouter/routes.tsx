@@ -1,6 +1,6 @@
 import { type RouteObject } from 'react-router-dom'
 
-import ErrorBoundary from '@/shared/common/ErrorBoundary'
+import { ErrorBoundary } from '@/shared/common/ErrorBoundary'
 import {
   Error404Page,
   Error500Page,
