@@ -24,7 +24,8 @@ const SignInPage = () => {
       client_id: import.meta.env.VITE_CLIENT_ID_OAUTH,
       redirect_uri: import.meta.env.VITE_REDIRECT_URI_OAUTH,
     })
-    window.location.href = `https://oauth.yandex.ru/authorize?${queryParams.toString()}`
+    window.location.href =
+      import.meta.env.VITE_OAUTH_URL + queryParams.toString()
   }
 
   if (isLoading) {
