@@ -37,6 +37,22 @@ export const AuthProvider = () => {
     }
   }, [])
 
+  const signInByOAuth = useCallback(async (code: string) => {
+    try {
+      const res = await AuthService.signInByOAuth(code)
+
+      if (res?.status === 200) {
+        setIsLoggedIn(true)
+        toast.success('Добро пожаловать!')
+        navigate(routesName.home)
+      } else {
+        throw new Error('Ошибка авторизации')
+      }
+    } catch {
+      toast.error('Упс, что-то пошло не так. Попробуйте снова')
+    }
+  }, [])
+
   const signUp = useCallback(async (data: ReqSignUp) => {
     try {
       const res = await AuthService.signUp(data)
@@ -64,8 +80,11 @@ export const AuthProvider = () => {
         }
       } else {
         setIsLoggedIn(false)
-
-        if (isProtectedRoute(location.pathname)) {
+        if (location.pathname == routesName.home) {
+          const query = new URLSearchParams(window.location.search)
+          const code = query.get('code')
+          code ? signInByOAuth(code) : navigate(routesName.signIn)
+        } else if (isProtectedRoute(location.pathname)) {
           navigate(routesName.signIn)
         }
       }
@@ -78,7 +97,6 @@ export const AuthProvider = () => {
     try {
       console.log('ddewdwe')
       const res = await AuthService.logout()
-      window.close()
 
       if (res?.status === 200) {
         dispatch(logout())
@@ -86,19 +104,28 @@ export const AuthProvider = () => {
         navigate(routesName.signIn)
       }
     } catch {
-      /* empty */
+      toast.error('Упс, что-то пошло не так. Попробуйте снова')
     }
   }, [location.pathname])
 
   useEffect(() => {
     checkIsAuth().finally(() => {
-      setIsLoading(false)
+      setTimeout(() => {
+        setIsLoading(false)
+      }, 500)
     })
   }, [checkIsAuth])
 
   return (
     <AuthContext.Provider
-      value={{ isLoggedIn, isLoading, signUp, signInByLogin, signOut }}>
+      value={{
+        isLoggedIn,
+        isLoading,
+        signUp,
+        signInByLogin,
+        signInByOAuth,
+        signOut,
+      }}>
       <Outlet />
     </AuthContext.Provider>
   )
