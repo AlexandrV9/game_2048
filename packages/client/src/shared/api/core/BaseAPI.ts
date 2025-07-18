@@ -62,7 +62,7 @@ class BaseAPI {
 
   private prepareUrl(url: string): string {
     if (this.options?.baseUrl) {
-      return `${this.options?.baseUrl}/${url}`
+      return `${this.options?.baseUrl}${url}`
     }
 
     return url

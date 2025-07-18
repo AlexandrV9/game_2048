@@ -1,0 +1,13 @@
+{
+  "compilerOptions": {
+    "composite": true,
+    "target": "ESNext",
+    "module": "esnext",
+    "allowSyntheticDefaultImports": true,
+    "esModuleInterop": true,
+    "lib": ["es2019", "DOM"],
+    "skipLibCheck": true,
+    "moduleResolution": "node"
+  },
+  "include": ["./server/index.mts"]
+}
