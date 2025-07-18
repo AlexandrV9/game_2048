@@ -9,6 +9,8 @@ import { useNavigate } from 'react-router-dom'
 import { Button } from '@/shared/ui'
 import { routesName } from '@/shared/configs/routes'
 import { Avatar, AvatarImage } from '@/shared/ui'
+import { useSelector } from 'react-redux'
+import { RootState } from '@/app/store'
 
 const ForumPage = () => {
   const [forumTopics, setForumTopics] = useState(forumTopicsMock)
@@ -17,6 +19,10 @@ const ForumPage = () => {
   const [dialogState, setDialogState] = useState<'create' | 'open' | null>(null)
   const topicContainerRef = useRef<HTMLDivElement | null>(null)
   const navigate = useNavigate()
+  const avatarLink = useSelector((state: RootState) => state.user).user?.avatar
+  const avatar = avatarLink
+    ? `https://${import.meta.env.VITE_BASE_API_URL}/resources/${avatarLink}`
+    : null
 
   useEffect(() => {
     if (topicContainerRef.current) {
@@ -59,7 +65,7 @@ const ForumPage = () => {
         <div className={styles.avatar}>
           <a href={`${routesName['profile']}/${me.id}`}>
             <Avatar className={styles.avatarImg}>
-              <AvatarImage src={me.avatar} alt="avatar" />
+              <AvatarImage src={avatar ? avatar : me.avatar} alt="avatar" />
             </Avatar>
           </a>
         </div>
