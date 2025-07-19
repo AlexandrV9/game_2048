@@ -1,11 +1,28 @@
-import { useNavigate } from 'react-router-dom'
-import { routesName } from '@/core/Routes'
-import { useEffect } from 'react'
+import { useEffect, useRef } from 'react'
+
+const NOTIFICATION_TIMEOUT = 300000
+
+const handleNotification = async (onChangeVisibility: VoidFunction) => {
+  if (Notification.permission !== 'granted') {
+    await Notification.requestPermission()
+  }
+
+  document.addEventListener('visibilitychange', onChangeVisibility)
+}
 
 export const useNotification = () => {
-  const navigate = useNavigate()
+  const timeoutId = useRef<NodeJS.Timeout>()
 
-  useEffect(() => {
+  const showNotification = () => {
+    if (!document.hidden && timeoutId.current) {
+      clearTimeout(timeoutId.current)
+
+      return
+    }
+    if (!document.hidden) {
+      return
+    }
+
     const timeout = setTimeout(() => {
       if (Notification.permission === 'granted') {
         const notification = new Notification(
@@ -16,10 +33,19 @@ export const useNotification = () => {
           }
         )
 
-        notification.onclick = () => navigate(routesName.game)
+        notification.onclick = () => window.focus()
       }
-    }, 3000)
+    }, NOTIFICATION_TIMEOUT)
 
-    return () => clearTimeout(timeout)
+    timeoutId.current = timeout
+  }
+
+  useEffect(() => {
+    handleNotification(showNotification)
+
+    return () => {
+      clearTimeout(timeoutId.current)
+      document.removeEventListener('visibilitychange', showNotification)
+    }
   }, [])
 }
