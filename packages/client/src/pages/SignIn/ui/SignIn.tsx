@@ -5,6 +5,7 @@ import { useAuth } from '@/shared/auth'
 import { Link } from 'react-router-dom'
 import { Button, Card, Form, TextInput } from '@/shared/ui'
 import { routesName } from '@/shared/configs/routes'
+import yaImage from '../../../shared/assets/yandex.svg'
 
 const SignInPage = () => {
   const { signInByLogin, isLoading } = useAuth()
@@ -15,6 +16,16 @@ const SignInPage = () => {
 
   function onSubmit(values: FormSchema) {
     void signInByLogin(values)
+  }
+
+  const OAuth = async () => {
+    const queryParams = new URLSearchParams({
+      response_type: 'code',
+      client_id: import.meta.env.VITE_CLIENT_ID_OAUTH,
+      redirect_uri: import.meta.env.VITE_REDIRECT_URI_OAUTH,
+    })
+    window.location.href =
+      import.meta.env.VITE_OAUTH_URL + queryParams.toString()
   }
 
   if (isLoading) {
@@ -66,6 +77,11 @@ const SignInPage = () => {
                 Войти
               </Button>
             </form>
+            <p className="text-center">или</p>
+            <Button className="w-full" onClick={OAuth}>
+              <img src={yaImage} alt="yandex" className="w-5 h-5" />
+              <p>Яндекс.ID</p>
+            </Button>
           </Form.Root>
         </Card.Content>
         <Card.Footer className="flex-col gap-2">

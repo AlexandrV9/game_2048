@@ -14,8 +14,14 @@ import { Link } from 'react-router-dom'
 import { useAuth } from '@/shared/auth'
 import { routesName } from '@/shared/configs/routes'
 import { useNotification } from '@/shared/hooks/useNotification'
+import { useSelector } from 'react-redux'
+import { RootState } from '@/app/store'
 
 export default function HomePage() {
+  const avatarLink = useSelector((state: RootState) => state.user).user?.avatar
+  const avatar = avatarLink
+    ? `https://${import.meta.env.VITE_BASE_API_URL}/resources/${avatarLink}`
+    : null
   const { signOut } = useAuth()
 
   useNotification()
@@ -77,7 +83,11 @@ export default function HomePage() {
             <Avatar className="w-[3vw] h-[3vw]">
               <Link to={`${routesName.profile}/1`} className="text-blue-600">
                 <AvatarImage
-                  src="https://sun9-25.userapi.com/c10968/u85534956/141244771/x_4ee7e2c5.jpg"
+                  src={
+                    avatar
+                      ? avatar
+                      : 'https://sun9-25.userapi.com/c10968/u85534956/141244771/x_4ee7e2c5.jpg'
+                  }
                   alt="avatar"
                   className="rounded-full w-[3vw] h-[3vw]"
                 />
