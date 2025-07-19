@@ -14,6 +14,7 @@ import { Link } from 'react-router-dom'
 import { routesName } from '@/core/Routes'
 import { formSchema, FormSchema } from '../model/formSchema'
 import { UserService } from '@/shared/api/services/user'
+import { useNotification } from '@/shared/hooks/useNotification'
 
 const mockUser: FormSchema & { avatarUrl?: string } = {
   first_name: 'UserName',
@@ -32,6 +33,8 @@ const ProfilePage = () => {
     defaultValues: mockUser,
     resolver: zodResolver(formSchema),
   })
+
+  useNotification()
 
   useEffect(() => {
     const loadUser = async () => {

@@ -9,6 +9,7 @@ import { useNavigate } from 'react-router-dom'
 import { Button } from '@/shared/ui'
 import { routesName } from '@/shared/configs/routes'
 import { Avatar, AvatarImage } from '@/shared/ui'
+import { useNotification } from '@/shared/hooks/useNotification'
 import { useSelector } from 'react-redux'
 import { RootState } from '@/app/store'
 
@@ -23,6 +24,8 @@ const ForumPage = () => {
   const avatar = avatarLink
     ? `https://${import.meta.env.VITE_BASE_API_URL}/resources/${avatarLink}`
     : null
+
+  useNotification()
 
   useEffect(() => {
     if (topicContainerRef.current) {
