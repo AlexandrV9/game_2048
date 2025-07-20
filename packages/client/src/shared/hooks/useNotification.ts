@@ -3,8 +3,8 @@ import { useEffect, useRef } from 'react'
 const NOTIFICATION_TIMEOUT = 300000
 
 const handleNotification = async (onChangeVisibility: VoidFunction) => {
-  if (Notification.permission !== 'granted') {
-    await Notification.requestPermission()
+  if (window.Notification?.permission !== 'granted') {
+    await window.Notification?.requestPermission()
   }
 
   document.addEventListener('visibilitychange', onChangeVisibility)
@@ -24,8 +24,8 @@ export const useNotification = () => {
     }
 
     const timeout = setTimeout(() => {
-      if (Notification.permission === 'granted') {
-        const notification = new Notification(
+      if (window.Notification?.permission === 'granted') {
+        const notification = new window.Notification(
           'Продолжайте играть, чтобы улучшить свой результат!',
           {
             body: 'Нажмите, чтобы продолжить играть',
