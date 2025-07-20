@@ -1,7 +1,7 @@
 import axios, { AxiosError } from 'axios'
 
 export const axiosInstance = axios.create({
-  baseURL: `https://${import.meta.env.VITE_BASE_API_URL}`,
+  baseURL: `${import.meta.env.VITE_BASE_API_URL}`, //убрал http дублировался в запросах
   headers: { 'Content-Type': 'application/json; charset=utf-8' },
   withCredentials: true,
   timeout: 10_000,
