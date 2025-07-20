@@ -11,7 +11,7 @@ import {
 } from '@/shared/ui/AlertDialog/alert-dialog'
 import { routesName } from '@/shared/configs/routes'
 
-const ErrorBoundary = () => {
+export const ErrorBoundary = () => {
   const navigate = useNavigate()
   const error = useRouteError()
 
@@ -58,5 +58,3 @@ const ErrorBoundary = () => {
     </AlertDialog>
   )
 }
-
-export default ErrorBoundary
