@@ -11,10 +11,10 @@ import {
 } from '@/shared/ui'
 import { useEffect, useRef, useState } from 'react'
 import { Link } from 'react-router-dom'
-import { routesName } from '@/core/Routes'
 import { formSchema, FormSchema } from '../model/formSchema'
 import { UserService } from '@/shared/api/services/user'
 import { useNotification } from '@/shared/hooks/useNotification'
+import { routesName } from '@/shared/configs/routes'
 
 const mockUser: FormSchema & { avatarUrl?: string } = {
   first_name: 'UserName',
