@@ -1,6 +1,6 @@
 import { useEffect, useRef } from 'react'
 
-const NOTIFICATION_TIMEOUT = 300000
+const NOTIFICATION_TIMEOUT = 1000 * 300
 
 const handleNotification = async (onChangeVisibility: VoidFunction) => {
   if (window.Notification?.permission !== 'granted') {
