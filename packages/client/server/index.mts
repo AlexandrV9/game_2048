@@ -77,11 +77,13 @@ async function createServer() {
       const { html: appHtml, initialState } = await render(req)
 
       // Заменяем комментарий на сгенерированную HTML-строку
-      const html = template.replace(`<!--ssr-outlet-->`, appHtml)
+      const stateScript = `<script>window.__INITIAL_STATE__ = ${JSON.stringify(initialState)}</script>`
+      const html = template.replace('<!--ssr-outlet-->', appHtml + stateScript)
 
       // Завершаем запрос и отдаём HTML-страницу
       res.status(200).set({ 'Content-Type': 'text/html' }).end(html)
     } catch (e) {
+      res.status(500)
       viteDevServer?.ssrFixStacktrace(e)
       next(e)
     }

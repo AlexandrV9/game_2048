@@ -3,7 +3,6 @@ import { Request as ExpressRequest } from 'express'
 import { renderToString } from 'react-dom/server'
 import { createFetchRequest } from './entry-server.utils'
 import { Provider } from 'react-redux'
-import { routes } from './app/providers'
 import { createReduxStore } from './app/store'
 import {
   createStaticHandler,
@@ -11,6 +10,7 @@ import {
   StaticRouterProvider,
 } from 'react-router-dom/server'
 import { StrictMode } from 'react'
+import { routes } from './app/providers/AppRouter/routes'
 
 export const render = async (req: ExpressRequest) => {
   const { query, dataRoutes } = createStaticHandler(routes)

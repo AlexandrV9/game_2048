@@ -1,4 +1,8 @@
-import { combineReducers, configureStore } from '@reduxjs/toolkit'
+import {
+  combineReducers,
+  configureStore,
+  ConfigureStoreOptions,
+} from '@reduxjs/toolkit'
 import userReducer from './features/userSlice'
 
 export type ReducersMap = {
@@ -10,11 +14,14 @@ const createRootReducer = () =>
     user: userReducer,
   })
 
-export const createReduxStore = () => {
+export const createReduxStore = (
+  initialState?: ConfigureStoreOptions['preloadedState']
+) => {
   return configureStore({
     reducer: createRootReducer(),
     middleware: getDefaultMiddleware => getDefaultMiddleware(),
     devTools: process.env.NODE_ENV !== 'production',
+    preloadedState: initialState,
   })
 }
 

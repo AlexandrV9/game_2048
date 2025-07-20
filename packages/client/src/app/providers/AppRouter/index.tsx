@@ -10,4 +10,3 @@ if (typeof window !== 'undefined') {
 export const AppRouter = () => <RouterProvider router={router} />
 
 export * from './ProtectedRoute'
-export * from './routes'
