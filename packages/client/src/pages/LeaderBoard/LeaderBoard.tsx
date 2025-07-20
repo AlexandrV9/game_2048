@@ -1,11 +1,12 @@
 import React, { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { Button } from '@/shared/ui'
-import { routesName } from '@/core/Routes'
+
 import { LeaderboardService } from '@/shared/api/services/leaderbord-service'
 import { LeaderBoardPlayerInfo } from '@/shared/api/services/leaderbord-service/types'
 import { useSelector } from 'react-redux'
 import { RootState } from '@/app/store'
+import { routesName } from '@/shared/configs/routes'
 
 const Leaderboard: React.FC = () => {
   const userInfo = useSelector((state: RootState) => state.user).user
