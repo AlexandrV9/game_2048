@@ -19,7 +19,7 @@ import { RootState } from '@/app/store'
 export default function HomePage() {
   const avatarLink = useSelector((state: RootState) => state.user).user?.avatar
   const avatar = avatarLink
-    ? `https://${import.meta.env.VITE_BASE_API_URL}/resources/${avatarLink}`
+    ? `http://localhost:3001/yandex-api/resources${avatarLink}`
     : null
   const { signOut } = useAuth()
 

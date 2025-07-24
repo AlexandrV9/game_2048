@@ -21,3 +21,32 @@ axiosInstance.interceptors.response.use(
     return Promise.reject(error)
   }
 )
+
+export const axiosServer = axios.create({
+  baseURL: 'http://localhost:3001',
+  headers: {
+    'Content-Type': 'application/json; charset=utf-8',
+  },
+  withCredentials: true,
+  timeout: 10_000,
+})
+
+// axiosServer.interceptors.request.use(config => {
+//   const token = getCookie('authCookie');
+//   config.headers['x-auth-token'] = 'token'; // функция получения куки
+//   console.log(config.headers)
+//   // if (token) {
+//     config.headers['x-auth-token'] = 'token';
+//   // }
+
+//   return config;
+// });
+
+// function getCookie(name: string) {
+//   console.log(document.cookie)
+//   const value = document.cookie
+//     .split('; ')
+//     .find(c => c.startsWith(name + '='));
+
+//   return value ? value.substring(name.length + 1) : null;
+// }

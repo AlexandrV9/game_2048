@@ -1,4 +1,4 @@
-import { Comment, me, Topic } from '@/pages/Forum/Forum.mock'
+import { Author, Comment, Topic } from '@/pages/Forum/Forum.type'
 import { FormEvent, useEffect, useRef, useState } from 'react'
 import CommentComponent from './comment'
 import { routesName } from '@/shared/configs/routes'
@@ -6,6 +6,7 @@ import calendarImage from '../../shared/assets/Forum/calendar.svg'
 import sendImage from '../../shared/assets/Forum/sendButton.svg'
 import { useSelector } from 'react-redux'
 import { RootState } from '@/app/store'
+import { serverApi } from '@/shared/api/core/BaseAPI'
 
 export const dateFormatted = (date: Date): string => {
   const day = date.getDate().toString()
@@ -19,17 +20,21 @@ export const dateFormatted = (date: Date): string => {
 const OpenTopic: React.FC<{
   topic: Topic
   forumTopics: Topic[]
-  setForumTopics: React.Dispatch<React.SetStateAction<Topic[]>>
+  setForumTopics: React.Dispatch<React.SetStateAction<Topic[] | null>>
   styles: CSSModuleClasses
   closeDialog: () => void
 }> = ({ topic, forumTopics, setForumTopics, styles, closeDialog }) => {
   const thisTopic = forumTopics.find(item => item.id == topic.id) as Topic
-  const [commentsTopic, setCommentsTopic] = useState(thisTopic.comments)
+  const [commentsTopic, setCommentsTopic] = useState<Comment[] | undefined>(
+    thisTopic.comments
+  )
+  const [author, setAuthor] = useState<Author | null>(null)
   const commentsContainerRef = useRef<HTMLDivElement | null>(null)
   const inputRef = useRef<HTMLTextAreaElement | null>(null)
-  const avatarLink = useSelector((state: RootState) => state.user).user?.avatar
+  const me = useSelector((state: RootState) => state.user).user
+  const avatarLink = me?.avatar
   const avatar = avatarLink
-    ? `https://${import.meta.env.VITE_BASE_API_URL}/resources/${avatarLink}`
+    ? `http://localhost:3001/yandex-api/resources${avatarLink}`
     : null
 
   useEffect(() => {
@@ -49,28 +54,60 @@ const OpenTopic: React.FC<{
     return () => document.removeEventListener('keydown', handleEscape)
   }, [])
 
+  useEffect(() => {
+    const postAuthor = async () => {
+      const authorPost = await serverApi.post('/yandex-api/user/search', {
+        login: topic.author,
+      })
+      const authorData: Author = authorPost.data as Author
+      setAuthor({
+        id: authorData.id,
+        first_name: authorData.first_name,
+        second_name: authorData.second_name,
+        login: authorData.login,
+        email: authorData.email,
+        phone: authorData.phone,
+        avatar: `http://localhost:3001/yandex-api/resources${authorData.avatar}`,
+        display_name: authorData.display_name,
+      })
+    }
+    console.log(author)
+    void postAuthor()
+    console.log(author)
+  }, [])
+
   const createComment = (data: FormEvent<HTMLFormElement>) => {
     data.preventDefault()
 
     if (!inputRef.current?.value) return
 
     const newComment: Comment = {
-      id: commentsTopic.length + Math.random() * 100,
+      id: Math.random() * 100,
       content: inputRef.current?.value,
-      author: me,
+      authorLogin: me?.login as string,
       created: new Date(),
     }
-    setCommentsTopic((prevComments: Comment[]) => [...prevComments, newComment])
-    setForumTopics((prevTopics: Topic[]) => {
-      return prevTopics.map(item => {
-        if (item.id == thisTopic.id) {
-          return {
-            ...item,
-            comments: [...item.comments, newComment],
+    commentsTopic
+      ? setCommentsTopic((prevComments: Comment[] | undefined) => [
+          ...(prevComments as Comment[]),
+          newComment,
+        ])
+      : setCommentsTopic(() => [newComment])
+    setForumTopics((prevTopics: Topic[] | null) => {
+      return (
+        prevTopics &&
+        prevTopics.map(item => {
+          if (item.id == thisTopic.id) {
+            return {
+              ...item,
+              comments: item.comments
+                ? [...item.comments, newComment]
+                : [newComment],
+            }
           }
-        }
-        return item
-      })
+          return item
+        })
+      )
     })
     if (inputRef.current) {
       inputRef.current.value = ''
@@ -85,15 +122,15 @@ const OpenTopic: React.FC<{
           <div className={styles.topicInfo}>
             <h2 className={styles.topicTitle}>{topic.topic}</h2>
             <div className={styles.topicMeta}>
-              <a href={`${routesName['profile']}/${topic.author.id}`}>
+              <a href={`${routesName['profile']}/${author?.id}`}>
                 <div className={styles.authorInfo}>
                   <img
-                    src={topic.author.avatar}
-                    alt={topic.author.login}
+                    src={author?.avatar}
+                    alt={author?.login}
                     className={styles.authorAvatar}
                   />
                   <span className={styles.authorName}>
-                    {topic.author.firstName} {topic.author.secondName}
+                    {author?.first_name} {author?.second_name}
                   </span>
                 </div>
               </a>
@@ -103,22 +140,22 @@ const OpenTopic: React.FC<{
                   className={styles.calendarIcon}
                   alt="calendar"
                 />
-                <span>{dateFormatted(topic.created)}</span>
+                <span>{dateFormatted(new Date(topic.created))}</span>
               </div>
             </div>
           </div>
         </div>
 
         <div className={styles.commentsSection} ref={commentsContainerRef}>
-          {commentsTopic.map(item => (
+          {commentsTopic?.map(item => (
             <CommentComponent comment={item} styles={styles} key={item.id} />
           ))}
         </div>
 
         <div className={styles.commentInputSection}>
           <img
-            src={avatar ? avatar : me.avatar}
-            alt={me.login}
+            src={avatar ? avatar : me?.avatar}
+            alt={me?.login}
             className={styles.inputAvatar}
           />
           <form

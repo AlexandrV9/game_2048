@@ -1,7 +1,9 @@
-import { Topic } from '@/pages/Forum/Forum.mock'
+import { Author, Topic } from '@/pages/Forum/Forum.type'
 import { dateFormatted } from './openTopic'
 import messageImage from '../../shared/assets/Forum/message.svg'
 import calendarImage from '../../shared/assets/Forum/calendar.svg'
+import { serverApi } from '@/shared/api/core/BaseAPI'
+import { useEffect, useState } from 'react'
 
 interface topicProps {
   topic: Topic | null
@@ -10,6 +12,28 @@ interface topicProps {
 }
 
 export const TopicComponent = ({ topic, styles }: topicProps) => {
+  const [author, setAuthor] = useState<Author | null>(null)
+
+  useEffect(() => {
+    const postAuthor = async () => {
+      const authorPost = await serverApi.post('/yandex-api/user/search', {
+        login: topic?.author,
+      })
+      const authorData: Author = authorPost.data as Author
+      setAuthor({
+        id: authorData.id,
+        first_name: authorData.first_name,
+        second_name: authorData.second_name,
+        login: authorData.login,
+        email: authorData.email,
+        phone: authorData.phone,
+        avatar: `http://localhost:3001/yandex-api/resources${authorData.avatar}`,
+        display_name: authorData.display_name,
+      })
+    }
+    void postAuthor()
+  }, [])
+
   return (
     <>
       {!topic ? (
@@ -20,12 +44,12 @@ export const TopicComponent = ({ topic, styles }: topicProps) => {
           <div className={styles.topicMeta}>
             <div className={styles.authorInfo}>
               <img
-                src={topic.author.avatar}
-                alt={topic.author.login}
+                src={author?.avatar}
+                alt={author?.login}
                 className={styles.authorAvatar}
               />
               <span className={styles.authorName}>
-                {topic.author.firstName} {topic.author.secondName}
+                {author?.first_name} {author?.second_name}
               </span>
             </div>
             <div className={styles.dateInfo}>
@@ -34,12 +58,12 @@ export const TopicComponent = ({ topic, styles }: topicProps) => {
                 className={styles.calendarIcon}
                 alt="calendar"
               />
-              <span>{dateFormatted((topic as Topic).created)}</span>
+              <span>{dateFormatted(new Date((topic as Topic).created))}</span>
             </div>
           </div>
         </div>
       )}
-      {topic && topic.comments.length ? (
+      {topic && topic.comments?.length ? (
         <>
           <img
             src={messageImage}

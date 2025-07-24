@@ -4,24 +4,27 @@ import { TopicComponent } from '@/components/Forum/topic'
 import CreateTopic from '@/components/Forum/createTopic'
 import clsx from 'clsx'
 import OpenTopic from '@/components/Forum/openTopic'
-import { forumTopicsMock, me, Topic } from './Forum.mock'
+
 import { useNavigate } from 'react-router-dom'
 import { Button } from '@/shared/ui'
 import { routesName } from '@/shared/configs/routes'
 import { Avatar, AvatarImage } from '@/shared/ui'
 import { useSelector } from 'react-redux'
 import { RootState } from '@/app/store'
+import { axiosServer } from '@/shared/api/configs/axios'
+import { Topic } from './Forum.type'
 
 const ForumPage = () => {
-  const [forumTopics, setForumTopics] = useState(forumTopicsMock)
+  const [forumTopics, setForumTopics] = useState<Topic[] | null>(null)
   const [isVisible, setIsVisible] = useState(false)
   const [openedTopic, setOpenedTopic] = useState<Topic | null>(null)
   const [dialogState, setDialogState] = useState<'create' | 'open' | null>(null)
   const topicContainerRef = useRef<HTMLDivElement | null>(null)
   const navigate = useNavigate()
-  const avatarLink = useSelector((state: RootState) => state.user).user?.avatar
+  const me = useSelector((state: RootState) => state.user).user
+  const avatarLink = me?.avatar
   const avatar = avatarLink
-    ? `https://${import.meta.env.VITE_BASE_API_URL}/resources/${avatarLink}`
+    ? `http://localhost:3001/yandex-api/resources${avatarLink}`
     : null
 
   useEffect(() => {
@@ -48,6 +51,10 @@ const ForumPage = () => {
 
   const topicStyle = clsx(styles.topic, styles.add)
 
+  const test = () => {
+    axiosServer.get('/')
+  }
+
   return (
     <div className={styles.forum}>
       <div className={styles.hoverTrigger}></div>
@@ -61,11 +68,14 @@ const ForumPage = () => {
 
       <nav>
         <h2>ФОРУМ</h2>
+        <Button className={styles.topicCreateButton} onClick={test}>
+          ghjdt
+        </Button>
 
         <div className={styles.avatar}>
-          <a href={`${routesName['profile']}/${me.id}`}>
+          <a href={`${routesName['profile']}/${me?.id}`}>
             <Avatar className={styles.avatarImg}>
-              <AvatarImage src={avatar ? avatar : me.avatar} alt="avatar" />
+              <AvatarImage src={avatar ? avatar : me?.avatar} alt="avatar" />
             </Avatar>
           </a>
         </div>
@@ -76,14 +86,15 @@ const ForumPage = () => {
           <TopicComponent topic={null} styles={styles} />
         </Button>
         <div className={styles.topicList} ref={topicContainerRef}>
-          {forumTopics.map(item => (
-            <Button
-              className={styles.topic}
-              onClick={() => openDialog(item)}
-              key={item.id}>
-              <TopicComponent topic={item} styles={styles} />
-            </Button>
-          ))}
+          {forumTopics &&
+            forumTopics.map(item => (
+              <Button
+                className={styles.topic}
+                onClick={() => openDialog(item)}
+                key={item.id}>
+                <TopicComponent topic={item} styles={styles} />
+              </Button>
+            ))}
         </div>
       </div>
       <div className={clsx(styles.plugTopic, isVisible ? '' : 'hidden')}>
@@ -96,7 +107,7 @@ const ForumPage = () => {
           />
         )}
 
-        {dialogState === 'open' && openedTopic && (
+        {dialogState === 'open' && openedTopic && forumTopics && (
           <OpenTopic
             topic={openedTopic}
             forumTopics={forumTopics}

@@ -1,17 +1,11 @@
 import { AxiosInstance, AxiosRequestConfig, AxiosResponse } from 'axios'
-import { axiosInstance } from '../configs/axios'
-
-export interface ApiOptions {
-  baseUrl?: string
-}
+import { axiosInstance, axiosServer } from '../configs/axios'
 
 class BaseAPI {
   transport: AxiosInstance
-  options?: ApiOptions
 
-  constructor(options?: ApiOptions) {
-    this.transport = axiosInstance
-    this.options = options
+  constructor(transport: AxiosInstance) {
+    this.transport = transport
   }
 
   get = <TData>(url: string, config?: AxiosRequestConfig) => {
@@ -21,7 +15,7 @@ class BaseAPI {
   post = <TData>(url: string, data?: unknown, config?: AxiosRequestConfig) => {
     return this.handleRequest<TData>(
       this.transport.post(
-        this.prepareUrl(url),
+        url,
         this.preparePayload(data),
         this.buildConfig(config)
       )
@@ -31,7 +25,7 @@ class BaseAPI {
   put = <TData>(url: string, data?: unknown, config?: AxiosRequestConfig) => {
     return this.handleRequest<TData>(
       this.transport.put<TData>(
-        this.prepareUrl(url),
+        url,
         this.preparePayload(data),
         this.buildConfig(config)
       )
@@ -41,7 +35,7 @@ class BaseAPI {
   patch = <TData>(url: string, data?: unknown, config?: AxiosRequestConfig) => {
     return this.handleRequest<TData>(
       this.transport.patch<TData>(
-        this.prepareUrl(url),
+        url,
         this.preparePayload(data),
         this.buildConfig(config)
       )
@@ -51,21 +45,13 @@ class BaseAPI {
   delete = <TData extends object>(url: string, config?: AxiosRequestConfig) => {
     return this.handleRequest<TData>(
       this.transport.delete<TData>(
-        this.prepareUrl(url),
+        url,
         this.buildConfig({
           ...config,
           data: this.preparePayload(config?.data),
         })
       )
     )
-  }
-
-  private prepareUrl(url: string): string {
-    if (this.options?.baseUrl) {
-      return `${this.options?.baseUrl}/${url}`
-    }
-
-    return url
   }
 
   private preparePayload(payload?: unknown) {
@@ -100,6 +86,5 @@ class BaseAPI {
   }
 }
 
-export const baseApi = new BaseAPI({
-  baseUrl: '',
-})
+export const baseApi = new BaseAPI(axiosInstance)
+export const serverApi = new BaseAPI(axiosServer)
