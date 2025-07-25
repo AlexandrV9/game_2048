@@ -33,7 +33,6 @@ export const axiosServer = axios.create({
 
 axiosServer.interceptors.request.use(config => {
   const token = getCookie('authCookie')
-  // config.headers['x-auth-token'] = 'token'; // функция получения куки
   console.log(config.headers)
   if (token) {
     config.headers['x-auth-token'] = 'token'
