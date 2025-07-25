@@ -1,10 +1,10 @@
 import styles from './Forum.module.scss'
 import { useEffect, useRef, useState } from 'react'
-import { TopicComponent } from '@/components/Forum/topic'
-import CreateTopic from '@/components/Forum/createTopic'
+import { TopicComponent } from '@/entity/Forum/topic'
+import CreateTopic from '@/entity/Forum/createTopic'
 import clsx from 'clsx'
-import OpenTopic from '@/components/Forum/openTopic'
-
+import OpenTopic from '@/entity/Forum/openTopic'
+import { useNotification } from '@/shared/hooks/useNotification'
 import { useNavigate } from 'react-router-dom'
 import { Button } from '@/shared/ui'
 import { routesName } from '@/shared/configs/routes'
@@ -26,6 +26,8 @@ const ForumPage = () => {
   const avatar = avatarLink
     ? `http://localhost:3001/yandex-api/resources${avatarLink}`
     : null
+
+  useNotification()
 
   useEffect(() => {
     const getTopics = async () => {

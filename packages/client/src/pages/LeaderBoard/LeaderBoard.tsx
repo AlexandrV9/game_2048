@@ -1,7 +1,8 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
 import { Button } from '@/shared/ui'
-import { routesName } from '@/core/Routes'
+import { useNotification } from '@/shared/hooks/useNotification'
+import { routesName } from '@/shared/configs/routes'
 
 const players = [
   { id: 1, name: 'Игрок 1', score: 150 },
@@ -32,6 +33,8 @@ const Leaderboard: React.FC = () => {
   const sortedPlayers = [...players].sort((a, b) => b.score - a.score)
   const currentPlayerIndex =
     sortedPlayers.findIndex(player => player.id === currentPlayer.id) + 1
+
+  useNotification()
 
   return (
     <div className="max-w-2xl mx-auto mt-10 bg-[#fbfbe9] p-5 rounded-lg shadow-lg">

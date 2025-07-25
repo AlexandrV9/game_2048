@@ -8,9 +8,11 @@ import { routesName } from '@/shared/configs/routes'
 import { GameStatusType } from '@/pages/Game/components/GameEngine/models'
 import GameEngine from '@/pages/Game/components/GameEngine/GameEngine'
 import { ToggleFullscreen } from '@/features/toggleFullscreen'
+import { useNotification } from '@/shared/hooks/useNotification'
 
 const GamePage: React.FC = () => {
   const navigate = useNavigate()
+  useNotification()
 
   const [gameState, setGameState] = useState<GAME_STATE>(GAME_STATE.START)
   const [score, setScore] = useState(0)

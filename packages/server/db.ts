@@ -1,6 +1,6 @@
 import { Sequelize, SequelizeOptions } from 'sequelize-typescript'
 import dotenv from 'dotenv'
-import { Comment, Topic } from './models'
+import { Comment, Reply, Topic } from './models'
 dotenv.config()
 
 const { POSTGRES_USER, POSTGRES_PASSWORD, POSTGRES_DB, POSTGRES_PORT } =
@@ -14,7 +14,7 @@ const sequelizeOptions: SequelizeOptions = {
   database: POSTGRES_DB,
   dialect: 'postgres',
   logging: false,
-  models: [Topic, Comment],
+  models: [Topic, Comment, Reply],
 }
 
 const sequelize = new Sequelize(sequelizeOptions)

@@ -31,22 +31,20 @@ export const axiosServer = axios.create({
   timeout: 10_000,
 })
 
-// axiosServer.interceptors.request.use(config => {
-//   const token = getCookie('authCookie');
-//   config.headers['x-auth-token'] = 'token'; // функция получения куки
-//   console.log(config.headers)
-//   // if (token) {
-//     config.headers['x-auth-token'] = 'token';
-//   // }
+axiosServer.interceptors.request.use(config => {
+  const token = getCookie('authCookie')
+  // config.headers['x-auth-token'] = 'token'; // функция получения куки
+  console.log(config.headers)
+  if (token) {
+    config.headers['x-auth-token'] = 'token'
+  }
 
-//   return config;
-// });
+  return config
+})
 
-// function getCookie(name: string) {
-//   console.log(document.cookie)
-//   const value = document.cookie
-//     .split('; ')
-//     .find(c => c.startsWith(name + '='));
+function getCookie(name: string) {
+  console.log(document.cookie)
+  const value = document.cookie.split('; ').find(c => c.startsWith(name + '='))
 
-//   return value ? value.substring(name.length + 1) : null;
-// }
+  return value ? value.substring(name.length + 1) : null
+}
