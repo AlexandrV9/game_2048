@@ -66,7 +66,7 @@ const CommentComponent: React.FC<topicProps> = ({
             </span>
             <span className={styles.commentSeparator}>•</span>
             <span className={styles.commentDate}>
-              {dateFormatted(comment.created)}
+              {dateFormatted(new Date(comment.created))}
             </span>
           </div>
           <p className={styles.commentText}>{comment.content}</p>

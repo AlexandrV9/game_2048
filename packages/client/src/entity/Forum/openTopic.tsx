@@ -7,6 +7,7 @@ import sendImage from '../../shared/assets/Forum/sendButton.svg'
 import { useSelector } from 'react-redux'
 import { RootState } from '@/app/store'
 import { serverApi } from '@/shared/api/core/BaseAPI'
+import { axiosServer } from '@/shared/api/configs/axios'
 
 export const dateFormatted = (date: Date): string => {
   const day = date.getDate().toString()
@@ -51,6 +52,15 @@ const OpenTopic: React.FC<{
       if (e.key === 'Escape') closeDialog()
     }
     document.addEventListener('keydown', handleEscape)
+
+    const getComments = async () => {
+      const response = await axiosServer.get(
+        `/forum/topics/${thisTopic.id}/comments`
+      )
+      setCommentsTopic(response.data)
+    }
+    void getComments()
+
     return () => document.removeEventListener('keydown', handleEscape)
   }, [])
 
@@ -76,16 +86,22 @@ const OpenTopic: React.FC<{
     console.log(author)
   }, [])
 
-  const createComment = (data: FormEvent<HTMLFormElement>) => {
+  const createComment = async (data: FormEvent<HTMLFormElement>) => {
     data.preventDefault()
 
     if (!inputRef.current?.value) return
-
+    const createComment = await axiosServer.post(
+      `/forum/topics/${thisTopic.id}/comments`,
+      {
+        content: inputRef.current?.value,
+        authorLogin: me?.login as string,
+      }
+    )
     const newComment: Comment = {
-      id: Math.random() * 100,
-      content: inputRef.current?.value,
-      authorLogin: me?.login as string,
-      created: new Date(),
+      id: createComment.data.id,
+      content: createComment.data.content,
+      authorLogin: createComment.data.authorLogin,
+      created: createComment.data.created,
     }
     commentsTopic
       ? setCommentsTopic((prevComments: Comment[] | undefined) => [

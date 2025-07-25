@@ -33,7 +33,7 @@ const CreateTopic: React.FC<{
 
     if (!inputRef.current?.value) return
 
-    const createTopic = await serverApi.post('/forum/topic', {
+    const createTopic = await serverApi.post('/forum/topics', {
       topic: inputRef.current?.value,
       author: userLogin,
       created: new Date(),

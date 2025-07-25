@@ -31,7 +31,7 @@ const ForumPage = () => {
 
   useEffect(() => {
     const getTopics = async () => {
-      const response = await axiosServer.get('/forum/topic')
+      const response = await axiosServer.get('/forum/topics')
       setForumTopics(response.data)
     }
     void getTopics()
@@ -61,10 +61,6 @@ const ForumPage = () => {
 
   const topicStyle = clsx(styles.topic, styles.add)
 
-  const test = () => {
-    axiosServer.get('/')
-  }
-
   return (
     <div className={styles.forum}>
       <div className={styles.hoverTrigger}></div>
@@ -78,9 +74,6 @@ const ForumPage = () => {
 
       <nav>
         <h2>ФОРУМ</h2>
-        <Button className={styles.topicCreateButton} onClick={test}>
-          ghjdt
-        </Button>
 
         <div className={styles.avatar}>
           <a href={`${routesName['profile']}/${me?.id}`}>

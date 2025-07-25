@@ -32,3 +32,26 @@ export const checkAuth = async (
     return res.status(500).json({ error: 'Authorization failed' })
   }
 }
+
+export const getUser = async (req: Request, res: Response) => {
+  try {
+    await checkAuth(req, res)
+    const resp = await axios.post(
+      'https://ya-praktikum.tech/api/v2/user/search',
+      { login: 'nblohin97' }
+    )
+    return {
+      id: resp.data.id,
+      first_name: resp.data.first_name,
+      second_name: resp.data.second_name,
+      display_name: resp.data.display_name,
+      phone: resp.data.phone,
+      login: resp.data.login,
+      avatar: resp.data.avatar,
+      email: resp.data.email,
+    }
+  } catch (error) {
+    console.error('Auth check error:', error)
+    return res.status(500).json({ error: 'Authorization failed' })
+  }
+}
