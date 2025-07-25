@@ -28,6 +28,14 @@ const ForumPage = () => {
     : null
 
   useEffect(() => {
+    const getTopics = async () => {
+      const response = await axiosServer.get('/forum/topic')
+      setForumTopics(response.data)
+    }
+    void getTopics()
+  }, [])
+
+  useEffect(() => {
     if (topicContainerRef.current) {
       topicContainerRef.current.scrollTo(0, 0)
     }

@@ -5,6 +5,7 @@ import {
   HasMany,
   PrimaryKey,
   AutoIncrement,
+  DataType,
 } from 'sequelize-typescript'
 import { Comment } from './Comment'
 
@@ -18,7 +19,7 @@ export class Topic extends Model {
   @Column
   topic!: string
 
-  @Column({ type: 'TIMESTAMP' })
+  @Column({ type: DataType.DATE })
   created!: Date
 
   @Column

@@ -6,15 +6,13 @@ import {
   BelongsTo,
   PrimaryKey,
   AutoIncrement,
-  HasMany,
   DataType,
 } from 'sequelize-typescript'
 
-import { Topic } from './Topic'
-import { Reply } from './Reply'
+import { Comment } from './Comment'
 
 @Table({ timestamps: false })
-export class Comment extends Model {
+export class Reply extends Model {
   @PrimaryKey
   @AutoIncrement
   @Column
@@ -29,13 +27,10 @@ export class Comment extends Model {
   @Column
   authorLogin!: string
 
-  @ForeignKey(() => Topic)
+  @ForeignKey(() => Comment)
   @Column
-  topicId!: number
+  commentId!: number
 
-  @BelongsTo(() => Topic)
-  topic!: Topic
-
-  @HasMany(() => Reply)
-  replies?: Reply[]
+  @BelongsTo(() => Comment)
+  comment!: Comment
 }

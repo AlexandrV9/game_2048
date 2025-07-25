@@ -7,6 +7,7 @@ import { checkAuth } from '../utils'
 export const forumAPI = () => {
   app.use(bodyParser.json())
   app.use(bodyParser.urlencoded({ extended: true }))
+
   app.post('/forum/topic', async (req, res) => {
     try {
       await checkAuth(req, res)
@@ -24,6 +25,29 @@ export const forumAPI = () => {
         author: newTopic.authorLogin,
         comments: newTopic.comments,
       })
+    } catch (error) {
+      console.error('Ошибка при создании топика:', error)
+      res.status(500).json({ error: 'Не удалось создать топик' })
+    }
+  })
+
+  app.get('/forum/topic', async (req, res) => {
+    try {
+      await checkAuth(req, res)
+      console.log(req.body)
+      const newTopic = await Topic.findAll()
+
+      res.status(200).json(
+        newTopic.map(item => {
+          return {
+            id: item.id,
+            topic: item.topic,
+            created: item.created,
+            author: item.authorLogin,
+            comments: item.comments,
+          }
+        })
+      )
     } catch (error) {
       console.error('Ошибка при создании топика:', error)
       res.status(500).json({ error: 'Не удалось создать топик' })
