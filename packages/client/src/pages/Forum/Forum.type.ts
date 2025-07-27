@@ -27,9 +27,8 @@ export interface Comment {
   created: Date
   authorLogin: string
   topicId?: number
-  topic?: Topic
-  parentCommentId?: number
-  childComments?: Comment[]
+  replies?: Comment[]
+  author?: Author
 }
 
 export interface Topic {

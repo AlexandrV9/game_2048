@@ -69,21 +69,19 @@ const OpenTopic: React.FC<{
       const authorPost = await serverApi.post('/yandex-api/user/search', {
         login: topic.author,
       })
-      const authorData: Author = authorPost.data as Author
+      const authorData: Author[] = authorPost.data as Author[]
       setAuthor({
-        id: authorData.id,
-        first_name: authorData.first_name,
-        second_name: authorData.second_name,
-        login: authorData.login,
-        email: authorData.email,
-        phone: authorData.phone,
-        avatar: `http://localhost:3001/yandex-api/resources${authorData.avatar}`,
-        display_name: authorData.display_name,
+        id: authorData[0].id,
+        first_name: authorData[0].first_name,
+        second_name: authorData[0].second_name,
+        login: authorData[0].login,
+        email: authorData[0].email,
+        phone: authorData[0].phone,
+        avatar: `http://localhost:3001/yandex-api/resources${authorData[0].avatar}`,
+        display_name: authorData[0].display_name,
       })
     }
-    console.log(author)
     void postAuthor()
-    console.log(author)
   }, [])
 
   const createComment = async (data: FormEvent<HTMLFormElement>) => {

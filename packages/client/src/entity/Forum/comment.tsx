@@ -6,11 +6,21 @@ import { dateFormatted } from './openTopic'
 import { routesName } from '@/shared/configs/routes'
 import { RootState } from '@/app/store'
 import { serverApi } from '@/shared/api/core/BaseAPI'
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
+import { Button } from '@/shared/ui'
+import { ChevronDown, ChevronRight } from 'lucide-react'
 
 interface topicProps {
   comment: Comment
   styles: CSSModuleClasses
+}
+
+interface CommentData {
+  id: string
+  authorLogin: string
+  content: string
+  created: string
+  commentId: number
 }
 
 const CommentComponent: React.FC<topicProps> = ({
@@ -19,22 +29,27 @@ const CommentComponent: React.FC<topicProps> = ({
 }: topicProps) => {
   const me = useSelector((state: RootState) => state.user).user
   const [author, setAuthor] = useState<Author | null>(null)
+  const [replies, setReplies] = useState<Comment[] | null>(null)
+  const [showReplyForm, setShowReplyForm] = useState(false)
+  const [showReplies, setShowReplies] = useState(false)
+  const [isLoading, setIsLoading] = useState(false)
+  const inputRef = useRef<HTMLTextAreaElement | null>(null)
 
   useEffect(() => {
     const postAuthor = async () => {
       const authorPost = await serverApi.post('/yandex-api/user/search', {
         login: comment.authorLogin,
       })
-      const authorData: Author = authorPost.data as Author
+      const authorData: Author[] = authorPost.data as Author[]
       setAuthor({
-        id: authorData.id,
-        first_name: authorData.first_name,
-        second_name: authorData.second_name,
-        login: authorData.login,
-        email: authorData.email,
-        phone: authorData.phone,
-        avatar: `http://localhost:3001/yandex-api/resources${authorData.avatar}`,
-        display_name: authorData.display_name,
+        id: authorData[0].id,
+        first_name: authorData[0].first_name,
+        second_name: authorData[0].second_name,
+        login: authorData[0].login,
+        email: authorData[0].email,
+        phone: authorData[0].phone,
+        avatar: `http://localhost:3001/yandex-api/resources${authorData[0].avatar}`,
+        display_name: authorData[0].display_name,
       })
     }
     void postAuthor()
@@ -49,30 +64,184 @@ const CommentComponent: React.FC<topicProps> = ({
     me?.login === comment.authorLogin && styles.me
   )
 
+  const handleReplySubmit = async (data: React.FormEvent<HTMLFormElement>) => {
+    data.preventDefault()
+
+    if (!inputRef.current?.value) return
+
+    const createReply = await serverApi.post(`/forum/comments/${comment.id}`, {
+      content: inputRef.current?.value,
+      authorLogin: me?.login,
+    })
+    const replyData: CommentData = createReply.data as CommentData
+
+    const authorReply = await serverApi.post('/yandex-api/user/search', {
+      login: replyData.authorLogin,
+    })
+    const authorData: Author[] = authorReply.data as Author[]
+
+    const newReply: Comment = {
+      id: Number(replyData.id),
+      content: replyData.content,
+      authorLogin: replyData.authorLogin,
+      created: new Date(replyData.created),
+      author: authorData[0],
+    }
+
+    setReplies([newReply])
+    if (inputRef.current) {
+      inputRef.current.value = ''
+    }
+  }
+
+  const clickShowReplies = () => {
+    setShowReplies(!showReplies)
+    const getReplies = async () => {
+      setIsLoading(true)
+      const replyGet = await serverApi.get(`/forum/comments/${comment.id}`)
+      const replyData: Comment[] = replyGet.data as Comment[]
+      const readyReply: Comment[] = []
+      for (const index in replyData) {
+        replyData[index]
+        const authorReply = await serverApi.post('/yandex-api/user/search', {
+          login: replyData[index].authorLogin,
+        })
+        const authorData: Author[] = authorReply.data as Author[]
+        readyReply.push({
+          id: Number(replyData[index].id),
+          content: replyData[index].content,
+          authorLogin: replyData[index].authorLogin,
+          created: new Date(replyData[index].created),
+          author: authorData[0],
+        })
+      }
+      setReplies(readyReply)
+      return
+    }
+    !showReplies &&
+      void getReplies().finally(() => {
+        setIsLoading(false)
+      })
+  }
+
   return (
-    <div className={commentStyle}>
-      <a href={`${routesName['profile']}/${author?.id}`}>
-        <img
-          src={author?.avatar}
-          alt={author?.login}
-          className={styles.authorAvatar}
-        />
-      </a>
-      <div className={styles.commentContent}>
-        <div className={bubbleStyle}>
-          <div className={styles.commentHeader}>
-            <span className={styles.commentAuthor}>
-              {author?.first_name} {author?.second_name}
-            </span>
-            <span className={styles.commentSeparator}>•</span>
-            <span className={styles.commentDate}>
-              {dateFormatted(new Date(comment.created))}
-            </span>
+    <>
+      <div className={commentStyle}>
+        <div className={styles.commentContent}>
+          <div className={bubbleStyle}>
+            <div className={styles.commentHeader}>
+              <a href={`${routesName['profile']}/${author?.id}`}>
+                <img
+                  src={author?.avatar}
+                  alt={author?.login}
+                  className={styles.authorAvatar}
+                />
+              </a>
+              <span className={styles.commentAuthor}>
+                {author?.first_name} {author?.second_name}
+              </span>
+              <span className={styles.commentSeparator}>•</span>
+              <span className={styles.commentDate}>
+                {dateFormatted(new Date(comment.created))}
+              </span>
+            </div>
+            <p className={styles.commentText}>{comment.content}</p>
           </div>
-          <p className={styles.commentText}>{comment.content}</p>
         </div>
       </div>
-    </div>
+
+      <div
+        className={clsx([
+          styles.replySection,
+          me?.login === comment.authorLogin && styles.me,
+        ])}>
+        <Button
+          type="button"
+          onClick={() => setShowReplyForm(!showReplyForm)}
+          className={styles.actionButton}>
+          Ответить
+        </Button>
+
+        <Button
+          onClick={clickShowReplies}
+          className={clsx([styles.actionButton, styles.toggleReplies])}>
+          {showReplies ? <ChevronDown size={14} /> : <ChevronRight size={14} />}
+          ответы
+        </Button>
+      </div>
+      {isLoading ? (
+        <div className={clsx(me?.login === comment.authorLogin && styles.me)}>
+          Загрузка...
+        </div>
+      ) : null}
+
+      {showReplies &&
+        replies?.map(reply => {
+          return (
+            <div
+              className={clsx([
+                styles.comment,
+                me?.login === comment.authorLogin && styles.me,
+              ])}
+              key={reply.id}>
+              <div
+                className={
+                  me?.login === comment.authorLogin
+                    ? styles.levelRight
+                    : styles.levelLeft
+                }>
+                <div className={styles.commentContent}>
+                  <div className={styles.commentBubble}>
+                    <div className={styles.commentHeader}>
+                      <a href={`${routesName['profile']}/${reply.author?.id}`}>
+                        <img
+                          src={`http://localhost:3001/yandex-api/resources${reply.author?.avatar}`}
+                          alt={reply.author?.login}
+                          className={styles.authorAvatar}
+                        />
+                      </a>
+                      <span className={styles.commentAuthor}>
+                        {reply.author?.first_name} {reply.author?.second_name}
+                      </span>
+                      <span className={styles.commentSeparator}>•</span>
+                      <span className={styles.commentDate}>
+                        {dateFormatted(new Date(reply.created))}
+                      </span>
+                    </div>
+                    <p className={styles.commentText}>{reply.content}</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          )
+        })}
+
+      {showReplyForm && (
+        <div className={clsx([styles.replyForm])}>
+          <form onSubmit={handleReplySubmit}>
+            <div className={styles.replyInputContainer}>
+              <textarea
+                placeholder={`Ответить ${author?.first_name}...`}
+                className={styles.replyInput}
+                rows={2}
+                ref={inputRef}
+              />
+            </div>
+            <div className={styles.replyActions}>
+              <Button
+                type="button"
+                onClick={() => setShowReplyForm(false)}
+                className={styles.cancelButton}>
+                Отмена
+              </Button>
+              <button type="submit" className={styles.submitButton}>
+                Ответить
+              </button>
+            </div>
+          </form>
+        </div>
+      )}
+    </>
   )
 }
 

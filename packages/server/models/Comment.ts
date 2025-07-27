@@ -37,5 +37,5 @@ export class Comment extends Model {
   topic!: Topic
 
   @HasMany(() => Reply)
-  replies?: Reply[]
+  replies!: Reply[]
 }

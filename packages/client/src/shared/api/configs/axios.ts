@@ -33,7 +33,6 @@ export const axiosServer = axios.create({
 
 axiosServer.interceptors.request.use(config => {
   const token = getCookie('authCookie')
-  console.log(config.headers)
   if (token) {
     config.headers['x-auth-token'] = 'token'
   }
@@ -42,7 +41,6 @@ axiosServer.interceptors.request.use(config => {
 })
 
 function getCookie(name: string) {
-  console.log(document.cookie)
   const value = document.cookie.split('; ').find(c => c.startsWith(name + '='))
 
   return value ? value.substring(name.length + 1) : null
