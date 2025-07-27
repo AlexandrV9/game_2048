@@ -50,7 +50,7 @@ const ProfilePage = () => {
         })
         if (response.data.avatar) {
           setAvatarUrl(
-            'https://ya-praktikum.tech/api/v2/resources/' + response.data.avatar
+            'http://localhost:3001/yandex-api/resources' + response.data.avatar
           )
         }
       } catch (error) {
@@ -76,7 +76,7 @@ const ProfilePage = () => {
       const response = await UserService.changeUserAvatar(file)
 
       setAvatarUrl(
-        'https://ya-praktikum.tech/api/v2/resources/' + response.data.avatar
+        'http://localhost:3001/yandex-api/resources' + response.data.avatar
       )
     } catch (error) {
       console.error('Ошибка при загрузке аватара', error)
