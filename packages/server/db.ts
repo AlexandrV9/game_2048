@@ -1,6 +1,8 @@
 import { Sequelize, SequelizeOptions } from 'sequelize-typescript'
 import dotenv from 'dotenv'
+
 import { Comment, Reaction, Reply, Topic } from './models'
+
 dotenv.config()
 
 const { POSTGRES_USER, POSTGRES_PASSWORD, POSTGRES_DB, POSTGRES_PORT } =

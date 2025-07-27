@@ -7,6 +7,7 @@ import {
   AutoIncrement,
   DataType,
 } from 'sequelize-typescript'
+
 import { Comment } from './Comment'
 
 @Table({ timestamps: false })

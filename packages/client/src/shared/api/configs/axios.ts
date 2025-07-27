@@ -21,18 +21,3 @@ axiosInstance.interceptors.response.use(
     return Promise.reject(error)
   }
 )
-
-axiosInstance.interceptors.request.use(config => {
-  const token = getCookie('authCookie')
-  if (token) {
-    config.headers['x-auth-token'] = 'token'
-  }
-
-  return config
-})
-
-function getCookie(name: string) {
-  const value = document.cookie.split('; ').find(c => c.startsWith(name + '='))
-
-  return value ? value.substring(name.length + 1) : null
-}

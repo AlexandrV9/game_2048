@@ -7,8 +7,6 @@ import { CLIENT_PORT, CLIENT_URL, SERVER_PORT } from './constants'
 import { yandexApiProxy } from './api/yaProxy'
 import { forumAPI } from './api/forum'
 import { initializeDatabase } from './db'
-// import axios from 'axios'
-// import bodyParser from 'body-parser'
 
 export const app = express()
 
@@ -43,30 +41,6 @@ app.use('/yandex-api', yandexApiProxy)
 initializeDatabase()
   .then(async () => {
     forumAPI()
-    // app.get('/', async (req, res) => {
-    //   try {
-    //     app.use(bodyParser.json())
-    //     app.use(bodyParser.urlencoded({ extended: true }))
-    //     console.log(req.body)
-    //     const resp = await axios.post(
-    //       'https://ya-praktikum.tech/api/v2/user/search',
-    //       { login: 'nblohin97' }
-    //     )
-    //     res.status(201).json({
-    //       id: resp.data.id,
-    //       first_name: resp.data.first_name,
-    //       second_name: resp.data.second_name,
-    //       display_name: resp.data.display_name,
-    //       phone: resp.data.phone,
-    //       login: resp.data.login,
-    //       avatar: resp.data.avatar,
-    //       email: resp.data.email,
-    //     })
-    //   } catch (error) {
-    //     console.error('Ошибка при создании топика:', error)
-    //     res.status(500).json({ error: 'Не удалось создать топик' })
-    //   }
-    // })
 
     app.listen(SERVER_PORT, () => {
       console.log(`  ➜ 🎸 Server is listening on port: ${SERVER_PORT}`)

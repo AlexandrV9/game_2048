@@ -93,6 +93,7 @@ const CommentComponent: React.FC<topicProps> = ({
           newReply,
         ])
       : setReplies([newReply])
+    comment.replies?.push(newReply)
     if (inputRef.current) {
       inputRef.current.value = ''
     }
