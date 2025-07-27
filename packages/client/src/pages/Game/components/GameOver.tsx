@@ -7,6 +7,8 @@ import { useSelector } from 'react-redux'
 import { RootState } from '@/app/store'
 import { User } from '@/shared/types'
 import { LeaderboardService } from '@/shared/api/services/leaderbord-service'
+import { selectUser } from '@/shared/common/selectors'
+import { toast } from 'react-toastify'
 
 interface GameOverProps {
   currentHighScore: number
@@ -17,23 +19,24 @@ const GameOver: React.FC<GameOverProps> = ({
   onRestartGame,
   currentHighScore,
 }) => {
-  const userInfo = useSelector((state: RootState) => state.user).user
+  const userInfo = useSelector(selectUser)
 
-  const setUserScore = async (user: User, score: number) => {
+  const setUserScore = async (score: number) => {
+    if (!userInfo) return
     try {
       const response = await LeaderboardService.setUserScore({
-        userId: user.id,
-        userName: user.first_name,
+        userId: userInfo.id,
+        userName: userInfo.first_name,
         score: score,
       })
     } catch (error) {
-      console.error('Проблема с сохранением результата')
+      toast.error('Проблема с сохранением результата')
     }
   }
 
   useEffect(() => {
     if (!userInfo || !currentHighScore) return
-    void setUserScore(userInfo, currentHighScore)
+    void setUserScore(currentHighScore)
   }, [userInfo, currentHighScore])
 
   return (

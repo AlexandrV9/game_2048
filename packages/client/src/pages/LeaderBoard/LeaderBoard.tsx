@@ -5,11 +5,12 @@ import { Button } from '@/shared/ui'
 import { LeaderboardService } from '@/shared/api/services/leaderbord-service'
 import { LeaderBoardPlayerInfo } from '@/shared/api/services/leaderbord-service/types'
 import { useSelector } from 'react-redux'
-import { RootState } from '@/app/store'
 import { routesName } from '@/shared/configs/routes'
+import { selectUser } from '@/shared/common/selectors'
+import { toast } from 'react-toastify'
 
 const Leaderboard: React.FC = () => {
-  const userInfo = useSelector((state: RootState) => state.user).user
+  const userInfo = useSelector(selectUser)
   const [players, setPlayers] = useState<LeaderBoardPlayerInfo[]>([])
 
   const sortedPlayers = [...players].sort((a, b) => b.data.score - a.data.score)
@@ -24,7 +25,7 @@ const Leaderboard: React.FC = () => {
         const response = await LeaderboardService.getLeaderboardData()
         setPlayers(response.data)
       } catch (error) {
-        console.error('Проблемы при загрузке лидерборда', error)
+        toast.error('Проблемы при загрузке лидерборда')
       }
     }
     void loadLeaderBoard()
