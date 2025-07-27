@@ -166,4 +166,24 @@ export const forumAPI = () => {
       res.status(500).json({ error: 'Не удалось создать комментарий' })
     }
   })
+
+  app.get('/forum/comments/:id/reaction', async (req, res) => {
+    try {
+      await checkAuth(req, res)
+      res.status(200)
+    } catch (error) {
+      console.error('Ошибка при получении реакций:', error)
+      res.status(500).json({ error: 'Не удалось получить реакции' })
+    }
+  })
+
+  app.post('/forum/comments/:id/reaction', async (req, res) => {
+    try {
+      await checkAuth(req, res)
+      res.status(201)
+    } catch (error) {
+      console.error('Ошибка при создании реакций:', error)
+      res.status(500).json({ error: 'Не удалось создать реакцию' })
+    }
+  })
 }
