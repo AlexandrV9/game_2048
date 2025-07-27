@@ -8,6 +8,7 @@ import { useSelector } from 'react-redux'
 import { routesName } from '@/shared/configs/routes'
 import { selectUser } from '@/shared/common/selectors'
 import { toast } from 'react-toastify'
+import { useNotification } from '@/shared/hooks/useNotification'
 
 const Leaderboard: React.FC = () => {
   const userInfo = useSelector(selectUser)
@@ -18,6 +19,8 @@ const Leaderboard: React.FC = () => {
     player => player.data.userId === userInfo?.id
   )
   const isPlayerFound = currentPlayerIndex !== -1
+
+  useNotification()
 
   useEffect(() => {
     const loadLeaderBoard = async () => {
