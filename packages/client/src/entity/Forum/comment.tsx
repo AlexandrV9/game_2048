@@ -1,14 +1,15 @@
 import clsx from 'clsx'
 import { useSelector } from 'react-redux'
+import { useEffect, useRef, useState } from 'react'
+import { ChevronDown, ChevronRight } from 'lucide-react'
 
 import { Author, Comment } from '@/pages/Forum/Forum.type'
 import { dateFormatted } from './openTopic'
 import { routesName } from '@/shared/configs/routes'
 import { RootState } from '@/app/store'
-import { serverApi } from '@/shared/api/core/BaseAPI'
-import { useEffect, useRef, useState } from 'react'
 import { Button } from '@/shared/ui'
-import { ChevronDown, ChevronRight } from 'lucide-react'
+import { ForumService } from '@/shared/api/services/forum'
+import { UserService } from '@/shared/api/services/user'
 
 interface topicProps {
   comment: Comment
@@ -29,7 +30,7 @@ const CommentComponent: React.FC<topicProps> = ({
 }: topicProps) => {
   const me = useSelector((state: RootState) => state.user).user
   const [author, setAuthor] = useState<Author | null>(null)
-  const [replies, setReplies] = useState<Comment[] | null>(null)
+  const [replies, setReplies] = useState<Comment[] | undefined>(comment.replies)
   const [showReplyForm, setShowReplyForm] = useState(false)
   const [showReplies, setShowReplies] = useState(false)
   const [isLoading, setIsLoading] = useState(false)
@@ -37,7 +38,7 @@ const CommentComponent: React.FC<topicProps> = ({
 
   useEffect(() => {
     const postAuthor = async () => {
-      const authorPost = await serverApi.post('/yandex-api/user/search', {
+      const authorPost = await UserService.searchUser({
         login: comment.authorLogin,
       })
       const authorData: Author[] = authorPost.data as Author[]
@@ -69,17 +70,16 @@ const CommentComponent: React.FC<topicProps> = ({
 
     if (!inputRef.current?.value) return
 
-    const createReply = await serverApi.post(`/forum/comments/${comment.id}`, {
+    const createReply = await ForumService.createReply({
+      commentId: comment.id,
       content: inputRef.current?.value,
-      authorLogin: me?.login,
+      authorLogin: me?.login as string,
     })
     const replyData: CommentData = createReply.data as CommentData
-
-    const authorReply = await serverApi.post('/yandex-api/user/search', {
+    const authorReply = await UserService.searchUser({
       login: replyData.authorLogin,
     })
     const authorData: Author[] = authorReply.data as Author[]
-
     const newReply: Comment = {
       id: Number(replyData.id),
       content: replyData.content,
@@ -87,8 +87,12 @@ const CommentComponent: React.FC<topicProps> = ({
       created: new Date(replyData.created),
       author: authorData[0],
     }
-
-    setReplies([newReply])
+    replies
+      ? setReplies((prevReplies: Comment[] | undefined) => [
+          ...(prevReplies as Comment[]),
+          newReply,
+        ])
+      : setReplies([newReply])
     if (inputRef.current) {
       inputRef.current.value = ''
     }
@@ -98,12 +102,14 @@ const CommentComponent: React.FC<topicProps> = ({
     setShowReplies(!showReplies)
     const getReplies = async () => {
       setIsLoading(true)
-      const replyGet = await serverApi.get(`/forum/comments/${comment.id}`)
+      const replyGet = await ForumService.getReply({
+        commentId: comment.id,
+      })
       const replyData: Comment[] = replyGet.data as Comment[]
       const readyReply: Comment[] = []
       for (const index in replyData) {
         replyData[index]
-        const authorReply = await serverApi.post('/yandex-api/user/search', {
+        const authorReply = await UserService.searchUser({
           login: replyData[index].authorLogin,
         })
         const authorData: Author[] = authorReply.data as Author[]
@@ -166,7 +172,7 @@ const CommentComponent: React.FC<topicProps> = ({
           onClick={clickShowReplies}
           className={clsx([styles.actionButton, styles.toggleReplies])}>
           {showReplies ? <ChevronDown size={14} /> : <ChevronRight size={14} />}
-          ответы
+          ответы ({comment.replies?.length})
         </Button>
       </div>
       {isLoading ? (

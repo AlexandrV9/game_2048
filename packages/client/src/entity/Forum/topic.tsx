@@ -1,9 +1,10 @@
+import { useEffect, useState } from 'react'
+
 import { Author, Topic } from '@/pages/Forum/Forum.type'
 import { dateFormatted } from './openTopic'
 import messageImage from '../../shared/assets/Forum/message.svg'
 import calendarImage from '../../shared/assets/Forum/calendar.svg'
-import { serverApi } from '@/shared/api/core/BaseAPI'
-import { useEffect, useState } from 'react'
+import { UserService } from '@/shared/api/services/user'
 
 interface topicProps {
   topic: Topic | null
@@ -16,8 +17,8 @@ export const TopicComponent = ({ topic, styles }: topicProps) => {
 
   useEffect(() => {
     const postAuthor = async () => {
-      const authorPost = await serverApi.post('/yandex-api/user/search', {
-        login: topic?.author,
+      const authorPost = await UserService.searchUser({
+        login: topic?.author as string,
       })
       const authorData: Author[] = authorPost.data as Author[]
       setAuthor({

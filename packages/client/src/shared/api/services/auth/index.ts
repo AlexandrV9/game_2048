@@ -1,4 +1,4 @@
-import { baseApi, serverApi } from '../../core/BaseAPI'
+import { serverApi } from '../../core/BaseAPI'
 import {
   ReqSignUp,
   ReqSignInByLogin,
@@ -9,7 +9,7 @@ import {
 
 export class AuthService {
   static signUp(data: ReqSignUp) {
-    return baseApi.post<ResSignUp>('/auth/signup', {
+    return serverApi.post<ResSignUp>('/auth/signup', {
       first_name: data.firstName,
       second_name: data.secondName,
       login: data.login,

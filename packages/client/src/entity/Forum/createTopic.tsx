@@ -1,9 +1,10 @@
-import { Button } from '@/shared/ui'
 import { FormEvent, useEffect, useRef } from 'react'
 import { useSelector } from 'react-redux'
+
+import { Button } from '@/shared/ui'
 import { RootState } from '@/app/store'
-import { serverApi } from '@/shared/api/core/BaseAPI'
 import { Topic } from '@/pages/Forum/Forum.type'
+import { ForumService } from '@/shared/api/services/forum'
 
 interface TopicData {
   author: string
@@ -33,9 +34,9 @@ const CreateTopic: React.FC<{
 
     if (!inputRef.current?.value) return
 
-    const createTopic = await serverApi.post('/forum/topics', {
+    const createTopic = await ForumService.createTopic({
       topic: inputRef.current?.value,
-      author: userLogin,
+      author: userLogin as string,
       created: new Date(),
       comments: [],
     })

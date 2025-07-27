@@ -11,7 +11,9 @@ export const forumAPI = () => {
   app.get('/forum/topics', async (req, res) => {
     try {
       await checkAuth(req, res)
-      const allTopics = await Topic.findAll()
+      const allTopics = await Topic.findAll({
+        include: [Comment],
+      })
 
       res.status(200).json(
         allTopics.map(item => {
@@ -62,6 +64,7 @@ export const forumAPI = () => {
         where: {
           topicId: topicId,
         },
+        include: [Reply],
       })
 
       const responseData = allComments.map(item => {
@@ -71,7 +74,7 @@ export const forumAPI = () => {
           created: item.created,
           authorLogin: item.authorLogin,
           topicId: item.topicId,
-          replies: [],
+          replies: item.replies,
         }
         return comment
       })

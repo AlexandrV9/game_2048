@@ -1,5 +1,5 @@
 import { AxiosInstance, AxiosRequestConfig, AxiosResponse } from 'axios'
-import { axiosInstance, axiosServer } from '../configs/axios'
+import { axiosInstance } from '../configs/axios'
 
 class BaseAPI {
   transport: AxiosInstance
@@ -86,5 +86,4 @@ class BaseAPI {
   }
 }
 
-export const baseApi = new BaseAPI(axiosInstance)
-export const serverApi = new BaseAPI(axiosServer)
+export const serverApi = new BaseAPI(axiosInstance)

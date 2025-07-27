@@ -1,13 +1,14 @@
-import { Author, Comment, Topic } from '@/pages/Forum/Forum.type'
 import { FormEvent, useEffect, useRef, useState } from 'react'
+import { useSelector } from 'react-redux'
+
+import { Author, Comment, Topic } from '@/pages/Forum/Forum.type'
 import CommentComponent from './comment'
 import { routesName } from '@/shared/configs/routes'
 import calendarImage from '../../shared/assets/Forum/calendar.svg'
 import sendImage from '../../shared/assets/Forum/sendButton.svg'
-import { useSelector } from 'react-redux'
 import { RootState } from '@/app/store'
-import { serverApi } from '@/shared/api/core/BaseAPI'
-import { axiosServer } from '@/shared/api/configs/axios'
+import { UserService } from '@/shared/api/services/user'
+import { ForumService } from '@/shared/api/services/forum'
 
 export const dateFormatted = (date: Date): string => {
   const day = date.getDate().toString()
@@ -54,10 +55,10 @@ const OpenTopic: React.FC<{
     document.addEventListener('keydown', handleEscape)
 
     const getComments = async () => {
-      const response = await axiosServer.get(
-        `/forum/topics/${thisTopic.id}/comments`
-      )
-      setCommentsTopic(response.data)
+      const response = await ForumService.getComment({
+        topicId: thisTopic.id,
+      })
+      setCommentsTopic(response.data as Comment[])
     }
     void getComments()
 
@@ -66,7 +67,7 @@ const OpenTopic: React.FC<{
 
   useEffect(() => {
     const postAuthor = async () => {
-      const authorPost = await serverApi.post('/yandex-api/user/search', {
+      const authorPost = await UserService.searchUser({
         login: topic.author,
       })
       const authorData: Author[] = authorPost.data as Author[]
@@ -88,18 +89,18 @@ const OpenTopic: React.FC<{
     data.preventDefault()
 
     if (!inputRef.current?.value) return
-    const createComment = await axiosServer.post(
-      `/forum/topics/${thisTopic.id}/comments`,
-      {
-        content: inputRef.current?.value,
-        authorLogin: me?.login as string,
-      }
-    )
+    const createComment = await ForumService.createComment({
+      topicId: thisTopic.id,
+      content: inputRef.current?.value,
+      authorLogin: me?.login as string,
+    })
+    const commentData = createComment.data as Comment
+    console.log(commentData)
     const newComment: Comment = {
-      id: createComment.data.id,
-      content: createComment.data.content,
-      authorLogin: createComment.data.authorLogin,
-      created: createComment.data.created,
+      id: commentData.id,
+      content: commentData.content,
+      authorLogin: commentData.authorLogin,
+      created: commentData.created,
     }
     commentsTopic
       ? setCommentsTopic((prevComments: Comment[] | undefined) => [

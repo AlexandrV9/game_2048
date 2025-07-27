@@ -1,5 +1,5 @@
-import { baseApi, serverApi } from '../../core/BaseAPI'
-import { UserBaseInfo, UserInfo } from './types'
+import { serverApi } from '../../core/BaseAPI'
+import { SearchUser, UserBaseInfo, UserInfo } from './types'
 
 export class UserService {
   static getUserInfo() {
@@ -22,5 +22,12 @@ export class UserService {
 
   static updateUserData(data: UserBaseInfo) {
     return serverApi.put<UserInfo>('/yandex-api/user/profile', data)
+  }
+
+  static searchUser(data: SearchUser) {
+    const res = serverApi.post('/yandex-api/user/search', {
+      login: data.login,
+    })
+    return res
   }
 }

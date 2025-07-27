@@ -1,7 +1,7 @@
 import axios, { AxiosError } from 'axios'
 
 export const axiosInstance = axios.create({
-  baseURL: `https://${import.meta.env.VITE_BASE_API_URL}`,
+  baseURL: `${import.meta.env.VITE_SERVER_API_URL}`,
   headers: { 'Content-Type': 'application/json; charset=utf-8' },
   withCredentials: true,
   timeout: 10_000,
@@ -22,16 +22,7 @@ axiosInstance.interceptors.response.use(
   }
 )
 
-export const axiosServer = axios.create({
-  baseURL: 'http://localhost:3001',
-  headers: {
-    'Content-Type': 'application/json; charset=utf-8',
-  },
-  withCredentials: true,
-  timeout: 10_000,
-})
-
-axiosServer.interceptors.request.use(config => {
+axiosInstance.interceptors.request.use(config => {
   const token = getCookie('authCookie')
   if (token) {
     config.headers['x-auth-token'] = 'token'

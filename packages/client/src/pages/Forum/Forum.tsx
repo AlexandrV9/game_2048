@@ -1,18 +1,19 @@
-import styles from './Forum.module.scss'
 import { useEffect, useRef, useState } from 'react'
+import clsx from 'clsx'
+import { useSelector } from 'react-redux'
+import { useNavigate } from 'react-router-dom'
+
+import styles from './Forum.module.scss'
 import { TopicComponent } from '@/entity/Forum/topic'
 import CreateTopic from '@/entity/Forum/createTopic'
-import clsx from 'clsx'
 import OpenTopic from '@/entity/Forum/openTopic'
 import { useNotification } from '@/shared/hooks/useNotification'
-import { useNavigate } from 'react-router-dom'
 import { Button } from '@/shared/ui'
 import { routesName } from '@/shared/configs/routes'
 import { Avatar, AvatarImage } from '@/shared/ui'
-import { useSelector } from 'react-redux'
 import { RootState } from '@/app/store'
-import { axiosServer } from '@/shared/api/configs/axios'
 import { Topic } from './Forum.type'
+import { ForumService } from '@/shared/api/services/forum'
 
 const ForumPage = () => {
   const [forumTopics, setForumTopics] = useState<Topic[] | null>(null)
@@ -31,7 +32,7 @@ const ForumPage = () => {
 
   useEffect(() => {
     const getTopics = async () => {
-      const response = await axiosServer.get('/forum/topics')
+      const response = await ForumService.getTopics()
       setForumTopics(response.data)
     }
     void getTopics()
