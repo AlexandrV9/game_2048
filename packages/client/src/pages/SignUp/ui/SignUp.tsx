@@ -5,6 +5,7 @@ import { useAuth } from '@/shared/auth'
 import { Button, Card, Form, TextInput, PhoneInput } from '@/shared/ui'
 import { Link } from 'react-router-dom'
 import { routesName } from '@/shared/configs/routes'
+import { Header } from '@/widgets'
 
 const SignUpPage = () => {
   const { signUp, isLoading } = useAuth()
@@ -22,7 +23,8 @@ const SignUpPage = () => {
   }
 
   return (
-    <div className="flex flex-col gap-2 justify-center items-center w-[100vw] h-[100vh] bg-[#fbfbe9]">
+    <div className="flex flex-col gap-2 items-center w-[100vw] h-[100vh] pb-[2rem] overflow-auto bg-amber-50 dark:bg-gray-800">
+      <Header isShowUserAvatar={false} />
       <h1 className="text-3xl font-bold">Игра 2048</h1>
       <Card.Root className="w-full max-w-[400px]">
         <Card.Header>
@@ -30,97 +32,101 @@ const SignUpPage = () => {
         </Card.Header>
         <Card.Content>
           <Form.Root {...form}>
-            <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
-              <Form.Field
-                control={form.control}
-                name="firstName"
-                render={({ field }) => (
-                  <Form.Item>
-                    <Form.Label>Имя</Form.Label>
-                    <Form.Control>
-                      <TextInput autoComplete="off" {...field} />
-                    </Form.Control>
-                    <Form.Message />
-                  </Form.Item>
-                )}
-              />
-              <Form.Field
-                control={form.control}
-                name="secondName"
-                render={({ field }) => (
-                  <Form.Item>
-                    <Form.Label>Фамилия</Form.Label>
-                    <Form.Control>
-                      <TextInput autoComplete="off" {...field} />
-                    </Form.Control>
-                    <Form.Message />
-                  </Form.Item>
-                )}
-              />
-              <Form.Field
-                control={form.control}
-                name="login"
-                render={({ field }) => (
-                  <Form.Item>
-                    <Form.Label>Логин</Form.Label>
-                    <Form.Control>
-                      <TextInput autoComplete="off" {...field} />
-                    </Form.Control>
-                    <Form.Message />
-                  </Form.Item>
-                )}
-              />
-              <Form.Field
-                control={form.control}
-                name="email"
-                render={({ field }) => (
-                  <Form.Item>
-                    <Form.Label>E-mail</Form.Label>
-                    <Form.Control>
-                      <TextInput autoComplete="off" {...field} />
-                    </Form.Control>
-                    <Form.Message />
-                  </Form.Item>
-                )}
-              />
-              <Form.Field
-                control={form.control}
-                name="phone"
-                render={({ field }) => (
-                  <Form.Item>
-                    <Form.Label>Номер телефона</Form.Label>
-                    <Form.Control>
-                      <PhoneInput
-                        {...field}
-                        defaultCountry="RU"
-                        international
-                        autoComplete="off"
-                        onChange={value => {
-                          field.onChange(value === '+8' ? '+7' : value)
-                        }}
-                      />
-                    </Form.Control>
-                    <Form.Message />
-                  </Form.Item>
-                )}
-              />
-              <Form.Field
-                control={form.control}
-                name="password"
-                render={({ field }) => (
-                  <Form.Item>
-                    <Form.Label>Пароль</Form.Label>
-                    <Form.Control>
-                      <TextInput
-                        type="password"
-                        autoComplete="off"
-                        {...field}
-                      />
-                    </Form.Control>
-                    <Form.Message />
-                  </Form.Item>
-                )}
-              />
+            <form
+              onSubmit={form.handleSubmit(onSubmit)}
+              className="flex flex-col gap-[1rem]">
+              <div className="space-y-8">
+                <Form.Field
+                  control={form.control}
+                  name="firstName"
+                  render={({ field }) => (
+                    <Form.Item>
+                      <Form.Label>Имя</Form.Label>
+                      <Form.Control>
+                        <TextInput autoComplete="off" {...field} />
+                      </Form.Control>
+                      <Form.Message />
+                    </Form.Item>
+                  )}
+                />
+                <Form.Field
+                  control={form.control}
+                  name="secondName"
+                  render={({ field }) => (
+                    <Form.Item>
+                      <Form.Label>Фамилия</Form.Label>
+                      <Form.Control>
+                        <TextInput autoComplete="off" {...field} />
+                      </Form.Control>
+                      <Form.Message />
+                    </Form.Item>
+                  )}
+                />
+                <Form.Field
+                  control={form.control}
+                  name="login"
+                  render={({ field }) => (
+                    <Form.Item>
+                      <Form.Label>Логин</Form.Label>
+                      <Form.Control>
+                        <TextInput autoComplete="off" {...field} />
+                      </Form.Control>
+                      <Form.Message />
+                    </Form.Item>
+                  )}
+                />
+                <Form.Field
+                  control={form.control}
+                  name="email"
+                  render={({ field }) => (
+                    <Form.Item>
+                      <Form.Label>E-mail</Form.Label>
+                      <Form.Control>
+                        <TextInput autoComplete="off" {...field} />
+                      </Form.Control>
+                      <Form.Message />
+                    </Form.Item>
+                  )}
+                />
+                <Form.Field
+                  control={form.control}
+                  name="phone"
+                  render={({ field }) => (
+                    <Form.Item>
+                      <Form.Label>Номер телефона</Form.Label>
+                      <Form.Control>
+                        <PhoneInput
+                          {...field}
+                          defaultCountry="RU"
+                          international
+                          autoComplete="off"
+                          onChange={value => {
+                            field.onChange(value === '+8' ? '+7' : value)
+                          }}
+                        />
+                      </Form.Control>
+                      <Form.Message />
+                    </Form.Item>
+                  )}
+                />
+                <Form.Field
+                  control={form.control}
+                  name="password"
+                  render={({ field }) => (
+                    <Form.Item>
+                      <Form.Label>Пароль</Form.Label>
+                      <Form.Control>
+                        <TextInput
+                          type="password"
+                          autoComplete="off"
+                          {...field}
+                        />
+                      </Form.Control>
+                      <Form.Message />
+                    </Form.Item>
+                  )}
+                />
+              </div>
 
               <Button type="submit" className="w-full">
                 Создать

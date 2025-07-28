@@ -4,14 +4,11 @@ import { TopicComponent } from '@/entity/Forum/topic'
 import CreateTopic from '@/entity/Forum/createTopic'
 import clsx from 'clsx'
 import OpenTopic from '@/entity/Forum/openTopic'
-import { forumTopicsMock, me, Topic } from './Forum.mock'
+import { forumTopicsMock, Topic } from './Forum.mock'
 import { useNavigate } from 'react-router-dom'
 import { Button } from '@/shared/ui'
-import { routesName } from '@/shared/configs/routes'
-import { Avatar, AvatarImage } from '@/shared/ui'
 import { useNotification } from '@/shared/hooks/useNotification'
-import { useSelector } from 'react-redux'
-import { RootState } from '@/app/store'
+import { Header } from '@/widgets'
 
 const ForumPage = () => {
   const [forumTopics, setForumTopics] = useState(forumTopicsMock)
@@ -20,10 +17,6 @@ const ForumPage = () => {
   const [dialogState, setDialogState] = useState<'create' | 'open' | null>(null)
   const topicContainerRef = useRef<HTMLDivElement | null>(null)
   const navigate = useNavigate()
-  const avatarLink = useSelector((state: RootState) => state.user).user?.avatar
-  const avatar = avatarLink
-    ? `https://${import.meta.env.VITE_BASE_API_URL}/resources/${avatarLink}`
-    : null
 
   useNotification()
 
@@ -62,17 +55,11 @@ const ForumPage = () => {
         back
       </Button>
 
-      <nav>
-        <h2>ФОРУМ</h2>
+      <Header />
 
-        <div className={styles.avatar}>
-          <a href={`${routesName['profile']}/${me.id}`}>
-            <Avatar className={styles.avatarImg}>
-              <AvatarImage src={avatar ? avatar : me.avatar} alt="avatar" />
-            </Avatar>
-          </a>
-        </div>
-      </nav>
+      <div className="flex justify-center">
+        <h1 className="text-3xl font-bold">Форум</h1>
+      </div>
 
       <div className={styles.forumPanel}>
         <Button className={topicStyle} onClick={createDialog}>
