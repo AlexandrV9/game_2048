@@ -1,10 +1,21 @@
-import { Button } from '@/shared/ui'
-import { me, Topic } from '@/pages/Forum/Forum.mock'
 import { FormEvent, useEffect, useRef } from 'react'
+import { useSelector } from 'react-redux'
+
+import { Button } from '@/shared/ui'
+import { RootState } from '@/app/store'
+import { Topic } from '@/pages/Forum/Forum.type'
+import { ForumService } from '@/shared/api/services/forum'
+
+interface TopicData {
+  author: string
+  created: Date
+  id: number
+  topic: string
+}
 
 const CreateTopic: React.FC<{
-  forumTopics: Topic[]
-  setForumTopics: React.Dispatch<React.SetStateAction<Topic[]>>
+  forumTopics: Topic[] | null
+  setForumTopics: React.Dispatch<React.SetStateAction<Topic[] | null>>
   styles: CSSModuleClasses
   closeDialog: () => void
 }> = ({ forumTopics, setForumTopics, styles, closeDialog }) => {
@@ -16,20 +27,35 @@ const CreateTopic: React.FC<{
     return () => document.removeEventListener('keydown', handleEscape)
   }, [])
   const inputRef = useRef<HTMLTextAreaElement | null>(null)
+  const userLogin = useSelector((state: RootState) => state.user).user?.login
 
-  const createTopic = (data: FormEvent<HTMLFormElement>) => {
+  const createTopic = async (data: FormEvent<HTMLFormElement>) => {
     data.preventDefault()
 
     if (!inputRef.current?.value) return
 
-    const newTopic: Topic = {
-      id: forumTopics.length + Math.random() * 100,
+    const createTopic = await ForumService.createTopic({
       topic: inputRef.current?.value,
-      author: me,
+      author: userLogin as string,
       created: new Date(),
       comments: [],
+    })
+    const topicData: TopicData = createTopic.data as TopicData
+
+    const newTopic: Topic = {
+      id: Number(topicData.id),
+      topic: topicData.topic,
+      author: topicData.author,
+      created: topicData.created,
+      comments: [],
     }
-    setForumTopics((prevTopics: Topic[]) => [newTopic, ...prevTopics])
+
+    forumTopics
+      ? setForumTopics((prevTopics: Topic[] | null) => [
+          newTopic,
+          ...(prevTopics as Topic[]),
+        ])
+      : setForumTopics(() => [newTopic])
     closeDialog()
   }
 

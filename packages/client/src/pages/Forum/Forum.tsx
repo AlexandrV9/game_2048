@@ -1,31 +1,42 @@
-import styles from './Forum.module.scss'
 import { useEffect, useRef, useState } from 'react'
+import clsx from 'clsx'
+import { useSelector } from 'react-redux'
+import { useNavigate } from 'react-router-dom'
+
+import styles from './Forum.module.scss'
 import { TopicComponent } from '@/entity/Forum/topic'
 import CreateTopic from '@/entity/Forum/createTopic'
-import clsx from 'clsx'
 import OpenTopic from '@/entity/Forum/openTopic'
-import { forumTopicsMock, me, Topic } from './Forum.mock'
-import { useNavigate } from 'react-router-dom'
+import { useNotification } from '@/shared/hooks/useNotification'
 import { Button } from '@/shared/ui'
 import { routesName } from '@/shared/configs/routes'
 import { Avatar, AvatarImage } from '@/shared/ui'
-import { useNotification } from '@/shared/hooks/useNotification'
-import { useSelector } from 'react-redux'
 import { RootState } from '@/app/store'
+import { Topic } from './Forum.type'
+import { ForumService } from '@/shared/api/services/forum'
 
 const ForumPage = () => {
-  const [forumTopics, setForumTopics] = useState(forumTopicsMock)
+  const [forumTopics, setForumTopics] = useState<Topic[] | null>(null)
   const [isVisible, setIsVisible] = useState(false)
   const [openedTopic, setOpenedTopic] = useState<Topic | null>(null)
   const [dialogState, setDialogState] = useState<'create' | 'open' | null>(null)
   const topicContainerRef = useRef<HTMLDivElement | null>(null)
   const navigate = useNavigate()
-  const avatarLink = useSelector((state: RootState) => state.user).user?.avatar
+  const me = useSelector((state: RootState) => state.user).user
+  const avatarLink = me?.avatar
   const avatar = avatarLink
-    ? `https://${import.meta.env.VITE_BASE_API_URL}/resources/${avatarLink}`
+    ? `${import.meta.env.VITE_AVATAR_URL}${avatarLink}`
     : null
 
   useNotification()
+
+  useEffect(() => {
+    const getTopics = async () => {
+      const response = await ForumService.getTopics()
+      setForumTopics(response.data)
+    }
+    void getTopics()
+  }, [])
 
   useEffect(() => {
     if (topicContainerRef.current) {
@@ -66,9 +77,9 @@ const ForumPage = () => {
         <h2>ФОРУМ</h2>
 
         <div className={styles.avatar}>
-          <a href={`${routesName['profile']}/${me.id}`}>
+          <a href={`${routesName['profile']}/${me?.id}`}>
             <Avatar className={styles.avatarImg}>
-              <AvatarImage src={avatar ? avatar : me.avatar} alt="avatar" />
+              <AvatarImage src={avatar ? avatar : me?.avatar} alt="avatar" />
             </Avatar>
           </a>
         </div>
@@ -79,14 +90,15 @@ const ForumPage = () => {
           <TopicComponent topic={null} styles={styles} />
         </Button>
         <div className={styles.topicList} ref={topicContainerRef}>
-          {forumTopics.map(item => (
-            <Button
-              className={styles.topic}
-              onClick={() => openDialog(item)}
-              key={item.id}>
-              <TopicComponent topic={item} styles={styles} />
-            </Button>
-          ))}
+          {forumTopics &&
+            forumTopics.map(item => (
+              <Button
+                className={styles.topic}
+                onClick={() => openDialog(item)}
+                key={item.id}>
+                <TopicComponent topic={item} styles={styles} />
+              </Button>
+            ))}
         </div>
       </div>
       <div className={clsx(styles.plugTopic, isVisible ? '' : 'hidden')}>
@@ -99,7 +111,7 @@ const ForumPage = () => {
           />
         )}
 
-        {dialogState === 'open' && openedTopic && (
+        {dialogState === 'open' && openedTopic && forumTopics && (
           <OpenTopic
             topic={openedTopic}
             forumTopics={forumTopics}

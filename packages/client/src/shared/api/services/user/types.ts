@@ -11,3 +11,7 @@ export interface UserBaseInfo {
   login: string
   email: string
 }
+
+export interface SearchUser {
+  login: string
+}
