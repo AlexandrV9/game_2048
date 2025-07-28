@@ -28,7 +28,7 @@ export const TopicComponent = ({ topic, styles }: topicProps) => {
         login: authorData[0].login,
         email: authorData[0].email,
         phone: authorData[0].phone,
-        avatar: `http://localhost:3001/yandex-api/resources${authorData[0].avatar}`,
+        avatar: `${import.meta.env.VITE_AVATAR_URL}${authorData[0].avatar}`,
         display_name: authorData[0].display_name,
       })
     }

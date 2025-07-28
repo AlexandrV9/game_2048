@@ -25,7 +25,7 @@ const ForumPage = () => {
   const me = useSelector((state: RootState) => state.user).user
   const avatarLink = me?.avatar
   const avatar = avatarLink
-    ? `http://localhost:3001/yandex-api/resources${avatarLink}`
+    ? `${import.meta.env.VITE_AVATAR_URL}${avatarLink}`
     : null
 
   useNotification()

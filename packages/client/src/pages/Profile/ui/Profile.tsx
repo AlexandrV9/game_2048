@@ -50,7 +50,7 @@ const ProfilePage = () => {
         })
         if (response.data.avatar) {
           setAvatarUrl(
-            'http://localhost:3001/yandex-api/resources' + response.data.avatar
+            `${import.meta.env.VITE_AVATAR_URL}${response.data.avatar}`
           )
         }
       } catch (error) {
@@ -75,9 +75,7 @@ const ProfilePage = () => {
     try {
       const response = await UserService.changeUserAvatar(file)
 
-      setAvatarUrl(
-        'http://localhost:3001/yandex-api/resources' + response.data.avatar
-      )
+      setAvatarUrl(`${import.meta.env.VITE_AVATAR_URL}${response.data.avatar}`)
     } catch (error) {
       console.error('Ошибка при загрузке аватара', error)
       form.setError('avatar', {

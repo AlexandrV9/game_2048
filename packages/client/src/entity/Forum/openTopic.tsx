@@ -36,7 +36,7 @@ const OpenTopic: React.FC<{
   const me = useSelector((state: RootState) => state.user).user
   const avatarLink = me?.avatar
   const avatar = avatarLink
-    ? `http://localhost:3001/yandex-api/resources${avatarLink}`
+    ? `${import.meta.env.VITE_AVATAR_URL}${avatarLink}`
     : null
 
   useEffect(() => {
@@ -58,7 +58,7 @@ const OpenTopic: React.FC<{
       const response = await ForumService.getComment({
         topicId: thisTopic.id,
       })
-      setCommentsTopic(response.data as Comment[])
+      setCommentsTopic(response.data)
     }
     void getComments()
 
@@ -78,7 +78,7 @@ const OpenTopic: React.FC<{
         login: authorData[0].login,
         email: authorData[0].email,
         phone: authorData[0].phone,
-        avatar: `http://localhost:3001/yandex-api/resources${authorData[0].avatar}`,
+        avatar: `${import.meta.env.VITE_AVATAR_URL}${authorData[0].avatar}`,
         display_name: authorData[0].display_name,
       })
     }
@@ -94,8 +94,7 @@ const OpenTopic: React.FC<{
       content: inputRef.current?.value,
       authorLogin: me?.login as string,
     })
-    const commentData = createComment.data as Comment
-    console.log(commentData)
+    const commentData = createComment.data
     const newComment: Comment = {
       id: commentData.id,
       content: commentData.content,

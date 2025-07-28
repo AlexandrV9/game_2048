@@ -32,3 +32,11 @@ export interface CreateComment {
   content: string
   authorLogin: string
 }
+
+export interface CommentData {
+  id: string
+  authorLogin: string
+  content: string
+  created: string
+  commentId: number
+}

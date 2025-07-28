@@ -1,6 +1,6 @@
 import clsx from 'clsx'
 import { useSelector } from 'react-redux'
-import { useEffect, useRef, useState } from 'react'
+import { FormEvent, useEffect, useRef, useState } from 'react'
 import { ChevronDown, ChevronRight } from 'lucide-react'
 
 import { Author, Comment } from '@/pages/Forum/Forum.type'
@@ -14,14 +14,6 @@ import { UserService } from '@/shared/api/services/user'
 interface topicProps {
   comment: Comment
   styles: CSSModuleClasses
-}
-
-interface CommentData {
-  id: string
-  authorLogin: string
-  content: string
-  created: string
-  commentId: number
 }
 
 const CommentComponent: React.FC<topicProps> = ({
@@ -49,7 +41,7 @@ const CommentComponent: React.FC<topicProps> = ({
         login: authorData[0].login,
         email: authorData[0].email,
         phone: authorData[0].phone,
-        avatar: `http://localhost:3001/yandex-api/resources${authorData[0].avatar}`,
+        avatar: `${import.meta.env.VITE_AVATAR_URL}${authorData[0].avatar}`,
         display_name: authorData[0].display_name,
       })
     }
@@ -65,7 +57,7 @@ const CommentComponent: React.FC<topicProps> = ({
     me?.login === comment.authorLogin && styles.me
   )
 
-  const handleReplySubmit = async (data: React.FormEvent<HTMLFormElement>) => {
+  const handleReplySubmit = async (data: FormEvent<HTMLFormElement>) => {
     data.preventDefault()
 
     if (!inputRef.current?.value) return
@@ -75,7 +67,7 @@ const CommentComponent: React.FC<topicProps> = ({
       content: inputRef.current?.value,
       authorLogin: me?.login as string,
     })
-    const replyData: CommentData = createReply.data as CommentData
+    const replyData = createReply.data
     const authorReply = await UserService.searchUser({
       login: replyData.authorLogin,
     })
@@ -106,19 +98,18 @@ const CommentComponent: React.FC<topicProps> = ({
       const replyGet = await ForumService.getReply({
         commentId: comment.id,
       })
-      const replyData: Comment[] = replyGet.data as Comment[]
       const readyReply: Comment[] = []
-      for (const index in replyData) {
-        replyData[index]
+      for (const index in replyGet.data) {
+        replyGet.data[index]
         const authorReply = await UserService.searchUser({
-          login: replyData[index].authorLogin,
+          login: replyGet.data[index].authorLogin,
         })
         const authorData: Author[] = authorReply.data as Author[]
         readyReply.push({
-          id: Number(replyData[index].id),
-          content: replyData[index].content,
-          authorLogin: replyData[index].authorLogin,
-          created: new Date(replyData[index].created),
+          id: Number(replyGet.data[index].id),
+          content: replyGet.data[index].content,
+          authorLogin: replyGet.data[index].authorLogin,
+          created: new Date(replyGet.data[index].created),
           author: authorData[0],
         })
       }
@@ -202,7 +193,9 @@ const CommentComponent: React.FC<topicProps> = ({
                     <div className={styles.commentHeader}>
                       <a href={`${routesName['profile']}/${reply.author?.id}`}>
                         <img
-                          src={`http://localhost:3001/yandex-api/resources${reply.author?.avatar}`}
+                          src={`${import.meta.env.VITE_AVATAR_URL}${
+                            reply.author?.avatar
+                          }`}
                           alt={reply.author?.login}
                           className={styles.authorAvatar}
                         />

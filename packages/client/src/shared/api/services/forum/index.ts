@@ -1,6 +1,7 @@
-import { Topic } from '@/pages/Forum/Forum.type'
+import { Topic, Comment } from '@/pages/Forum/Forum.type'
 import { serverApi } from '../../core/BaseAPI'
 import {
+  CommentData,
   CreateComment,
   CreateReply,
   GetComment,
@@ -26,28 +27,36 @@ export class ForumService {
   }
 
   static getReply(data: GetReply) {
-    const res = serverApi.get(`/forum/comments/${data.commentId}`)
+    const res = serverApi.get<Comment[]>(`/forum/comments/${data.commentId}`)
     return res
   }
 
   static createReply(data: CreateReply) {
-    const res = serverApi.post(`/forum/comments/${data.commentId}`, {
-      content: data.content,
-      authorLogin: data.authorLogin,
-    })
+    const res = serverApi.post<CommentData>(
+      `/forum/comments/${data.commentId}`,
+      {
+        content: data.content,
+        authorLogin: data.authorLogin,
+      }
+    )
     return res
   }
 
   static getComment(data: GetComment) {
-    const res = serverApi.get(`/forum/topics/${data.topicId}/comments`)
+    const res = serverApi.get<Comment[]>(
+      `/forum/topics/${data.topicId}/comments`
+    )
     return res
   }
 
   static createComment(data: CreateComment) {
-    const res = serverApi.post(`/forum/topics/${data.topicId}/comments`, {
-      content: data.content,
-      authorLogin: data.authorLogin,
-    })
+    const res = serverApi.post<Comment>(
+      `/forum/topics/${data.topicId}/comments`,
+      {
+        content: data.content,
+        authorLogin: data.authorLogin,
+      }
+    )
     return res
   }
 }
