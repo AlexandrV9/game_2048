@@ -11,6 +11,8 @@ import {
 } from 'react-router-dom/server'
 import { StrictMode } from 'react'
 import { routes } from './app/providers/AppRouter/routes'
+import { ThemeProvider } from './shared/lib/theme'
+import { ToastContainer } from 'react-toastify'
 
 export const render = async (req: ExpressRequest) => {
   const { query, dataRoutes } = createStaticHandler(routes)
@@ -29,7 +31,10 @@ export const render = async (req: ExpressRequest) => {
     html: renderToString(
       <StrictMode>
         <Provider store={reduxStore}>
-          <StaticRouterProvider router={router} context={context} />
+          <ThemeProvider>
+            <StaticRouterProvider router={router} context={context} />
+            <ToastContainer />
+          </ThemeProvider>
         </Provider>
       </StrictMode>
     ),
