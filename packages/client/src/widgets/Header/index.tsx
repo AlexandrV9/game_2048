@@ -8,12 +8,6 @@ import { GameRules } from './GameRules'
 import { ToggleFullscreen } from '@/features/toggleFullscreen'
 import { ArrowLeftIcon } from '@/shared/ui/icons'
 
-const getAvatarFullLink = (avatarLink: string | null | undefined) => {
-  if (!avatarLink) return null
-
-  return `https://${import.meta.env.VITE_BASE_API_URL}/resources/${avatarLink}`
-}
-
 const fallbackAvatar =
   'https://sun9-25.userapi.com/c10968/u85534956/141244771/x_4ee7e2c5.jpg'
 
@@ -33,7 +27,9 @@ export const Header = ({
   const navigate = useNavigate()
 
   const avatarLink = useSelector((state: RootState) => state.user).user?.avatar
-  const avatar = getAvatarFullLink(avatarLink)
+  const avatar = avatarLink
+    ? `${import.meta.env.VITE_AVATAR_URL}${avatarLink}`
+    : null
 
   return (
     <header className="flex w-full p-[1rem]">

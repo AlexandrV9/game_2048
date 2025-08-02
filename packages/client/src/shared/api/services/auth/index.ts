@@ -1,4 +1,4 @@
-import { baseApi } from '../../core/BaseAPI'
+import { serverApi } from '../../core/BaseAPI'
 import {
   ReqSignUp,
   ReqSignInByLogin,
@@ -9,7 +9,7 @@ import {
 
 export class AuthService {
   static signUp(data: ReqSignUp) {
-    return baseApi.post<ResSignUp>('/auth/signup', {
+    return serverApi.post<ResSignUp>('/auth/signup', {
       first_name: data.firstName,
       second_name: data.secondName,
       login: data.login,
@@ -20,7 +20,7 @@ export class AuthService {
   }
 
   static signInByOAuth(code: string) {
-    return baseApi.post('/oauth/yandex', {
+    return serverApi.post('/yandex-api/oauth/yandex', {
       grant_type: 'authorization_code',
       code: code,
       redirect_uri: import.meta.env.VITE_REDIRECT_URI_OAUTH,
@@ -29,37 +29,14 @@ export class AuthService {
   }
 
   static signInByLogin(data: ReqSignInByLogin) {
-    return baseApi.post<ResSignInByLogin>('/auth/signin', data)
+    return serverApi.post<ResSignInByLogin>('/yandex-api/auth/signin', data)
   }
 
   static getUserInfo() {
-    return baseApi.get<ReqGetUserInfo>('/auth/user')
+    return serverApi.get<ReqGetUserInfo>('/yandex-api/auth/user')
   }
 
   static logout() {
-    return baseApi.post('/auth/logout')
-  }
-}
-
-export class OAuthService {
-  static async getAuthorizationUrl() {
-    const queryParams = new URLSearchParams({
-      client_id: import.meta.env.VITE_CLIENT_ID_OAUTH,
-      response_type: 'code',
-      redirect_uri: import.meta.env.VITE_REDIRECT_URI_OAUTH,
-    })
-
-    const url = `https://oauth.yandex.ru/authorize?${queryParams.toString()}`
-    return url
-  }
-
-  static async signInByOAuth(code: string) {
-    return baseApi.post('/oauth/yandex', {
-      grant_type: 'authorization_code',
-      code: code,
-      redirect_uri: import.meta.env.VITE_REDIRECT_URI_OAUTH,
-      client_id: import.meta.env.VITE_CLIENT_ID_OAUTH,
-      // client_secret: import.meta.env.VITE_CODE_OAUTH,
-    })
+    return serverApi.post('/yandex-api/auth/logout')
   }
 }

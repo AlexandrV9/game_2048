@@ -9,7 +9,7 @@ import { createServer as createViteServer, ViteDevServer } from 'vite'
 
 dotenv.config()
 
-const port = process.env.PORT || 8000
+const port = process.env.PORT || 9000
 const __filename = fileURLToPath(import.meta.url)
 const clientPath = path.join(dirname(__filename), '..')
 const isDev = process.env.NODE_ENV === 'development'
