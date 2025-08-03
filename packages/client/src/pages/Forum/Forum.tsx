@@ -14,6 +14,7 @@ import { Avatar, AvatarImage } from '@/shared/ui'
 import { RootState } from '@/app/store'
 import { Topic } from './Forum.type'
 import { ForumService } from '@/shared/api/services/forum'
+import { Reactions } from '@/entity/Forum/emoji'
 
 const ForumPage = () => {
   const [forumTopics, setForumTopics] = useState<Topic[] | null>(null)
@@ -92,12 +93,15 @@ const ForumPage = () => {
         <div className={styles.topicList} ref={topicContainerRef}>
           {forumTopics &&
             forumTopics.map(item => (
-              <Button
-                className={styles.topic}
-                onClick={() => openDialog(item)}
-                key={item.id}>
-                <TopicComponent topic={item} styles={styles} />
-              </Button>
+              <div key={item.id} className={styles.topicContainer}>
+                <Button
+                  className={styles.topic}
+                  onClick={() => openDialog(item)}>
+                  <TopicComponent topic={item} styles={styles} />
+                </Button>
+
+                <Reactions topic={item} styles={styles} />
+              </div>
             ))}
         </div>
       </div>
