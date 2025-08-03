@@ -43,6 +43,6 @@ export interface CommentData {
 
 export interface ReactionData {
   topicId: number
-  emoji: string
+  emojiId: number
   user: string
 }

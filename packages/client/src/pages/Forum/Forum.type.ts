@@ -31,11 +31,33 @@ export interface Comment {
   author?: Author
 }
 
+interface TopicEmoji {
+  code: string
+  count: number
+  users: string[]
+}
+
+export interface EmojiObj {
+  id: number
+  code: string
+}
+
+export type TopicEmojiList = Record<number, TopicEmoji>
 export interface Topic {
   id: number
   topic: string
   author: string
   created: Date
   comments?: Comment[]
-  reactions?: string[]
+  reactions?: TopicEmojiList
+}
+
+export interface ReactionObj {
+  status: 'added' | 'removed'
+  reaction?: {
+    id: number
+    topicId: number
+    emojiId: number
+    authorLogin: string
+  }
 }
