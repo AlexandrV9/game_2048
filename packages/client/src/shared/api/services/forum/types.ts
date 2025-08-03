@@ -40,3 +40,9 @@ export interface CommentData {
   created: string
   commentId: number
 }
+
+export interface ReactionData {
+  topicId: number
+  emoji: string
+  user: string
+}
