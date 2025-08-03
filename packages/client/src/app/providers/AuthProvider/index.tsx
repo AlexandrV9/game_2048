@@ -109,9 +109,13 @@ export const AuthProvider = () => {
 
   useEffect(() => {
     checkIsAuth().finally(() => {
-      setTimeout(() => {
+      const timeoutId = setTimeout(() => {
         setIsLoading(false)
       }, 500)
+
+      return () => {
+        clearTimeout(timeoutId)
+      }
     })
   }, [checkIsAuth])
 

@@ -1,22 +1,13 @@
-import { useEffect, useRef } from 'react'
+import { useEffect, useRef, useCallback } from 'react'
 
 const NOTIFICATION_TIMEOUT = 1000 * 300
-
-const handleNotification = async (onChangeVisibility: VoidFunction) => {
-  if (window.Notification?.permission !== 'granted') {
-    await window.Notification?.requestPermission()
-  }
-
-  document.addEventListener('visibilitychange', onChangeVisibility)
-}
 
 export const useNotification = () => {
   const timeoutId = useRef<NodeJS.Timeout>()
 
-  const showNotification = () => {
+  const showNotification = useCallback(() => {
     if (!document.hidden && timeoutId.current) {
       clearTimeout(timeoutId.current)
-
       return
     }
     if (!document.hidden) {
@@ -38,14 +29,18 @@ export const useNotification = () => {
     }, NOTIFICATION_TIMEOUT)
 
     timeoutId.current = timeout
-  }
+  }, [])
 
   useEffect(() => {
-    handleNotification(showNotification)
+    if (window.Notification?.permission !== 'granted') {
+      window.Notification?.requestPermission()
+    }
+
+    document.addEventListener('visibilitychange', showNotification)
 
     return () => {
       clearTimeout(timeoutId.current)
       document.removeEventListener('visibilitychange', showNotification)
     }
-  }, [])
+  }, [showNotification])
 }
