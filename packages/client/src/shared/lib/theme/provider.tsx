@@ -7,13 +7,7 @@ export const ThemeProvider = ({
   initialTheme = 'system',
   storageKey = 'ui-theme',
 }: ThemeProviderProps) => {
-  const [theme, setTheme] = useState<ThemeType>(() => {
-    // if (localStorage) {
-    //   return (localStorage.getItem(storageKey) as ThemeType) || initialTheme
-    // }
-
-    return initialTheme
-  })
+  const [theme, setTheme] = useState<ThemeType>(() => initialTheme)
 
   const toggleTheme = useCallback((value: ThemeType) => {
     setTheme(value)
@@ -24,19 +18,24 @@ export const ThemeProvider = ({
   useEffect(() => {
     const root = window.document.documentElement
 
-    root.classList.remove('light', 'dark')
+    const applyTheme = (themeValue: string) => {
+      root.classList.remove('light', 'dark')
+      root.classList.add(themeValue)
+    }
 
     if (theme === 'system') {
       const systemTheme = window.matchMedia('(prefers-color-scheme: dark)')
-        .matches
-        ? 'dark'
-        : 'light'
-
-      root.classList.add(systemTheme)
-      return
+      const setSystemTheme = () => {
+        applyTheme(systemTheme.matches ? 'dark' : 'light')
+      }
+      setSystemTheme()
+      systemTheme.addEventListener('change', setSystemTheme)
+      return () => {
+        systemTheme.removeEventListener('change', setSystemTheme)
+      }
+    } else {
+      applyTheme(theme)
     }
-
-    root.classList.add(theme)
   }, [theme])
 
   return <ThemeContext.Provider value={value}>{children}</ThemeContext.Provider>
