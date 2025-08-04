@@ -6,6 +6,7 @@ import { Link } from 'react-router-dom'
 import { Button, Card, Form, TextInput } from '@/shared/ui'
 import { routesName } from '@/shared/configs/routes'
 import yaImage from '../../../shared/assets/yandex.svg'
+import { Header } from '@/widgets'
 
 const SignInPage = () => {
   const { signInByLogin, isLoading } = useAuth()
@@ -33,7 +34,8 @@ const SignInPage = () => {
   }
 
   return (
-    <div className="flex flex-col gap-2 justify-center items-center w-[100vw] h-[100vh] bg-[#fbfbe9]">
+    <div className="flex flex-col gap-2 items-center w-[100vw] h-[100vh] bg-amber-50 dark:bg-gray-800 ">
+      <Header isShowUserAvatar={false} />
       <h1 className="text-3xl font-bold">Игра 2048</h1>
       <Card.Root className="w-full max-w-[400px]">
         <Card.Header>

@@ -6,6 +6,7 @@ import image from '../shared/assets/2048.svg'
 import store from '@/app/store'
 
 import './index.css'
+import { ThemeProvider } from '@/shared/lib'
 
 export function App() {
   useEffect(() => {
@@ -31,7 +32,9 @@ export function App() {
     <div className="h-[100vh] w-[100vw]">
       <Suspense fallback={null}>
         <ReduxProvider store={store}>
-          <AppRouter />
+          <ThemeProvider>
+            <AppRouter />
+          </ThemeProvider>
         </ReduxProvider>
         <ToastContainer />
       </Suspense>

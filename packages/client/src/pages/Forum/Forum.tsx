@@ -7,6 +7,7 @@ import styles from './Forum.module.scss'
 import { TopicComponent } from '@/entity/Forum/topic'
 import CreateTopic from '@/entity/Forum/createTopic'
 import OpenTopic from '@/entity/Forum/openTopic'
+import { Header } from '@/widgets'
 import { useNotification } from '@/shared/hooks/useNotification'
 import { Button } from '@/shared/ui'
 import { routesName } from '@/shared/configs/routes'
@@ -73,17 +74,11 @@ const ForumPage = () => {
         back
       </Button>
 
-      <nav>
-        <h2>ФОРУМ</h2>
+      <Header />
 
-        <div className={styles.avatar}>
-          <a href={`${routesName['profile']}/${me?.id}`}>
-            <Avatar className={styles.avatarImg}>
-              <AvatarImage src={avatar ? avatar : me?.avatar} alt="avatar" />
-            </Avatar>
-          </a>
-        </div>
-      </nav>
+      <div className="flex justify-center">
+        <h1 className="text-3xl font-bold">Форум</h1>
+      </div>
 
       <div className={styles.forumPanel}>
         <Button className={topicStyle} onClick={createDialog}>
