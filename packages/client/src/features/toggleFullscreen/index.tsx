@@ -11,6 +11,10 @@ export const ToggleFullscreen = () => {
     toggleFullscreen()
   }, [])
 
+  const handleFullscreenChange = useCallback(() => {
+    setIsFullscreen(!!document.fullscreenElement)
+  }, [])
+
   const tooltipText = !isFullscreenAllowed
     ? 'Fullscreen is not allowed in this browser'
     : isFullscreen
@@ -19,17 +23,12 @@ export const ToggleFullscreen = () => {
 
   useEffect(() => {
     setIsFullscreen(!!document.fullscreenElement)
-
-    const handleFullscreenChange = () => {
-      setIsFullscreen(!!document.fullscreenElement)
-    }
-
     document.addEventListener('fullscreenchange', handleFullscreenChange)
 
     return () => {
       document.removeEventListener('fullscreenchange', handleFullscreenChange)
     }
-  }, [])
+  }, [handleFullscreenChange])
 
   useEffect(() => {
     setIsFullscreenAllowed(
