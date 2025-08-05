@@ -6,6 +6,7 @@ import {
   CreateReply,
   GetComment,
   GetReply,
+  ReactionData,
   ResponseCreateTopic,
   TopicCreate,
 } from './types'
@@ -55,6 +56,17 @@ export class ForumService {
       {
         content: data.content,
         authorLogin: data.authorLogin,
+      }
+    )
+    return res
+  }
+
+  static addReaction(data: ReactionData) {
+    const res = serverApi.post<Comment>(
+      `/forum/topics/${data.topicId}/reaction`,
+      {
+        emoji: data.emoji,
+        authorLogin: data.user,
       }
     )
     return res

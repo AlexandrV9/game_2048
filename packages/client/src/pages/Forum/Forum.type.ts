@@ -37,4 +37,5 @@ export interface Topic {
   author: string
   created: Date
   comments?: Comment[]
+  reactions?: string[]
 }
