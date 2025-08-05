@@ -1,4 +1,10 @@
-import React, { useState, useEffect, Dispatch, SetStateAction } from 'react'
+import React, {
+  useState,
+  useEffect,
+  Dispatch,
+  SetStateAction,
+  useCallback,
+} from 'react'
 import styles from '@/pages/Game/style.module.css'
 import { Button } from '@/shared/ui'
 import clsx from 'clsx'
@@ -17,6 +23,14 @@ const StartGame: React.FC<StartGameProps> = ({
   const [countdown, setCountdown] = useState(-1)
   const [showInstructions, setShowInstructions] = useState(false)
 
+  const handleStartClick = useCallback(() => {
+    setCountdown(3)
+  }, [])
+
+  const toggleInstructions = useCallback(() => {
+    setShowInstructions(!showInstructions)
+  }, [showInstructions])
+
   useEffect(() => {
     if (countdown > 0) {
       const timer = setTimeout(() => setCountdown(prev => prev - 1), 1000)
@@ -25,14 +39,6 @@ const StartGame: React.FC<StartGameProps> = ({
       onStartGame()
     }
   }, [countdown, onStartGame])
-
-  const handleStartClick = () => {
-    setCountdown(3)
-  }
-
-  const toggleInstructions = () => {
-    setShowInstructions(!showInstructions)
-  }
 
   return (
     <>

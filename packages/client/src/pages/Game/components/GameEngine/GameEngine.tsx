@@ -4,6 +4,7 @@ import React, {
   useState,
   Dispatch,
   SetStateAction,
+  useCallback,
 } from 'react'
 import { getCellColor } from '@/pages/Game/components/GameEngine/utils/cellColor'
 import { generateEmptyBoard } from '@/pages/Game/components/GameEngine/utils/generateEmptyBoard'
@@ -67,15 +68,15 @@ const GameEngine: React.FC<GameEngineProps> = ({
   const [showDialog, setShowDialog] = useState(false)
   const [dialogType, setDialogType] = useState<GameStatusType | null>(null)
 
-  const startGame = () => {
+  const startGame = useCallback(() => {
     const newBoard = addRandomCell(addRandomCell(generateEmptyBoard(size)))
     setBoard(newBoard)
     setScore(0)
     setGameStatus(GameStatus.playing)
     setIsWinGameContinue(false)
-  }
+  }, [size, setScore, setGameStatus])
 
-  const handleContinue = () => {
+  const handleContinue = useCallback(() => {
     setShowDialog(false)
     if (dialogType === GameStatus.lose) {
       startGame()
@@ -84,16 +85,16 @@ const GameEngine: React.FC<GameEngineProps> = ({
       setIsWinGameContinue(true)
     }
     setDialogType(null)
-  }
+  }, [dialogType, startGame, setGameStatus])
 
-  const handleExit = () => {
+  const handleExit = useCallback(() => {
     setShowDialog(false)
     setGameStatus(GameStatus.idle)
     setDialogType(null)
     handleGameOver(score)
-  }
+  }, [score, handleGameOver, setGameStatus])
 
-  const draw = () => {
+  const draw = useCallback(() => {
     const ctx = canvasRef.current?.getContext('2d')
     if (!ctx) {
       return
@@ -132,88 +133,103 @@ const GameEngine: React.FC<GameEngineProps> = ({
         }
       })
     })
-  }
+  }, [board, canvasSize, size])
 
-  const handleKeyDown = (event: KeyboardEvent | PressingKeyObj) => {
-    if (gameStatus !== GameStatus.playing) return
+  const handleKeyDown = useCallback(
+    (event: KeyboardEvent | PressingKeyObj) => {
+      if (gameStatus !== GameStatus.playing) return
 
-    let newBoard: GameBoard = cloneBoard(board)
-    let moved = false
-    let points = 0
-    let win = false
+      let newBoard: GameBoard = cloneBoard(board)
+      let moved = false
+      let points = 0
+      let win = false
 
-    switch (event.key) {
-      case GameMoveDirections.left:
-        ;[newBoard, moved, points, win] = moveLeft(size, newBoard)
-        break
-      case GameMoveDirections.right:
-        newBoard = rotateBoard(size, rotateBoard(size, newBoard))
-        ;[newBoard, moved, points, win] = moveLeft(size, newBoard)
-        newBoard = rotateBoard(size, rotateBoard(size, newBoard))
-        break
-      case GameMoveDirections.up:
-        newBoard = rotateBoard(
-          size,
-          rotateBoard(size, rotateBoard(size, newBoard))
-        )
-        ;[newBoard, moved, points, win] = moveLeft(size, newBoard)
-        newBoard = rotateBoard(size, newBoard)
-        break
-      case GameMoveDirections.down:
-        newBoard = rotateBoard(size, newBoard)
-        ;[newBoard, moved, points, win] = moveLeft(size, newBoard)
-        newBoard = rotateBoard(
-          size,
-          rotateBoard(size, rotateBoard(size, newBoard))
-        )
-        break
-    }
-
-    if (moved) {
-      setBoard(addRandomCell(newBoard))
-      setScore(score => score + points)
-      if (win && !isWinGameContinue) {
-        setGameStatus(GameStatus.win)
-        setDialogType(GameStatus.win)
-        setShowDialog(true)
+      switch (event.key) {
+        case GameMoveDirections.left:
+          ;[newBoard, moved, points, win] = moveLeft(size, newBoard)
+          break
+        case GameMoveDirections.right:
+          newBoard = rotateBoard(size, rotateBoard(size, newBoard))
+          ;[newBoard, moved, points, win] = moveLeft(size, newBoard)
+          newBoard = rotateBoard(size, rotateBoard(size, newBoard))
+          break
+        case GameMoveDirections.up:
+          newBoard = rotateBoard(
+            size,
+            rotateBoard(size, rotateBoard(size, newBoard))
+          )
+          ;[newBoard, moved, points, win] = moveLeft(size, newBoard)
+          newBoard = rotateBoard(size, newBoard)
+          break
+        case GameMoveDirections.down:
+          newBoard = rotateBoard(size, newBoard)
+          ;[newBoard, moved, points, win] = moveLeft(size, newBoard)
+          newBoard = rotateBoard(
+            size,
+            rotateBoard(size, rotateBoard(size, newBoard))
+          )
+          break
       }
-      if (endGameCheck(size, newBoard)) {
-        setGameStatus(GameStatus.lose)
-        setDialogType(GameStatus.lose)
-        setShowDialog(true)
-      }
-    }
-  }
 
-  const handleTouchStart = (e: TouchEvent) => {
+      if (moved) {
+        setBoard(addRandomCell(newBoard))
+        setScore(score => score + points)
+        if (win && !isWinGameContinue) {
+          setGameStatus(GameStatus.win)
+          setDialogType(GameStatus.win)
+          setShowDialog(true)
+        }
+        if (endGameCheck(size, newBoard)) {
+          setGameStatus(GameStatus.lose)
+          setDialogType(GameStatus.lose)
+          setShowDialog(true)
+        }
+      }
+    },
+    [
+      gameStatus,
+      board,
+      size,
+      isWinGameContinue,
+      setScore,
+      setGameStatus,
+      setShowDialog,
+      setDialogType,
+    ]
+  )
+
+  const handleTouchStart = useCallback((e: TouchEvent) => {
     const touch = e.touches[0]
     touchStartRef.current = { x: touch.clientX, y: touch.clientY }
-  }
+  }, [])
 
-  const handleTouchEnd = (e: TouchEvent) => {
-    if (!touchStartRef.current) return
+  const handleTouchEnd = useCallback(
+    (e: TouchEvent) => {
+      if (!touchStartRef.current) return
 
-    const touch = e.changedTouches[0]
-    const dx = touch.clientX - touchStartRef.current.x
-    const dy = touch.clientY - touchStartRef.current.y
-    const absDx = Math.abs(dx)
-    const absDy = Math.abs(dy)
+      const touch = e.changedTouches[0]
+      const dx = touch.clientX - touchStartRef.current.x
+      const dy = touch.clientY - touchStartRef.current.y
+      const absDx = Math.abs(dx)
+      const absDy = Math.abs(dy)
 
-    if (Math.max(absDx, absDy) < SMALL_SWIPE) return
+      if (Math.max(absDx, absDy) < SMALL_SWIPE) return
 
-    const direction =
-      absDx > absDy
-        ? dx > 0
-          ? GameMoveDirections.right
-          : GameMoveDirections.left
-        : dy > 0
-        ? GameMoveDirections.down
-        : GameMoveDirections.up
+      const direction =
+        absDx > absDy
+          ? dx > 0
+            ? GameMoveDirections.right
+            : GameMoveDirections.left
+          : dy > 0
+          ? GameMoveDirections.down
+          : GameMoveDirections.up
 
-    handleKeyDown({ key: direction })
+      handleKeyDown({ key: direction })
 
-    touchStartRef.current = null
-  }
+      touchStartRef.current = null
+    },
+    [handleKeyDown]
+  )
 
   useEffect(() => {
     const resize = () => {
@@ -228,7 +244,7 @@ const GameEngine: React.FC<GameEngineProps> = ({
     window.addEventListener('resize', resize)
     startGame()
     return () => window.removeEventListener('resize', resize)
-  }, [])
+  }, [size, startGame])
 
   useEffect(() => {
     if (!canvasRef.current) return
@@ -240,12 +256,12 @@ const GameEngine: React.FC<GameEngineProps> = ({
       canvas.removeEventListener('touchstart', handleTouchStart)
       canvas.removeEventListener('touchend', handleTouchEnd)
     }
-  }, [board, gameStatus])
+  }, [handleTouchStart, handleTouchEnd])
 
   useEffect(() => {
     window.addEventListener('keydown', handleKeyDown)
     return () => window.removeEventListener('keydown', handleKeyDown)
-  }, [board, gameStatus, size])
+  }, [handleKeyDown])
 
   useEffect(() => {
     let frameId: number
@@ -255,7 +271,7 @@ const GameEngine: React.FC<GameEngineProps> = ({
     }
     render()
     return () => cancelAnimationFrame(frameId)
-  }, [board, canvasSize])
+  }, [draw])
 
   return (
     <div ref={containerRef} className={styles.content}>

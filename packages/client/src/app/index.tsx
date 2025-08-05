@@ -10,14 +10,26 @@ import { ThemeProvider } from '@/shared/lib'
 
 export function App() {
   useEffect(() => {
+    const abortController = new AbortController()
+
     const fetchServerData = async () => {
-      const url = `http://localhost:${__SERVER_PORT__}`
-      const response = await fetch(url)
-      const data = await response.json()
-      console.log(data)
+      try {
+        const url = `http://localhost:${__SERVER_PORT__}`
+        const response = await fetch(url, { signal: abortController.signal })
+        const data = await response.json()
+        console.log(data)
+      } catch (error) {
+        if (error instanceof Error && error.name !== 'AbortError') {
+          console.error('Fetch error:', error)
+        }
+      }
     }
 
     fetchServerData()
+
+    return () => {
+      abortController.abort()
+    }
   }, [])
 
   useEffect(() => {
@@ -26,6 +38,12 @@ export function App() {
     link.type = 'image/svg+xml'
     link.href = image
     document.head.appendChild(link)
+
+    return () => {
+      if (document.head.contains(link)) {
+        document.head.removeChild(link)
+      }
+    }
   }, [])
 
   return (
