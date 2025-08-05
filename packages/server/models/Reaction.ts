@@ -6,9 +6,11 @@ import {
   BelongsTo,
   PrimaryKey,
   AutoIncrement,
+  DataType,
 } from 'sequelize-typescript'
 
-import { Comment } from './Comment'
+import { Emoji } from './Emoji'
+import { Topic } from './Topic'
 
 @Table({ timestamps: false })
 export class Reaction extends Model {
@@ -17,16 +19,19 @@ export class Reaction extends Model {
   @Column
   declare id: number
 
-  @Column
-  emodji!: string
+  @ForeignKey(() => Emoji)
+  @Column(DataType.INTEGER)
+  declare emojiId: number
+  @BelongsTo(() => Emoji)
+  emoji!: Emoji
 
   @Column
   authorLogin!: string
 
-  @ForeignKey(() => Comment)
+  @ForeignKey(() => Topic)
   @Column
-  commentId!: number
+  topicId!: number
 
-  @BelongsTo(() => Comment)
-  comment!: Comment
+  @BelongsTo(() => Topic)
+  comment!: Topic
 }

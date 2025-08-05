@@ -1,4 +1,9 @@
-import { Topic, Comment } from '@/pages/Forum/Forum.type'
+import {
+  Topic,
+  Comment,
+  EmojiObj,
+  TopicEmojiList,
+} from '@/pages/Forum/Forum.type'
 import { serverApi } from '../../core/BaseAPI'
 import {
   CommentData,
@@ -62,13 +67,18 @@ export class ForumService {
   }
 
   static addReaction(data: ReactionData) {
-    const res = serverApi.post<Comment>(
+    const res = serverApi.post<TopicEmojiList>(
       `/forum/topics/${data.topicId}/reaction`,
       {
-        emoji: data.emoji,
+        emojiId: data.emojiId,
         authorLogin: data.user,
       }
     )
+    return res
+  }
+
+  static getEmojiList() {
+    const res = serverApi.get<EmojiObj[]>(`/forum/emojis`)
     return res
   }
 }

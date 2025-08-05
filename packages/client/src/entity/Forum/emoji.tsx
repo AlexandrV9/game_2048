@@ -1,48 +1,49 @@
 import { useEffect, useState } from 'react'
 import emojiImage from '../../shared/assets/Forum/emoji.svg'
 import { ForumService } from '@/shared/api/services/forum'
-import { Topic } from '@/pages/Forum/Forum.type'
-import { UserService } from '@/shared/api/services/user'
+import { EmojiObj, Topic, TopicEmojiList } from '@/pages/Forum/Forum.type'
+import { useSelector } from 'react-redux'
+import { selectUser } from '@/shared/common/selectors'
 
 interface reactionsProps {
   topic: Topic
   styles: CSSModuleClasses
 }
 
-const emosjis = ['😀', '😂', '😍', '😭', '😢', '🔥', '💯', '👍']
-
-const getEmojiData = (emojiList: string[]) => {
-  const emojiData: Record<string, number> = {}
-
-  emojiList.forEach(emoji => {
-    const emojiCount = emojiData[emoji]
-
-    emojiData[emoji] = (emojiCount || 0) + 1
-  })
-
-  return Object.entries(emojiData)
-}
-
 export const Reactions = ({ styles, topic }: reactionsProps) => {
+  const userInfo = useSelector(selectUser)
   const [isOpenEmojiList, setOpenEmojiList] = useState(false)
-  const [emojiData, setEmojiData] = useState<Array<string>>([])
+  const [emojiList, setEmojiList] = useState<EmojiObj[]>([])
+  const [emojiData, setEmojiData] = useState<TopicEmojiList>({})
 
-  const handleClickEmoji = async (emoji: string) => {
-    setEmojiData(prev => [...prev, emoji])
-    const res = await UserService.getUserInfo()
-    const user = res.data.login
-
-    if (user) {
-      ForumService.addReaction({
+  const handleClickEmoji = async (emojiId: number) => {
+    if (userInfo) {
+      const reactions = await ForumService.addReaction({
         topicId: topic.id,
-        emoji,
-        user,
+        emojiId,
+        user: userInfo.login,
       })
+      if (reactions.data) {
+        setEmojiData(reactions.data)
+      }
     }
   }
 
   useEffect(() => {
+    const fetchData = async () => {
+      if (topic?.reactions) setEmojiData(topic.reactions)
+
+      const resEmojis = await ForumService.getEmojiList()
+      setEmojiList(resEmojis.data || [])
+      console.log(emojiList)
+    }
+
+    fetchData()
+  }, [topic])
+
+  useEffect(() => {
     topic?.reactions && setEmojiData(topic.reactions)
+    console.log(emojiData)
   }, [])
 
   return (
@@ -50,11 +51,12 @@ export const Reactions = ({ styles, topic }: reactionsProps) => {
       <div className={styles.reactionsInfoContainer}>
         {emojiData && (
           <div className={styles.emojiInfoListContainer}>
-            {getEmojiData(emojiData).map(([emoji, count]) => (
+            {Object.entries(emojiData).map(([id, { code, count }]) => (
               <div
+                key={id}
                 className={styles.emojiInfoContainer}
-                onClick={() => handleClickEmoji(emoji)}>
-                <p>{emoji}</p>
+                onClick={() => handleClickEmoji(Number(id))}>
+                <p>{code}</p>
                 <p>{count}</p>
               </div>
             ))}
@@ -70,12 +72,12 @@ export const Reactions = ({ styles, topic }: reactionsProps) => {
 
       {isOpenEmojiList && (
         <div className={styles.reactionsList}>
-          {emosjis.map(emoji => (
+          {emojiList.map(emoji => (
             <button
-              key={emoji}
+              key={emoji.id}
               className={styles.reactionButton}
-              onClick={() => handleClickEmoji(emoji)}>
-              {emoji}
+              onClick={() => handleClickEmoji(emoji.id)}>
+              {emoji.code}
             </button>
           ))}
         </div>
