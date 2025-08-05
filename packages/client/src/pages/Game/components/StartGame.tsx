@@ -38,29 +38,29 @@ const StartGame: React.FC<StartGameProps> = ({
     <>
       {countdown > 0 ? (
         <div className={styles.countdown}>
-          <h1>{countdown}</h1>
+          <h1 className="text-3xl font-bold">{countdown}</h1>
         </div>
       ) : (
         <div className={clsx(styles.content, 'gap-4')}>
-          <h1>Добро пожаловать в 2048!</h1>
+          <h1 className="text-3xl font-bold">Добро пожаловать в 2048!</h1>
           <h3>Выберите сложность</h3>
           <div className="flex flex-row gap-2">
             <Button
-              variant={size === 8 ? 'default' : 'outline'}
+              variant={size === 8 ? 'primary' : 'default'}
               onClick={() => {
                 setSize(8)
               }}>
               Легко
             </Button>
             <Button
-              variant={size === 4 ? 'default' : 'outline'}
+              variant={size === 4 ? 'primary' : 'default'}
               onClick={() => {
                 setSize(4)
               }}>
               Нормально
             </Button>
             <Button
-              variant={size === 3 ? 'default' : 'outline'}
+              variant={size === 3 ? 'primary' : 'default'}
               onClick={() => {
                 setSize(3)
               }}>

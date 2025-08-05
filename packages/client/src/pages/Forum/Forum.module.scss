@@ -5,7 +5,7 @@
   height: 100vh;
   display: flex;
   flex-direction: column;
-  background-color: #f8f8f3;
+  background: var(--content-bg-light);
   overflow-x: hidden;
   scrollbar-width: 0.1vw;
   font-size: 2vh;
@@ -23,6 +23,10 @@
       color: #6c6150;
     }
   }
+}
+
+.dark .forum {
+  background: var(--content-bg-dark);
 }
 
 .forum::-webkit-scrollbar {
@@ -104,10 +108,10 @@
   transition: opacity 0.3s ease;
 }
 
-.avatarImg{
-    width: 3vw;
-    height: 3vw;
-  }
+.avatarImg {
+  width: 3vw;
+  height: 3vw;
+}
 
 .avatar:hover {
   opacity: 0.7;
@@ -196,6 +200,7 @@
   display: flex;
   justify-content: center;
   align-items: center;
+  gap: 10px;
   z-index: 1002;
 }
 
@@ -223,7 +228,7 @@
   justify-content: center;
   align-items: center;
 
-  textarea{
+  textarea {
     width: 49vw;
     max-height: 15vh;
     min-height: 10vh;
