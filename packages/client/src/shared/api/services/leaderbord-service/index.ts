@@ -6,7 +6,7 @@ const LEADERBOARD_RATING_FIELD_NAME = 'score'
 
 export class LeaderboardService {
   static setUserScore(data: UserScore) {
-    return serverApi.post<UserScoreObj>('/leaderboard', {
+    return serverApi.post<UserScoreObj>('/yandex-api/leaderboard', {
       data: data,
       ratingFieldName: LEADERBOARD_RATING_FIELD_NAME,
       teamName: LEADERBOARD_TEAM_NAME,
@@ -15,7 +15,7 @@ export class LeaderboardService {
 
   static getLeaderboardData() {
     return serverApi.post<LeaderBoardPlayerInfo[]>(
-      `/leaderboard/${LEADERBOARD_TEAM_NAME}`,
+      `/yandex-api/leaderboard/${LEADERBOARD_TEAM_NAME}`,
       {
         ratingFieldName: LEADERBOARD_RATING_FIELD_NAME,
         cursor: 0,
