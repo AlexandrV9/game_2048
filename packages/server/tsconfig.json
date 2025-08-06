@@ -25,6 +25,18 @@
     "paths": {
       "*": ["types/*"]
     },
-    "outDir": "dist"
-  }
+    "outDir": "./dist",
+    "rootDir": "./"
+  },
+  "exclude": [
+    "dist",
+    "node_modules",
+    "**/*.test.ts",
+    "**/*.mock.ts",
+    "**/__test__",
+    "**/__tests__"
+  ],
+  "include": [
+    "**/*.ts"
+  ]
 }

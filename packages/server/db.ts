@@ -7,18 +7,32 @@ import { EMOJIS } from './constants'
 
 dotenv.config({ path: path.resolve(__dirname, '../../.env') })
 
-const { POSTGRES_USER, POSTGRES_PASSWORD, POSTGRES_DB, POSTGRES_PORT } =
-  process.env
+const {
+  POSTGRES_USER,
+  POSTGRES_PASSWORD,
+  POSTGRES_DB,
+  POSTGRES_PORT,
+  POSTGRES_HOST,
+} = process.env
 
 const sequelizeOptions: SequelizeOptions = {
-  host: 'localhost',
-  port: Number(POSTGRES_PORT),
-  username: POSTGRES_USER,
-  password: POSTGRES_PASSWORD,
-  database: POSTGRES_DB,
+  host: POSTGRES_HOST || 'localhost',
+  port: Number(POSTGRES_PORT) || 5432,
+  username: POSTGRES_USER || 'postgres',
+  password: POSTGRES_PASSWORD || 'postgres',
+  database: POSTGRES_DB || 'game_2048',
   dialect: 'postgres',
-  logging: false,
+  logging: process.env.NODE_ENV === 'development',
   models: [Topic, Comment, Reply, Reaction, Emoji],
+  pool: {
+    max: 5,
+    min: 0,
+    acquire: 30000,
+    idle: 10000,
+  },
+  retry: {
+    max: 3,
+  },
 }
 
 const sequelize = new Sequelize(sequelizeOptions)
@@ -35,6 +49,7 @@ export const initializeDatabase = async () => {
     console.log('Таблица Emoji загружена')
   } catch (error) {
     console.error('Соединение с БД не установлено по ошибке: ', error)
+    throw error
   }
 }
 

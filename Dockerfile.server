@@ -1,27 +1,49 @@
 ARG NODE_VERSION=20
 ARG SERVER_PORT=3001
 
-FROM node:$NODE_VERSION-buster as base
+FROM node:${NODE_VERSION}-alpine AS base
 
 WORKDIR /app
 
-FROM base as builder
+# Install dependencies for native modules
+RUN apk add --no-cache python3 make g++
 
+FROM base AS builder
+
+# Copy package files
 COPY package.json yarn.lock ./
+COPY packages/server/package.json ./packages/server/
+
+# Install dependencies
 RUN yarn install --frozen-lockfile
 
+# Copy source code
 COPY . .
 
-RUN yarn
-RUN rm -rf /app/packages/server/dist/ && yarn build --scope=server
+# Clean dist directory and build server
+RUN rm -rf /app/packages/server/dist && \
+    yarn build --scope=server
 
+FROM node:${NODE_VERSION}-alpine AS production
 
-FROM node:$NODE_VERSION-buster-slim as production
 WORKDIR /app
 
-COPY --from=builder /app/packages/server/dist/ /app/
-COPY --from=builder /app/packages/server/package.json /app/package.json
-RUN yarn install --production=true
+# Install production dependencies only
+COPY --from=builder /app/packages/server/dist/ ./dist/
+COPY --from=builder /app/packages/server/package.json ./package.json
+RUN yarn install --production=true --frozen-lockfile
 
-EXPOSE $SERVER_PORT
-CMD [ "node", "/app/index.js" ]
+# Create non-root user
+RUN addgroup -g 1001 -S nodejs
+RUN adduser -S nodejs -u 1001
+
+# Change ownership of the app directory
+RUN chown -R nodejs:nodejs /app
+USER nodejs
+
+EXPOSE ${SERVER_PORT}
+
+HEALTHCHECK --interval=30s --timeout=3s --start-period=5s --retries=3 \
+  CMD node -e "require('http').get('http://localhost:${SERVER_PORT}/health', (res) => { process.exit(res.statusCode === 200 ? 0 : 1) })" || exit 1
+
+CMD ["node", "./dist/index.js"]

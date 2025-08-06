@@ -36,6 +36,11 @@ app.use((_, res, next) => {
   next()
 })
 
+// Health check endpoint for Docker
+app.get('/health', (_, res) => {
+  res.status(200).json({ status: 'ok', timestamp: new Date().toISOString() })
+})
+
 app.use('/yandex-api', yandexApiProxy)
 
 initializeDatabase()
@@ -48,4 +53,5 @@ initializeDatabase()
   })
   .catch(error => {
     console.error('Database initialization failed:', error)
+    process.exit(1)
   })
