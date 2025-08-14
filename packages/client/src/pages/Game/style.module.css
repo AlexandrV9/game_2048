@@ -1,6 +1,6 @@
 :root {
   --game-bg-light: url('/assets/background-light.png');
-  --game-bg-dark: url('/assets/background-light.png');
+  --game-bg-dark: url('/assets/background-dark.svg');
   --text-color-light: #333;
   --text-color-dark: #f3f4f6;
   --countdown-bg-light: rgba(255, 255, 255, 0.2);
