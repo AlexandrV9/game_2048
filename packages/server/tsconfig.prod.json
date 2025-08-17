@@ -1,4 +1,21 @@
 {
-  "extends": "./tsconfig",
-  "exclude": ["**/*.test.ts", "**/*.mock.ts", "**/__test__"]
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    "outDir": "./dist",
+    "rootDir": "./",
+    "sourceMap": false,
+    "removeComments": true,
+    "composite": false
+  },
+  "exclude": [
+    "**/*.test.ts",
+    "**/*.mock.ts", 
+    "**/__test__",
+    "**/__tests__",
+    "dist",
+    "node_modules"
+  ],
+  "include": [
+    "**/*.ts"
+  ]
 }

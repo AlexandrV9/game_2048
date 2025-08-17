@@ -1,11 +1,53 @@
+# Game 2048
+
+Игра 2048 с современным стеком технологий.
+
+## Быстрый старт с Docker
+
+### Требования
+- Docker
+- Docker Compose
+
+### Запуск
+1. Скопируйте файл с переменными окружения:
+```bash
+cp env.example .env
+```
+
+2. Отредактируйте `.env` файл (особенно `POSTGRES_PASSWORD`)
+
+3. Запустите проект:
+```bash
+./scripts/docker-setup.sh
+```
+
+Или вручную:
+```bash
+docker-compose up -d
+```
+
+### Доступ к приложению
+- **Клиент**: http://localhost:3000
+- **Сервер**: http://localhost:3001
+
+Подробная документация по Docker: [DOCKER_README.md](./DOCKER_README.md)
+
+## Разработка
+
 ### Как запускать?
 
 1. Убедитесь что у вас установлен `node` и `docker`
 2. Выполните команду `yarn bootstrap` - это обязательный шаг, без него ничего работать не будет :)
-3. Выполните команду `yarn dev`
-3. Выполните команду `yarn dev --scope=client` чтобы запустить только клиент
-4. Выполните команду `yarn dev --scope=server` чтобы запустить только server
-
+3. Для разработки с Docker:
+   ```bash
+   ./scripts/dev.sh
+   ```
+4. Или запустите локально:
+   ```bash
+   yarn dev`
+   ```
+5. Выполните команду `yarn dev --scope=client` чтобы запустить только клиент
+6. Выполните команду `yarn dev --scope=server` чтобы запустить только server
 
 ### Как добавить зависимости?
 В этом проекте используется `monorepo` на основе [`lerna`](https://github.com/lerna/lerna)
@@ -63,14 +105,34 @@
 
 Все ваши PR будут автоматически деплоиться на vercel. URL вам предоставит деплоящий бот
 
-## Production окружение в докере
-Перед первым запуском выполните `node init.js`
+## Production окружение в Docker
 
+### Быстрый запуск
+```bash
+docker-compose -f docker-compose.prod.yml up -d
+```
 
-`docker compose up` - запустит три сервиса
-1. nginx, раздающий клиентскую статику (client)
-2. node, ваш сервер (server)
-3. postgres, вашу базу данных (postgres)
+### Структура сервисов
+1. **PostgreSQL** - база данных
+2. **Node.js Server** - API сервер
+3. **Nginx** - статические файлы клиента
 
-Если вам понадобится только один сервис, просто уточните какой в команде
-`docker compose up {sevice_name}`, например `docker compose up server`
+### Переменные окружения
+Все настройки хранятся в файле `.env`:
+- Пароли и токены не попадают в репозиторий
+- Используйте `env.example` как шаблон
+- Обязательно измените `POSTGRES_PASSWORD`
+
+### Мониторинг
+```bash
+# Логи всех сервисов
+docker-compose logs -f
+
+# Статус сервисов
+docker-compose ps
+
+# Health checks
+docker-compose exec postgres pg_isready -U postgres
+curl http://localhost:3001/health
+curl http://localhost:3000/health
+```
