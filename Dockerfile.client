@@ -1,11 +1,28 @@
 ARG NODE_VERSION=20
 ARG CLIENT_PORT=3000
 
+# Env variables for client
+ARG VITE_BASE_API_URL
+ARG VITE_CLIENT_ID_OATH
+ARG VITE_REDIRECT_URI_OAUTH
+ARG VITE_NODE_ENV
+ARG VITE_OAUTH_URL
+ARG VITE_SERVER_API_URL
+ARG VITE_AVATAR_URL
+
 FROM node:${NODE_VERSION}-alpine AS base
 
 WORKDIR /app
 
 FROM base AS builder
+
+ENV VITE_BASE_API_URL=$VITE_BASE_API_URL
+ENV VITE_CLIENT_ID_OATH=$VITE_CLIENT_ID_OATH
+ENV VITE_REDIRECT_URI_OAUTH=$VITE_REDIRECT_URI_OAUTH
+ENV VITE_NODE_ENV=$VITE_NODE_ENV
+ENV VITE_OAUTH_URL=$VITE_OAUTH_URL
+ENV VITE_SERVER_API_URL=$VITE_SERVER_API_URL
+ENV VITE_AVATAR_URL=$VITE_AVATAR_URL
 
 # Copy package files
 COPY package.json yarn.lock ./
@@ -37,11 +54,11 @@ COPY --from=builder /app/packages/client/dist/server/ /usr/share/nginx/html/serv
 
 # Create directories and set permissions for nginx
 RUN mkdir -p /var/cache/nginx /var/log/nginx /run && \
-    chown -R nginx:nginx /usr/share/nginx/html && \
-    chown -R nginx:nginx /var/cache/nginx && \
-    chown -R nginx:nginx /var/log/nginx && \
-    chown -R nginx:nginx /etc/nginx/conf.d && \
-    chown -R nginx:nginx /run
+  chown -R nginx:nginx /usr/share/nginx/html && \
+  chown -R nginx:nginx /var/cache/nginx && \
+  chown -R nginx:nginx /var/log/nginx && \
+  chown -R nginx:nginx /etc/nginx/conf.d && \
+  chown -R nginx:nginx /run
 
 USER nginx
 
