@@ -9,7 +9,7 @@ import {
 
 export class AuthService {
   static signUp(data: ReqSignUp) {
-    return serverApi.post<ResSignUp>('/auth/signup', {
+    return serverApi.post<ResSignUp>('/yandex-api/auth/signup', {
       first_name: data.firstName,
       second_name: data.secondName,
       login: data.login,
